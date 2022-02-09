@@ -10,6 +10,7 @@ import java.util.Set;
 public class GeneticTokenizer {
     private final List<String> lines;
     private String next;
+    private Token.Type nextType;
     private int pos;
     private int line;
     private final Set<String> reserved = new HashSet<>(List.of(
@@ -56,6 +57,7 @@ public class GeneticTokenizer {
         StringBuilder s = new StringBuilder(); // read_str
         String curr_line = lines.get(line);
         next = "";
+        nextType = null;
         // find next token
         while (pos >= curr_line.length() || curr_line.charAt(pos) == ' ') {
             pos++;
@@ -80,11 +82,13 @@ public class GeneticTokenizer {
         // type OP
         if (isOperator(s.toString())) {
             next = s.toString();
+            nextType = Token.Type.OP;
             return;
         }
-        // type DELI
+        // type DELIMITER
         if (!notDelimeter(s.charAt(0))) {
             next = s.toString();
+            nextType = Token.Type.DELIMITER;
             return;
         }
         // add character to token until can't
@@ -95,30 +99,33 @@ public class GeneticTokenizer {
         // type NUM
         if (isNumber(s.toString())) {
             next = s.toString();
+            nextType = Token.Type.NUM;
             return;
         }
         // type RESERVED
         if (isReserved(s.toString())) {
             next = s.toString();
+            nextType = Token.Type.RESERVED;
             return;
         }
         next = s.toString(); // type IDENTIFIER
+        nextType = Token.Type.IDENTIFIER;
     }
 
     public boolean hasNext() {
         return !next.equals("");
     }
 
-    public int[] getInfo() {
-        return new int[]{pos, line};
+    public String getInfo() {
+        return "\n line " + line + ": " + lines.get(line) + "\n at pos: " + pos;
     }
 
-    public String peek() {
-        return next;
+    public Token peek() {
+        return new Token(next, nextType);
     }
 
-    public String consume() {
-        String res = next;
+    public Token consume() {
+        Token res = new Token(next, nextType);
         computeNext();
         return res;
     }
