@@ -1,4 +1,4 @@
 package carin.entities;
 
-public class Virus {
+public class Virus implements GeneticEntity {
 }

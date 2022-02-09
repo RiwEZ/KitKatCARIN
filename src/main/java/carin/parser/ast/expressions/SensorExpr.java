@@ -1,9 +1,12 @@
-package carin.parser.ast;
+package carin.parser.ast.expressions;
 
 import carin.GameStates;
 import carin.entities.GeneticEntity;
+import carin.parser.ast.SyntaxError;
 
-public class SensorExpr {
+import java.util.Map;
+
+public class SensorExpr implements Expr {
     private final String cmd;
     private final GeneticEntity host;
     private final GameStates states;
@@ -25,7 +28,8 @@ public class SensorExpr {
         return 0;
     }
 
-    public int evaluate() throws SyntaxError {
+    @Override
+    public int evaluate(Map<String, Integer> var_map) {
         switch (cmd) {
             case "virus":
                 break;
@@ -36,8 +40,7 @@ public class SensorExpr {
                 //
                 break;
             default:
-                throw new SyntaxError("Invalid SensorExpression at line"); // + line ...
         }
-        return 0;
+        return -1;
     }
 }

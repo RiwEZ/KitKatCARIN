@@ -1,4 +1,4 @@
 package carin.entities;
 
-public class Antibody {
+public class Antibody implements GeneticEntity {
 }
