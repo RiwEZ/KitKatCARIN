@@ -1,3 +1,4 @@
+virusLoc=(virus+1)
 t =t + 1  # keeping track of time unit
 virusLoc = virus
 if (virusLoc / 10 - 1)

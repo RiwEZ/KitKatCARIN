@@ -12,16 +12,16 @@ public class GeneticTokenizer {
     private String next;
     private int pos;
     private int line;
-    private Set<String> reserved = new HashSet<>(List.of(
+    private final Set<String> reserved = new HashSet<>(List.of(
         "antibody", "down", "downleft", "downright", "else", "if",
         "left", "move", "nearby", "right", "shoot", "then", "up",
         "upleft", "upright", "virus", "while"
     ));
-    private Set<String> operators = new HashSet<>(List.of(
+    private final Set<String> operators = new HashSet<>(List.of(
             "+", "-", "=", "%", "*", "/"
     ));
-    private Set<Character> delimeters = new HashSet<>(List.of(
-            '{', '}', '(', ')', ' '
+    private final Set<Character> delimeters = new HashSet<>(List.of(
+            '{', '}', '(', ')'
     ));
 
     public GeneticTokenizer(List<String> lines) {
@@ -32,7 +32,7 @@ public class GeneticTokenizer {
     }
 
     private boolean notDelimeter(char c) {
-        return !delimeters.contains(c);
+        return !delimeters.contains(c) && !isOperator(String.valueOf(c));
     }
 
     private boolean isReserved(String str) {
@@ -42,6 +42,7 @@ public class GeneticTokenizer {
     private boolean isOperator(String str) {
         return operators.contains(str);
     }
+
     private boolean isNumber(String str) {
         try {
             Integer.parseInt(str);
@@ -51,19 +52,15 @@ public class GeneticTokenizer {
         return true;
     }
 
-    // AssignmentStatement → <identifier> = Expression
-    // IfStatement → if ( Expression ) then Statement else Statement
-    // BlockStatement → { Statement* }
     public void computeNext() {
         StringBuilder s = new StringBuilder(); // read_str
         String curr_line = lines.get(line);
         next = "";
-
         // find next token
-        while (curr_line.charAt(pos) == ' ') {
+        while (pos >= curr_line.length() || curr_line.charAt(pos) == ' ') {
             pos++;
             // check if end of line
-            if (pos == curr_line.length()) {
+            if (pos >= curr_line.length()) {
                 if (line == lines.size() - 1) return; // eof
                 line += 1;
                 curr_line = lines.get(line);
@@ -77,32 +74,66 @@ public class GeneticTokenizer {
         if (s.toString().equals("#")) {
             line += 1;
             pos = 0;
+            computeNext();
             return;
         }
+        // type OP
         if (isOperator(s.toString())) {
             next = s.toString();
             return;
         }
-        while (notDelimeter(curr_line.charAt(pos))) {
+        // type DELI
+        if (!notDelimeter(s.charAt(0))) {
+            next = s.toString();
+            return;
+        }
+        // add character to token until can't
+        while (pos < curr_line.length() && notDelimeter(curr_line.charAt(pos)) && curr_line.charAt(pos) != ' ') {
             s.append(curr_line.charAt(pos));
             pos++;
         }
-
-        // determine token type
+        // type NUM
         if (isNumber(s.toString())) {
             next = s.toString();
             return;
         }
-        next = s.toString();
+        // type RESERVED
+        if (isReserved(s.toString())) {
+            next = s.toString();
+            return;
+        }
+        next = s.toString(); // type IDENTIFIER
     }
 
-
-    public void peek() {
-
+    public boolean hasNext() {
+        return !next.equals("");
     }
 
-    public void consume() {
+    public int[] getInfo() {
+        return new int[]{pos, line};
+    }
 
+    public String peek() {
+        return next;
+    }
+
+    public String consume() {
+        String res = next;
+        computeNext();
+        return res;
+    }
+
+    public boolean peek(String str) {
+        if (!hasNext()) return false;
+        return next.equals(str);
+    }
+
+    public boolean consume(String str) {
+        if (peek(str)) {
+            consume();
+            return true;
+        }
+        else return false;
     }
 
 }

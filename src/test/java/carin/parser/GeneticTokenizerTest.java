@@ -15,8 +15,7 @@ class GeneticTokenizerTest {
         List<String> lines = Files.readAllLines(p);
 
         GeneticTokenizer tk = new GeneticTokenizer(lines);
-
-        for (int i = 0; i < 100; i++)
-            tk.computeNext();
+        while(tk.hasNext())
+            System.out.println(tk.consume());
     }
 }
