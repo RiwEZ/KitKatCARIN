@@ -45,7 +45,8 @@ public class GeneticParser {
     public Expr testExpr(List<String> expr) throws Exception {
         if (expr.size() != 1) throw new Exception("wrong expr");
         tk = new GeneticTokenizer(expr);
-        return parseExpr();
+        Expr res = parseExpr();
+        return res;
     }
 
     private String errInfo() {
@@ -106,6 +107,7 @@ public class GeneticParser {
                 case "-" -> v = new Expression(v, '-', parseTerm());
             }
         }
+        if (Token.isPower(tk.peek())) throw new SyntaxError("not a statement", errInfo());
         return v;
     }
     // Term → Factor (*Factor)* | Factor (/Factor)* | Factor (%Factor)*
@@ -119,6 +121,7 @@ public class GeneticParser {
                 case "%" -> v = new Term(v, '%', parseFactor());
             }
         }
+        if (Token.isPower(tk.peek())) throw new SyntaxError("not a statement", errInfo());
         return v;
     }
     // Factor → Power (^Power)*
