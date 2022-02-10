@@ -117,7 +117,7 @@ public class GeneticTokenizer {
     }
 
     public String getInfo() {
-        return "\n line " + line + ": " + lines.get(line) + "\n at pos: " + pos;
+        return line + "\n\t" + lines.get(line) + "\n\t" + " ".repeat(pos - 1) + '^';
     }
 
     public Token peek() {
