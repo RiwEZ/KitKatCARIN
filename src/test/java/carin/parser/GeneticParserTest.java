@@ -1,8 +1,11 @@
 package carin.parser;
 
 import carin.entities.Antibody;
+import carin.parser.ast.SyntaxError;
 import org.junit.jupiter.api.DynamicTest;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
 import java.io.IOException;
@@ -19,7 +22,13 @@ class GeneticParserTest {
     int[] expr_tester(String test, GeneticParser parser, Map<String, Integer> var_map) {
         List<String> l = new LinkedList<>();
         String[] arr = test.split("=");
-        int expected = Integer.parseInt(arr[1].trim());
+        int expected;
+        try {
+            expected = Integer.parseInt(arr[1].trim());
+        }
+        catch (NumberFormatException ignored) {
+            expected = -1;
+        }
         int evalres;
         if (parser != null) {
             try {
@@ -41,7 +50,10 @@ class GeneticParserTest {
     /*
         read test file of format
         expression = expected output
-            > -1 is reserved for SyntaxError
+
+        when you need to debug add conditional breakpoint
+        "test.equal("test_str"))" to expr_tester line
+        syntaxerror will always tell line 0 because of how we're generating this test
     */
     @TestFactory
     Stream<DynamicTest> expr_test() {
@@ -63,4 +75,14 @@ class GeneticParserTest {
         }));
     }
 
+    @Test
+    void parser_test() {
+        try {
+            GeneticParser parser = new GeneticParser(new Antibody(), "tests/genetic2.in");
+            parser.getProgram();
+        }
+        catch (IOException | SyntaxError e) {
+            e.printStackTrace();
+        }
+    }
 }

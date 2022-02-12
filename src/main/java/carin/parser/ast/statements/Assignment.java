@@ -16,7 +16,8 @@ public class Assignment implements Statement {
     }
 
     @Override
-    public void evaluate() {
+    public boolean evaluate() {
         var_map.put(var, val.evaluate(var_map));
+        return false;
     }
 }

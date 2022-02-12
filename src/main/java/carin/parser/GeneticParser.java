@@ -4,23 +4,17 @@ import carin.GameStates;
 import carin.entities.GeneticEntity;
 import carin.parser.ast.SyntaxError;
 import carin.parser.ast.expressions.*;
-import carin.parser.ast.statements.Assignment;
-import carin.parser.ast.statements.Command;
-import carin.parser.ast.statements.Statement;
-import org.jetbrains.annotations.NotNull;
+import carin.parser.ast.statements.*;
 
+import javax.swing.plaf.nimbus.State;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class GeneticParser {
     private GameStates states;
     private final GeneticEntity host;
-    private boolean action_flag;
     private final Map<String, Integer> var_map = new HashMap<>();
     private GeneticTokenizer tk;
     private final String path;
@@ -34,7 +28,9 @@ public class GeneticParser {
         this.rand = new Random();
     }
 
-    public void evaluate() {
+    public Statement getProgram() throws SyntaxError {
+        Statement program = parseProgram();
+        return program;
     }
 
     /** this should be use for testing only
@@ -45,7 +41,7 @@ public class GeneticParser {
     public Expr testExpr(List<String> expr) throws Exception {
         if (expr.size() != 1) throw new Exception("wrong expr");
         tk = new GeneticTokenizer(expr);
-        Expr res = parseExpr();
+        Expr res = parseExpr(); // for inspecting AST in debugger
         return res;
     }
 
@@ -59,44 +55,100 @@ public class GeneticParser {
     }
 
     // Program → Statement+
-    private void parseProgram() throws SyntaxError {
-        Statement a = parseStatement();
+    private Statement parseProgram() throws SyntaxError {
+        StatementSeq seq = new StatementSeq();
+        while (Token.isStatement(tk.peek())) {
+            seq.add(parseStatement());
+        }
+        if (seq.size() < 1) throw new SyntaxError("at least 1 statement needed", errInfo());
+        return seq;
+    }
+
+    // ( Expression )
+    private Expr parseCondition() throws SyntaxError {
+        if (!tk.consume("(")) throw new SyntaxError("\"(\" expected", errInfo());
+        Expr condition = parseExpr();
+        if (!tk.consume(")")) throw new SyntaxError("\")\" expected", errInfo());
+        return condition;
     }
 
     // Statement → Command | BlockStatement | IfStatement | WhileStatement
     private Statement parseStatement() throws SyntaxError {
-        Statement p;
-        //if (isBlock()) {}
-        //if (isIf) {}
-        //if (isWhile) {}
-        if (Token.isCommand(tk.peek())) p = parseCommand();
-        else throw new SyntaxError("", errInfo());
+        Statement p = new StatementSeq(); // empty statement for block
+        if (Token.isCommand(tk.peek()))
+            p = parseCommand();
+        else if (Token.isBlock(tk.peek())) {
+            // parseBlock
+            tk.consume("{");
+            StatementSeq seq = new StatementSeq();
+            while (!tk.peek("}")) {
+                seq.add(parseStatement());
+            }
+            tk.consume("}");
+            p = seq;
+        }
+        else if (Token.isIf(tk.peek())) p = parseIf();
+        else if (Token.isWhile(tk.peek())) {
+            // parseWhile
+            tk.consume();
+            Expr condition = parseCondition();
+            Statement todo = parseStatement();
+            p = new WhileStatement(condition, todo, var_map);
+        }
+        //else throw new SyntaxError("something wrong", errInfo());
         return p;
     }
 
-    // Command → AssignmentStatement | ActionCommand
+    // IfStatement → if ( Expression ) then Statement else Statement
+    private Statement parseIf() throws SyntaxError {
+        tk.consume(); // consume if
+        Expr condition = parseCondition();
+        Statement then;
+        Statement otherwise;
+        if (tk.peek("then")) {
+            tk.consume();
+            then = parseStatement();
+        }
+        else throw new SyntaxError("\"then\" expected", errInfo());
+        if (tk.peek("else")) {
+            tk.consume();
+            otherwise = parseStatement();
+        }
+        else throw new SyntaxError("\"else\" expected", errInfo());
+        return new IfStatement(condition, then, otherwise, var_map);
+    }
+
+    /* Command → AssignmentStatement | ActionCommand
+       AssignmentStatement → <identifier> = Expression
+       ActionCommand → MoveCommand | AttackCommand
+       MoveCommand → move Direction
+       AttackCommand → shoot Direction
+       Direction → left | right | up | down | upleft | upright | downleft | downright
+    */
     private Statement parseCommand() throws SyntaxError {
         Statement cmd;
         if (Token.isAssign(tk.peek())) {
-            cmd = new Command(parseAssignment());
+            String var = tk.consume().val();
+            if (tk.consume("=")) {
+                Expr v = parseExpr();
+                cmd = new Assignment(var_map, var, v);
+            }
+            else throw new SyntaxError("expression expected", errInfo());
         }
-        /*
         else if (Token.isAction(tk.peek())) {
+            Token token = tk.consume();
+            // parse Direction
+            if (Token.isDirection(tk.peek())) {
+                String direction = tk.consume().val();
+                if (Token.isAttack(token)) cmd = new Action(states, host,'a');
+                else cmd = new Action(states, host,'m');
+            }
+            else throw new SyntaxError("direction expected", tk.getInfo());
         }
-        */
-        else throw new SyntaxError("", errInfo());
+        else throw new SyntaxError("something wrong", errInfo());
         return cmd;
     }
 
-    // AssignmentStatement → <identifier> = Expression
-    private Assignment parseAssignment() throws SyntaxError {
-        String var = tk.consume().val();
-        Expr v;
-        if (tk.consume("="))
-            v = parseExpr();
-        else throw new SyntaxError("expression expected", errInfo());
-        return new Assignment(var_map, var, v);
-    }
     // Expression → Term (+Term)* | Term (-Term)*
     private Expr parseExpr() throws SyntaxError {
         Expr v = parseTerm();
@@ -107,7 +159,6 @@ public class GeneticParser {
                 case "-" -> v = new Expression(v, '-', parseTerm());
             }
         }
-        if (Token.isPower(tk.peek())) throw new SyntaxError("not a statement", errInfo());
         return v;
     }
     // Term → Factor (*Factor)* | Factor (/Factor)* | Factor (%Factor)*
@@ -121,7 +172,6 @@ public class GeneticParser {
                 case "%" -> v = new Term(v, '%', parseFactor());
             }
         }
-        if (Token.isPower(tk.peek())) throw new SyntaxError("not a statement", errInfo());
         return v;
     }
     // Factor → Power (^Power)*
@@ -131,6 +181,8 @@ public class GeneticParser {
             tk.consume();
             v = new Factor(v, parsePower());
         }
+        // TODO there's a problem with multiline expression
+        if (Token.isPower(tk.peek())) throw new SyntaxError("not a statement", errInfo());
         return v;
     }
     // Power → <number> | <identifier> | ( Expression ) | SensorExpression
@@ -141,11 +193,12 @@ public class GeneticParser {
             v = new Power(tk.consume(), rand);
         else if (Token.isSensor(tk.peek()))
             v = new SensorExpr(host, tk.consume().val(), states);
-        else if (tk.peek("(")) {
-            tk.consume("(");
+        else if (tk.consume("(")) {
             v = parseExpr();
+            /*
             if (tk.peek().type() != Token.Type.DELIMITER)
                 throw new SyntaxError("not a statement", errInfo());
+            */
             if (!tk.consume(")"))
                 throw new SyntaxError("\")\" expected", errInfo());
         }

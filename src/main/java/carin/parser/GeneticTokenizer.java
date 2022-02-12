@@ -13,11 +13,7 @@ public class GeneticTokenizer {
     private Token.Type nextType;
     private int pos;
     private int line;
-    private final Set<String> reserved = new HashSet<>(List.of(
-        "antibody", "down", "downleft", "downright", "else", "if",
-        "left", "move", "nearby", "right", "shoot", "then", "up",
-        "upleft", "upright", "virus", "while"
-    ));
+    private final Set<String> reserved = Token.getReserved();
     private final Set<String> operators = new HashSet<>(List.of(
             "+", "-", "=", "%", "*", "/"
     ));
