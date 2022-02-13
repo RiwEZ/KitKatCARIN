@@ -181,8 +181,10 @@ public class GeneticParser {
             tk.consume();
             v = new Factor(v, parsePower());
         }
-        // TODO there's a problem with multiline expression
-        if (Token.isPower(tk.peek())) throw new SyntaxError("not a statement", errInfo());
+        if (Token.isNUM(tk.peek()))
+            throw new SyntaxError("not a statement", errInfo());
+        else if (Token.isIDENTIFIER(tk.peek()))
+            return v;
         return v;
     }
     // Power → <number> | <identifier> | ( Expression ) | SensorExpression

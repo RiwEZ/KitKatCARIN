@@ -72,7 +72,7 @@ public class GeneticTokenizer {
         if (s.toString().equals("#")) {
             line += 1;
             pos = 0;
-            computeNext();
+            if (line < lines.size()) computeNext();
             return;
         }
         // type OP
@@ -113,7 +113,9 @@ public class GeneticTokenizer {
     }
 
     public String getInfo() {
-        return line + "\n\t" + lines.get(line) + "\n\t" + " ".repeat(pos - 1) + '^';
+        if (line < lines.size())
+            return line + "\n\t" + lines.get(line) + "\n\t" + " ".repeat(pos - 1) + '^';
+        return "unknown";
     }
 
     public Token peek() {

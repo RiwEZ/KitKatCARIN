@@ -78,7 +78,7 @@ class GeneticParserTest {
     @Test
     void parser_test() {
         try {
-            GeneticParser parser = new GeneticParser(new Antibody(), "tests/genetic2.in");
+            GeneticParser parser = new GeneticParser(new Antibody(), "tests/genetic1.in");
             parser.getProgram();
         }
         catch (IOException | SyntaxError e) {
