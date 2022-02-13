@@ -2,6 +2,8 @@ package carin.parser;
 
 import carin.entities.Antibody;
 import carin.parser.ast.SyntaxError;
+import carin.parser.ast.statements.Program;
+import carin.parser.ast.statements.Statement;
 import org.junit.jupiter.api.DynamicTest;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
@@ -53,7 +55,7 @@ class GeneticParserTest {
 
         when you need to debug add conditional breakpoint
         "test.equal("test_str"))" to expr_tester line
-        syntaxerror will always tell line 0 because of how we're generating this test
+        SyntaxError will always tell line 0 because of how we're generating this test
     */
     @TestFactory
     Stream<DynamicTest> expr_test() {
@@ -62,7 +64,7 @@ class GeneticParserTest {
         List<String> test_cases = new ArrayList<>();
         try {
             test_cases = Files.readAllLines(Path.of("tests/expr1.in"));
-            parser = new GeneticParser(new Antibody(), "tests/expr1.in");
+            parser = new GeneticParser(null, new Antibody(), "tests/expr1.in");
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -78,8 +80,13 @@ class GeneticParserTest {
     @Test
     void parser_test() {
         try {
-            GeneticParser parser = new GeneticParser(new Antibody(), "tests/genetic1.in");
-            parser.getProgram();
+            GeneticParser parser = new GeneticParser(null, new Antibody(), "tests/genetic2.in");
+            Program program = parser.getProgram();
+            program.evaluate();
+            Map<String, Integer> expected = Map.of(
+                    "a", 2, "b", -1, "t", 5, "c", 90
+            );
+            assertEquals(expected, program.getVarMap());
         }
         catch (IOException | SyntaxError e) {
             e.printStackTrace();

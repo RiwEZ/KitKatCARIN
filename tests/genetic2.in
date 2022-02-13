@@ -1,2 +1,12 @@
-a = 1
-t = t + 1 t
+a = 2
+b = 1 - 2
+t = 3 + 1
+if (a) then t = t + a + b
+else {}
+c = 0
+while (100 - c) { # for c = 0 -> c = 100
+    c = c + 1
+}
+{
+    c = c - 10
+}

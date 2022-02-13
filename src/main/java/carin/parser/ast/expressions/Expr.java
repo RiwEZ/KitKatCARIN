@@ -7,5 +7,5 @@ public interface Expr {
     /**
      * @return result of expression
      */
-    public int evaluate(Map<String, Integer> var_map);
+    int evaluate(Map<String, Integer> var_map);
 }

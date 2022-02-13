@@ -6,30 +6,30 @@ import carin.parser.ast.SyntaxError;
 import carin.parser.ast.expressions.*;
 import carin.parser.ast.statements.*;
 
-import javax.swing.plaf.nimbus.State;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
 public class GeneticParser {
-    private GameStates states;
+    private final GameStates states;
     private final GeneticEntity host;
     private final Map<String, Integer> var_map = new HashMap<>();
     private GeneticTokenizer tk;
     private final String path;
     private final Random rand;
 
-    public GeneticParser(GeneticEntity host, String path) throws IOException {
+    public GeneticParser(GameStates states, GeneticEntity host, String path) throws IOException {
         List<String> lines = Files.readAllLines(Path.of(path));
         this.path = path;
         this.tk = new GeneticTokenizer(lines);
+        this.states = states;
         this.host = host;
         this.rand = new Random();
     }
 
-    public Statement getProgram() throws SyntaxError {
-        Statement program = parseProgram();
+    public Program getProgram() throws SyntaxError {
+        Program program = new Program(parseProgram(), var_map); // for inspecting AST in debugger
         return program;
     }
 
@@ -55,7 +55,7 @@ public class GeneticParser {
     }
 
     // Program → Statement+
-    private Statement parseProgram() throws SyntaxError {
+    private StatementSeq parseProgram() throws SyntaxError {
         StatementSeq seq = new StatementSeq();
         while (Token.isStatement(tk.peek())) {
             seq.add(parseStatement());
@@ -78,7 +78,7 @@ public class GeneticParser {
         if (Token.isCommand(tk.peek()))
             p = parseCommand();
         else if (Token.isBlock(tk.peek())) {
-            // parseBlock
+            // BlockStatement → { Statement* }
             tk.consume("{");
             StatementSeq seq = new StatementSeq();
             while (!tk.peek("}")) {
@@ -89,13 +89,12 @@ public class GeneticParser {
         }
         else if (Token.isIf(tk.peek())) p = parseIf();
         else if (Token.isWhile(tk.peek())) {
-            // parseWhile
+            // WhileStatement → while ( Expression ) Statement
             tk.consume();
             Expr condition = parseCondition();
             Statement todo = parseStatement();
             p = new WhileStatement(condition, todo, var_map);
         }
-        //else throw new SyntaxError("something wrong", errInfo());
         return p;
     }
 
@@ -139,9 +138,9 @@ public class GeneticParser {
             Token token = tk.consume();
             // parse Direction
             if (Token.isDirection(tk.peek())) {
-                String direction = tk.consume().val();
-                if (Token.isAttack(token)) cmd = new Action(states, host,'a');
-                else cmd = new Action(states, host,'m');
+                int direction = Token.getDirection(tk.consume().val());
+                if (Token.isAttack(token)) cmd = new Action(states, host,'a', direction);
+                else cmd = new Action(states, host,'m', direction);
             }
             else throw new SyntaxError("direction expected", tk.getInfo());
         }
@@ -197,10 +196,6 @@ public class GeneticParser {
             v = new SensorExpr(host, tk.consume().val(), states);
         else if (tk.consume("(")) {
             v = parseExpr();
-            /*
-            if (tk.peek().type() != Token.Type.DELIMITER)
-                throw new SyntaxError("not a statement", errInfo());
-            */
             if (!tk.consume(")"))
                 throw new SyntaxError("\")\" expected", errInfo());
         }
