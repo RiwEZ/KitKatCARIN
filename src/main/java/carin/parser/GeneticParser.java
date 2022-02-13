@@ -28,8 +28,8 @@ public class GeneticParser {
         this.rand = new Random();
     }
 
-    public Program getProgram() throws SyntaxError {
-        Program program = new Program(parseProgram(), var_map); // for inspecting AST in debugger
+    public GeneticProgram getProgram() throws SyntaxError {
+        GeneticProgram program = new GeneticProgram(parseProgram(), var_map); // for inspecting AST in debugger
         return program;
     }
 

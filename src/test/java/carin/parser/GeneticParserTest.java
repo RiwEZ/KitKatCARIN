@@ -2,8 +2,7 @@ package carin.parser;
 
 import carin.entities.Antibody;
 import carin.parser.ast.SyntaxError;
-import carin.parser.ast.statements.Program;
-import carin.parser.ast.statements.Statement;
+import carin.parser.ast.statements.GeneticProgram;
 import org.junit.jupiter.api.DynamicTest;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
@@ -81,7 +80,7 @@ class GeneticParserTest {
     void parser_test() {
         try {
             GeneticParser parser = new GeneticParser(null, new Antibody(), "tests/genetic2.in");
-            Program program = parser.getProgram();
+            GeneticProgram program = parser.getProgram();
             program.evaluate();
             Map<String, Integer> expected = Map.of(
                     "a", 2, "b", -1, "t", 5, "c", 90

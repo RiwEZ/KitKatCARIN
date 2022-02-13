@@ -2,11 +2,11 @@ package carin.parser.ast.statements;
 
 import java.util.Map;
 
-public class Program implements Statement {
+public class GeneticProgram implements Statement {
     private final StatementSeq seq;
     private final Map<String, Integer> var_map;
 
-    public Program(StatementSeq seq, Map<String, Integer> var_map) {
+    public GeneticProgram(StatementSeq seq, Map<String, Integer> var_map) {
         this.seq = seq;
         this.var_map = var_map;
     }
