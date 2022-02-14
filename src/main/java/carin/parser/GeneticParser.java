@@ -51,16 +51,16 @@ public class GeneticParser {
             line_str
                  ^ (arrow at pos)
         */
-        return " at " + path + ':' + tk.getInfo();
+        return " at " + path + tk.getInfo();
     }
 
     // Program → Statement+
     private StatementSeq parseProgram() throws SyntaxError {
         StatementSeq seq = new StatementSeq();
+        if (!tk.hasNext()) throw new SyntaxError("at least 1 statement needed", errInfo());
         while (Token.isStatement(tk.peek())) {
             seq.add(parseStatement());
         }
-        if (seq.size() < 1) throw new SyntaxError("at least 1 statement needed", errInfo());
         return seq;
     }
 
@@ -104,15 +104,11 @@ public class GeneticParser {
         Expr condition = parseCondition();
         Statement then;
         Statement otherwise;
-        if (tk.peek("then")) {
-            tk.consume();
+        if (tk.consume("then"))
             then = parseStatement();
-        }
         else throw new SyntaxError("\"then\" expected", errInfo());
-        if (tk.peek("else")) {
-            tk.consume();
+        if (tk.consume("else"))
             otherwise = parseStatement();
-        }
         else throw new SyntaxError("\"else\" expected", errInfo());
         return new IfStatement(condition, then, otherwise, var_map);
     }
@@ -182,8 +178,6 @@ public class GeneticParser {
         }
         if (Token.isNUM(tk.peek()))
             throw new SyntaxError("not a statement", errInfo());
-        else if (Token.isIDENTIFIER(tk.peek()))
-            return v;
         return v;
     }
     // Power → <number> | <identifier> | ( Expression ) | SensorExpression

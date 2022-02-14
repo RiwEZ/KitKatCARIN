@@ -88,11 +88,11 @@ public class Token {
     }
 
     public static boolean isIf(@NotNull Token tk) {
-        return tk.type() == Type.RESERVED && tk.val().equals("if");
+        return isRESERVED(tk) && tk.val().equals("if");
     }
 
     public static boolean isWhile(@NotNull Token tk) {
-        return tk.type() == Type.RESERVED && tk.val().equals("while");
+        return isRESERVED(tk) && tk.val().equals("while");
     }
 
     public static boolean isStatement(@NotNull Token tk) {
@@ -105,6 +105,10 @@ public class Token {
 
     public static boolean isIDENTIFIER(@NotNull Token tk) {
         return tk.type() == Type.IDENTIFIER;
+    }
+
+    public static boolean isRESERVED(@NotNull Token tk) {
+        return tk.type() == Type.RESERVED;
     }
 
     public static boolean isSensor(@NotNull Token tk) {

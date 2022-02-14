@@ -50,10 +50,13 @@ public class GeneticTokenizer {
     }
 
     public void computeNext() {
+        if (lines.size() == 0) return;
+
         StringBuilder s = new StringBuilder(); // read_str
         String curr_line = lines.get(line);
         next = "";
         nextType = null;
+
         // find next token
         while (pos >= curr_line.length() || curr_line.charAt(pos) == ' ') {
             pos++;
@@ -109,13 +112,14 @@ public class GeneticTokenizer {
     }
 
     public boolean hasNext() {
-        return !next.equals("");
+        return next != null && !next.equals("");
     }
 
     public String getInfo() {
+        if (lines.size() == 0) return "";
         if (line < lines.size())
-            return line + "\n\t" + lines.get(line) + "\n\t" + " ".repeat(pos - 1) + '^';
-        return "unknown";
+            return ":" + line + "\n\t" + lines.get(line) + "\n\t" + " ".repeat(pos - 1) + '^';
+        return ":unknown";
     }
 
     public Token peek() {

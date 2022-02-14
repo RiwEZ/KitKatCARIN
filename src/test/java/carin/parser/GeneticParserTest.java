@@ -17,6 +17,10 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/* TODO
+    - SensorExpr Test
+    - Action Test
+*/
 class GeneticParserTest {
 
     // should have expected result
@@ -77,7 +81,7 @@ class GeneticParserTest {
     }
 
     @Test
-    void parser_test() {
+    void parser_statement_test() {
         try {
             GeneticParser parser = new GeneticParser(null, new Antibody(), "tests/genetic2.in");
             GeneticProgram program = parser.getProgram();
@@ -90,5 +94,28 @@ class GeneticParserTest {
         catch (IOException | SyntaxError e) {
             e.printStackTrace();
         }
+    }
+
+    void parser_exception_tester(String path, String expected_msg) {
+        try {
+            GeneticParser parser = new GeneticParser(null, new Antibody(), path);
+            SyntaxError e = assertThrows(SyntaxError.class, parser::getProgram);
+            assertTrue(e.getMessage().contains(expected_msg));
+            System.out.println(e.getMessage());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void parser_exception_test() {
+        parser_exception_tester("tests/wrong_genetic/gene1.in", "at least 1 statement needed");
+        parser_exception_tester("tests/wrong_genetic/gene2.in", "\"(\" expected");
+        parser_exception_tester("tests/wrong_genetic/gene3.in", "\"then\" expected");
+        parser_exception_tester("tests/wrong_genetic/gene4.in", "\"else\" expected");
+        parser_exception_tester("tests/wrong_genetic/gene5.in", "expression expected");
+        parser_exception_tester("tests/wrong_genetic/gene6.in", "direction expected");
+        parser_exception_tester("tests/wrong_genetic/gene7.in", "\")\" expected");
     }
 }
