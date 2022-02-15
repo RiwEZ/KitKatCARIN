@@ -1,8 +1,734 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <litidata version="1.0">
- <maps/>
- <spriteSheets/>
- <tilesets/>
+ <maps>
+  <map version="1.8" tiledversion="1.8.1" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1" name="map1">
+   <tileset firstgid="1" source="tiles-club.tsx"/>
+   <objectgroup id="0" name="Spawn" visible="1">
+    <object id="5" type="SPAWNPOINT" x="48" y="48" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="6" type="SPAWNPOINT" x="96" y="48" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="7" type="SPAWNPOINT" x="144" y="48" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="8" type="SPAWNPOINT" x="192" y="48" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="9" type="SPAWNPOINT" x="240" y="48" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="10" type="SPAWNPOINT" x="288" y="48" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="11" type="SPAWNPOINT" x="336" y="48" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="12" type="SPAWNPOINT" x="384" y="48" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="13" type="SPAWNPOINT" x="48" y="96" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="14" type="SPAWNPOINT" x="96" y="96" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="15" type="SPAWNPOINT" x="144" y="96" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="16" type="SPAWNPOINT" x="192" y="96" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="17" type="SPAWNPOINT" x="240" y="96" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="18" type="SPAWNPOINT" x="288" y="96" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="19" type="SPAWNPOINT" x="336" y="96" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="20" type="SPAWNPOINT" x="384" y="96" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="21" type="SPAWNPOINT" x="48" y="144" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="22" type="SPAWNPOINT" x="96" y="144" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="23" type="SPAWNPOINT" x="144" y="144" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="24" type="SPAWNPOINT" x="192" y="144" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="25" type="SPAWNPOINT" x="240" y="144" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="26" type="SPAWNPOINT" x="288" y="144" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="27" type="SPAWNPOINT" x="336" y="144" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="28" type="SPAWNPOINT" x="384" y="144" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="29" type="SPAWNPOINT" x="48" y="192" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="30" type="SPAWNPOINT" x="96" y="192" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="31" type="SPAWNPOINT" x="144" y="192" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="32" type="SPAWNPOINT" x="192" y="192" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="33" type="SPAWNPOINT" x="240" y="192" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="34" type="SPAWNPOINT" x="288" y="192" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="35" type="SPAWNPOINT" x="336" y="192" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="36" type="SPAWNPOINT" x="384" y="192" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="37" type="SPAWNPOINT" x="48" y="240" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="38" type="SPAWNPOINT" x="96" y="240" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="39" type="SPAWNPOINT" x="144" y="240" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="40" type="SPAWNPOINT" x="192" y="240" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="41" type="SPAWNPOINT" x="240" y="240" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="42" type="SPAWNPOINT" x="288" y="240" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="43" type="SPAWNPOINT" x="336" y="240" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="44" type="SPAWNPOINT" x="384" y="240" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="45" type="SPAWNPOINT" x="48" y="288" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="46" type="SPAWNPOINT" x="96" y="288" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="47" type="SPAWNPOINT" x="144" y="288" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="48" type="SPAWNPOINT" x="192" y="288" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="49" type="SPAWNPOINT" x="240" y="288" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="50" type="SPAWNPOINT" x="288" y="288" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="51" type="SPAWNPOINT" x="336" y="288" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="52" type="SPAWNPOINT" x="384" y="288" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="53" type="SPAWNPOINT" x="48" y="336" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="54" type="SPAWNPOINT" x="96" y="336" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="55" type="SPAWNPOINT" x="144" y="336" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="56" type="SPAWNPOINT" x="192" y="336" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="57" type="SPAWNPOINT" x="240" y="336" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="58" type="SPAWNPOINT" x="288" y="336" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="59" type="SPAWNPOINT" x="336" y="336" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="60" type="SPAWNPOINT" x="384" y="336" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="61" type="SPAWNPOINT" x="48" y="384" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="62" type="SPAWNPOINT" x="96" y="384" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="63" type="SPAWNPOINT" x="144" y="384" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="64" type="SPAWNPOINT" x="192" y="384" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="65" type="SPAWNPOINT" x="240" y="384" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="66" type="SPAWNPOINT" x="288" y="384" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="67" type="SPAWNPOINT" x="336" y="384" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+    <object id="68" type="SPAWNPOINT" x="384" y="384" width="48" height="48">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="DYNAMIC"/>
+      <property name="collisionValign" value="DOWN"/>
+      <property name="spawnDirection" value="DOWN"/>
+      <property name="spawnPivot" value="DIMENSION_CENTER"/>
+      <property name="tags" value="spawn"/>
+     </properties>
+    </object>
+   </objectgroup>
+   <layer id="1" name="Tile Layer 1" width="30" height="30">
+    <data encoding="csv">
+97,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,99,99,99,99,99,99,99,99,99,99,99,99,99,100,
+113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,116,
+113,0,82,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,81,0,116,
+113,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+113,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+113,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+113,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+113,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+113,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+113,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+113,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+113,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+113,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+113,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+113,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,132,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,83,0,116,
+129,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,132,
+145,146,146,146,146,146,146,146,146,146,146,146,146,146,146,146,147,147,147,147,147,147,147,147,147,147,147,147,147,148
+</data>
+   </layer>
+   <objectgroup id="0" name="Collision" visible="1">
+    <object id="1" type="COLLISIONBOX" x="0" y="0" width="480" height="16">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="STATIC"/>
+      <property name="collisionValign" value="DOWN"/>
+     </properties>
+    </object>
+    <object id="2" type="COLLISIONBOX" x="464" y="16" width="16" height="464">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="STATIC"/>
+      <property name="collisionValign" value="DOWN"/>
+     </properties>
+    </object>
+    <object id="3" type="COLLISIONBOX" x="0" y="464" width="464" height="16">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="STATIC"/>
+      <property name="collisionValign" value="DOWN"/>
+     </properties>
+    </object>
+    <object id="4" type="COLLISIONBOX" x="0" y="16" width="16" height="448">
+     <properties>
+      <property name="collisionAlign" value="CENTER"/>
+      <property name="collisionType" value="STATIC"/>
+      <property name="collisionValign" value="DOWN"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </map>
+ </maps>
+ <spriteSheets>
+  <sprite width="36" height="36" imageformat="PNG" name="antibody-idle-left">
+   <image>iVBORw0KGgoAAAANSUhEUgAAAEgAAAAkCAYAAAAq23xmAAAIN0lEQVR4XtWaW29VVRDHMSYmarzEF+OLxicTjQlKYoBKb5RSbCmFXoCi0Y+A8RZA8QII2NNTRETAKyKCePkivvGiKHK/CpRyeR/Xb509u6uz9zrdu4UETzJpz9lrzfzXf2bNmlnnzJjxP3j1H5K751Tl3oVVeaRtmzzesk2eaqzKs80jMnMqwlx0oAud6MaGtTv5S+QuJva/L/cs3i33NWyVB9q2yEPOyMNFhLHMYS46PAin05qJvhL77UNy/7wReaylKs80DUtLc0V6mquywr0fdDLQMiy9TVVZ6j+vI4zRsS1D0tlakcb5FXka3dgojW+6npuup9S+J6cis1jYo7NellspjrBudGOjOL6I5xIvrWoeltdypSqvNlXkFca4vyvd3z73eVdpTxn7rSPyPJHidK2zC5yuuDW9hW5sFMZXxHMPPjHbi/089ryMp6x9FmD1qyz97op0fXFBOj49K+0jZ+oKYxjb883ljB6/VSfFF/Gcm7jWKrQEWLHPC3nK2G8clud8zhiWNVa/Covt+OyczP/kpDR/fFyaNx2XJiN8xjPGMHbJ15cyehy29bn4wlc9z73wzh+lpG/fVenbfzUPSNRTGfuOHDtfiVdZ8tUlHx1Nm45Jw/q/Ze57f8mcdycKn/GMMYxljtUTw1dDFoscx+pUCer59rL07hvNEEQ0sHCiw0YSJx3JnHzFlnQ5Z7WdbxfGFlvkoqJl8wl58YOjUYJ4xhjGMsfqSQmqyNvYBgNY8j0XRI5VtOLQden9flS6v/xXOneel0U7znujCOHLPuf/rl0XZakjyc5PgTiSbCRRDnDikdQtMf0/jnnbVp8KNtuGTnkS7BbjM54xxs6zuFTAAJYaQYnn/GnFSRWcFlbR8p+u+33/0ufnZUH1tDfM3lZpq5yShdvOSNfui7Js72hmvup1p9zroafA0OBqJsoCahQLGK/3/XA1o0+F54udTXCpw1T4jGd5kWNxqYABLJ4g9RxHuQ6wW8Yq7Np1wRMBISE57PHOnRcy41f9dlNW/nIjA0Q95TG4wpLaCSfpPBIq0Yoscwuctfp3L1b/VEX1Df56UwYOXBt3oMMAFk9QQ+I5qs2iBOV5rJ6nVv58Q5YfHAdgPQWGpAKfyfbTeejjaCYi0Xu7CIKcMGeCASyeIPUc5bsl6MlFG70cPnzYizUwmeg81bNs7xW/UOupoIWZGUZQpyOHiNSFqKheK9a+xWFF9fW6Uzesj3yqUYJSz7ne5nYT1L2ntl2spxIMHgeRrPN9hO44d9sJwmkc/4rL9285BKWnF+EGq/2ulmF7WMUxQPa5ik/snHrJVrSesgTpc8aT6zgd2W5KtHWcxRN7r2L1kOsW7xl3XD5BQWHGBARmBw6MZQxYADEgKhhfmLQDHdvPZoDECGKOPwiGaqejXZi1Y3HY9ypWD2UJuc7imkBQ2HPpVlAFNrRjhu3nOp88kvZEJQhifOuWE9K44R/fLkBSGEnUR0S4tWtFnzOWOSExbGEw8dfimkBQCAwQeP1WEcRWUYL43wKpRxDE0Cog/L9g+HSqFydSuFq7VvQ5KYPtrvPRT4Sik2i1uOoSxNGqishJVLJKVAyQfk4fRtLjFIIQ1QOIMAcVIshVw7QLs9ce8STN+6gWTdReRBQkxfBYXORVxoMB3VTZ6GrdetK/t7iiBLEfUaILI5rwVFGCIIew1UIyJcgtqDRBm2sRBEFz1h2RuUl/BVGtTjctTwyPxTXgthe51XcCLmpoYNm+EFWIIFXEfqSVgFlAqKeKEkTOgZjGjcdk3odHExC17VFmixFx2IcMSIEcSNJogjz6wRgei8uWC0RPYYLCAs03f877jRtqDLNYPFWUIOZr7qCj5i+60BkSNOkxHzgKb0OURhOEsf3CJtTisbgsQb65dU70QRDkoPxCMTjmqVnwNoDSq4IdWYJi4gnS3LHmT08SutCJbrUTKxT1ud3qEGyT9lQIIl2AA8ezNpwQbv3cVsMe8+SQMAQ7to9XtJYQKxR2eJwtkW4Hpwud6A49lddqpDiSRlUJ0nIB8sFFCTCVLda/f8wfRP5Ggqh2OiZU+NyBK0ENda4Z2l3u0W6dECxKEIbZUnqbBznosvpjzao+506JYlUJCo9nikcWFybpyUTxq55aKzMeOQFBgylB9S6qYJnIYcEk6qIEAZ697Y9k520WhC6rP3bdoc8pL7gHsgRR4IELp1FKWPsxsQRphFpcNO7pdUeRq06YBoz2RbznTohF+6rbCXWTry/cmNatWl9MPB0UKDbKXJhxPNPyWKKwV4YgO587pvBiLyXI5cH0wixz5ZpzWR4WVyRa/kIY4Umy80K4Js0lYxByThg5CqTslevAwWte7ALVpiUiJnY+uYjWwxLE5WF65Wov7fXrFhdmb1igGkm13mX8dCGCwtaE0wdirGF0orvIpT3XstY+JFGlqx1tZn274NKA3omHQmKncGW76jx6MjoDq5+vp9jiXD+nl/b6KhRJjgR/iZUQoAb5FgMJ34c3izo/L3LK2PcEBTnJJ+vkqEaol8I7csSXFs6ZVNA6jyvWvCtgiy/kJx5JOTnJLnwySXJObuQUsP+mtatXvul1iCNCq/56BFlcqg8bufjyXjme7I4ptp/HBB2xyLGvHPtpJIUEaV7Ue6aY6FfOlAwWl+qzkVMPX8aT5AQSJ6eLL8H5UYITl8j6HfPLORJz5Rb9eCH9CjonJ01Xki8Ks5FTD5++1JN3ys9f8iJ5uuITcuHIsa/Ek3fKD6hsJPuoqkV0+iOpPNGxydfpg0l093CUc1qVjpw77TXdSLZSJrL/A7/lcp2htdPOAAAAAElFTkSuQmCC</image>
+   <keyframes>400,400</keyframes>
+  </sprite>
+  <sprite width="16" height="16" imageformat="PNG" name="tiles-club">
+   <image>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</image>
+  </sprite>
+  <sprite width="36" height="36" imageformat="PNG" name="virus-idle-left">
+   <image>iVBORw0KGgoAAAANSUhEUgAAAEgAAAAkCAYAAAAq23xmAAAFS0lEQVR4XtWaz6ocRRjFJwQEFYlk58atoAgxrtwEXEpEEhIuMYmYJxBDIBh8kjyT6/sm/hsV2vrd+U7nm9NVXd13ZuTacMhNddU5p05VV/Wf2Wz+B8ew2VwveLvgZsGHBR8VfFpw65KgLRxwwQn3ddftHqXRNRoWvFXwTsF7BTcK3l8I6tKGtnDAdc11Wgd1o827BR8UfFxwp+Buwf2Ch4GzgscF3xV8X/AswN+UcY46qk9bOOCCE240Vvk7xsgdNFLUjTZ04POCb74oxccEnMGNxjJ/w/qRexo4ykhxLupI/7OCBwU/egcPBZzBjcYifycZOTiCqztSFf0Hzrct+DP+Befn5xf4ofydoXLVUxvnQ6PrbzjhyMERXM2RmtF/4Xx/JGw3ywLKbZwPjZq/nM/ikRP+2uybAZTlOt4+TFRHqqYvXrVnBtDB3wK/R5mCyPr8rXLqUFft4KBMvNJxfzLmI3d72K0lr7yDCOep7QGpfGYqvwpuNPZm0rDb6VjMPxl269fLWkC5o/xNZ3MQGSqnjrdrBPQytPFwszVyZ24sj0wW1v8VSDaq+rStGCGkvZk07G4H2PG+9PrSV0CCZkIOIiP7UUiCPOYrQbp4wIsC0six07CYTkbu7yCSURd2oxIGtPUOoxFaaKKNB+6ZuC245/XhUEAZ0vGZ4jMrB+zt4fb+4gEvCkgjd8eNCRJytAw5nC8Z4RYAbTxwY8m906OWj1P5qfh6hBcFpJG72zLmAkJrBjmcLxnhPgltPHD3zQ3m45aPU/mp+OKe7pYC0sjdVwWm3T9JQOWCyreb+hrUqg9nvuTQDG09whDQmc7DKeRLqcVPvTV+WrsuHnJAMjZu61o71ggs6YDWsmSEbRVtPEx8+HrR41/rh3pZw315QOMM6gl81YHX9w4kI8wgD2j0kXekfMk4v+s7vL548iUJ3JcHNO4e28CxDYk3GblXCWj0kRfdUwWUF3X31Q2otShK2Bc5lXt9nRevG5kLKM+gY/uZmUHzAemaPIUhu9ZnA8odOJWfzO++ugEJ281u0ZagwK4Efgn4+dYNnhuZCygHIy+A9cz1fJGeO++8NV/dgHK6NUECAK2AaOM8NSNLA8o8dNL11PHeefEcHJCPnAv2ApKhnpGlAfmzVEuv5ZfyzNHz5QHtbfPesZpg7xJr8SQjtW2+GZA/jbte7xJTQOJZG9B4gyYR75gL9uABiTcZqd0oThZpderX+LcVUA85oMzVW6QnjxqkD44dkHiTkdqjxujDOyQcGlDmqr0fCl9jQJOHVUEdVEC+rfr26eXe3vnRDO38sLr3qOEBqUM1PxoIoeanxWcB7T1qTF53CBCCQwMSj/OjGdr5dcfeWpgvsdyZ/Ci0NCDtqs6HRvaHB7woIH9h9lwVXwfUQQn5076gp/UcEBBPMvA8tGovzCYzWduy1grXVSDSlz+Ve304Mqfr4QEvCshfuY5TXB3T2rE2ILWrBDR5eT8smMkg+7hsQHm3A66HB7woIH9pP/nc8joAcQ7Ap7TK9VpD7ZLwi+CefP4ZpjN58rnJdb3jLT9+Xv93fjRD+2JmXwSkI4zOziSNjgu6sOpVAprMnCX6/2FAe/5yPnMzaVyTLgs4gmsycxbo/+R8HoR33ANxOB8aNX85n/EIk1fp0/P4ClbwDh8hoMlnKPc1HsN0JPXjha+H3Y8Svi14MrR/bsI56lCXNof+eEEfMn/2jh0KOIN78iHTfU2OqEiaV+XnL+P90bEAZ3D3Z44fw5uRvCo/oOJzMF886RSzVDN3LWgLB1xwrps5V+0I44fMZMfimf0vt23mm5wa0uAAAAAASUVORK5CYII=</image>
+   <keyframes>500,500</keyframes>
+  </sprite>
+ </spriteSheets>
+ <tilesets>
+  <tileset firstgid="0" name="tiles-club" tilewidth="16" tileheight="16" tilecount="256" columns="16">
+   <image source="tiles-club.png" width="256" height="256"/>
+  </tileset>
+ </tilesets>
  <emitters/>
  <blueprints/>
  <sounds/>

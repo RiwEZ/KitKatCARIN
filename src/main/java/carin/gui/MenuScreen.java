@@ -77,6 +77,7 @@ public class MenuScreen extends Screen {
 
     private static void displayIngameScreen() {
         // gameplay screen
+        Game.screens().display("INGAME");
     }
 
     public static void renderGameLogo(Graphics2D g) {

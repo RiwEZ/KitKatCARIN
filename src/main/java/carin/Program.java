@@ -1,5 +1,6 @@
 package carin;
 
+import carin.gui.IngameScreen;
 import carin.gui.MenuScreen;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.gui.GuiProperties;
@@ -12,24 +13,20 @@ import java.awt.event.KeyEvent;
 public class Program {
     public static final Font GUI_FONT = Resources.fonts().get("misc/ARCADECLASSIC.TTF").deriveFont(48f);
     public static final Font GUI_FONT_SMALL = GUI_FONT.deriveFont(30f);
-    public static float HUD_SCALE = 2.0f;
 
     public static void main(String[] args) {
+        GuiProperties.setDefaultFont(GUI_FONT);
+        Resources.load("game.litidata");
         Game.info().setName("C.A.R.I.N | by KitKat");
         Game.info().setSubTitle("");
         Game.info().setWebsite("https://github.com/RiwEZ/KitKatCARIN");
         Game.init(args);
-        initCARIN();
+        GameStates.init();
+        Game.world().loadEnvironment("map1");
+        Game.window().getRenderComponent().fadeIn(1000);
+        Game.screens().add(new MenuScreen());
+        Game.screens().add(new IngameScreen());
         Game.start();
     }
 
-    private static void initCARIN() {
-        // init default UI settings
-        Game.window().getRenderComponent().fadeIn(1000);
-        GuiProperties.setDefaultFont(GUI_FONT);
-        Game.screens().add(new MenuScreen());
-        Input.keyboard().onKeyPressed(KeyEvent.VK_ESCAPE, e -> {
-            System.exit(0);
-        });
-    }
 }
