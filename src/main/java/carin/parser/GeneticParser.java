@@ -2,7 +2,6 @@ package carin.parser;
 
 import carin.GameStates;
 import carin.entities.GeneticEntity;
-import carin.parser.ast.SyntaxError;
 import carin.parser.ast.expressions.*;
 import carin.parser.ast.statements.*;
 
@@ -28,6 +27,7 @@ public class GeneticParser {
         this.rand = new Random();
     }
 
+    // TODO: need a way to change host of same program
     public GeneticProgram getProgram() throws SyntaxError {
         GeneticProgram program = new GeneticProgram(parseProgram(), var_map); // for inspecting AST in debugger
         return program;

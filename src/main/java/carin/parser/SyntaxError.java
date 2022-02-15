@@ -1,4 +1,4 @@
-package carin.parser.ast;
+package carin.parser;
 
 public class SyntaxError extends Exception {
     public SyntaxError(String message, String info) {

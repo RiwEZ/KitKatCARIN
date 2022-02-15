@@ -2,7 +2,6 @@ package carin.parser.ast.expressions;
 
 import carin.GameStates;
 import carin.entities.GeneticEntity;
-import carin.parser.ast.SyntaxError;
 
 import java.util.Map;
 

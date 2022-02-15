@@ -1,7 +1,6 @@
 package carin.parser;
 
 import carin.entities.Antibody;
-import carin.parser.ast.SyntaxError;
 import carin.parser.ast.statements.GeneticProgram;
 import org.junit.jupiter.api.DynamicTest;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
