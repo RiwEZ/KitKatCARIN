@@ -3,17 +3,18 @@ package carin.parser.ast.statements;
 import carin.GameStates;
 import carin.entities.GeneticEntity;
 
+import java.util.Map;
+
 // TODO: make this work
 public class Action implements Statement {
     private final Character action; // a = attack, m = move
-    private final GeneticEntity host;
+    private GeneticEntity host;
     private final GameStates states;
     private final int direction;
 
-    public Action(GameStates states, GeneticEntity host, Character action, int direction) {
+    public Action(GameStates states, Character action, int direction) {
         this.states = states;
         this.action = action;
-        this.host = host;
         this.direction = direction;
     }
 
@@ -33,8 +34,9 @@ public class Action implements Statement {
     }
 
     @Override
-    public boolean evaluate() {
+    public boolean evaluate(Map<String, Integer> var_map, GeneticEntity host) {
         // direction is numpad number's relative position to number 5
+        this.host = host;
         switch (direction) {
             case 1: makeActionAt(-1, -1);
             case 2: makeActionAt(0, -1);

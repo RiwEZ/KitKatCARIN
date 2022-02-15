@@ -29,7 +29,7 @@ public class GeneticParser {
 
     // TODO: need a way to change host of same program
     public GeneticProgram getProgram() throws SyntaxError {
-        GeneticProgram program = new GeneticProgram(parseProgram(), var_map); // for inspecting AST in debugger
+        GeneticProgram program = new GeneticProgram(parseProgram(), host, var_map); // for inspecting AST in debugger
         return program;
     }
 
@@ -93,7 +93,7 @@ public class GeneticParser {
             tk.consume();
             Expr condition = parseCondition();
             Statement todo = parseStatement();
-            p = new WhileStatement(condition, todo, var_map);
+            p = new WhileStatement(condition, todo);
         }
         return p;
     }
@@ -110,7 +110,7 @@ public class GeneticParser {
         if (tk.consume("else"))
             otherwise = parseStatement();
         else throw new SyntaxError("\"else\" expected", errInfo());
-        return new IfStatement(condition, then, otherwise, var_map);
+        return new IfStatement(condition, then, otherwise);
     }
 
     /* Command → AssignmentStatement | ActionCommand
@@ -126,7 +126,7 @@ public class GeneticParser {
             String var = tk.consume().val();
             if (tk.consume("=")) {
                 Expr v = parseExpr();
-                cmd = new Assignment(var_map, var, v);
+                cmd = new Assignment(var, v);
             }
             else throw new SyntaxError("expression expected", errInfo());
         }
@@ -135,8 +135,8 @@ public class GeneticParser {
             // parse Direction
             if (Token.isDirection(tk.peek())) {
                 int direction = Token.getDirection(tk.consume().val());
-                if (Token.isAttack(token)) cmd = new Action(states, host,'a', direction);
-                else cmd = new Action(states, host,'m', direction);
+                if (Token.isAttack(token)) cmd = new Action(states,'a', direction);
+                else cmd = new Action(states,'m', direction);
             }
             else throw new SyntaxError("direction expected", tk.getInfo());
         }
@@ -156,6 +156,7 @@ public class GeneticParser {
         }
         return v;
     }
+
     // Term → Factor (*Factor)* | Factor (/Factor)* | Factor (%Factor)*
     private Expr parseTerm() throws SyntaxError {
         Expr v = parseFactor();
@@ -163,12 +164,13 @@ public class GeneticParser {
             String op = tk.consume().val();
             switch (op) {
                 case "*" -> v = new Term(v, '*', parseFactor());
-                case "/" -> v = new Term(v, '/', parseFactor());
+                case "/" -> v = new Term(v, '/', parseFactor()); // let divide by zero be runtime exception
                 case "%" -> v = new Term(v, '%', parseFactor());
             }
         }
         return v;
     }
+
     // Factor → Power (^Power)*
     private Expr parseFactor() throws SyntaxError {
         Expr v = parsePower();
@@ -180,6 +182,7 @@ public class GeneticParser {
             throw new SyntaxError("not a statement", errInfo());
         return v;
     }
+
     // Power → <number> | <identifier> | ( Expression ) | SensorExpression
     private Expr parsePower() throws SyntaxError {
         Expr v;
@@ -187,7 +190,7 @@ public class GeneticParser {
         else if (Token.isPower(tk.peek()))
             v = new Power(tk.consume(), rand);
         else if (Token.isSensor(tk.peek()))
-            v = new SensorExpr(host, tk.consume().val(), states);
+            v = new SensorExpr(tk.consume().val(), states);
         else if (tk.consume("(")) {
             v = parseExpr();
             if (!tk.consume(")"))

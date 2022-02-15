@@ -7,12 +7,10 @@ import java.util.Map;
 
 public class SensorExpr implements Expr {
     private final String cmd;
-    private final GeneticEntity host;
     private final GameStates states;
 
     // maybe change cmd to expr
-    public SensorExpr(GeneticEntity host, String cmd, GameStates states) {
-        this.host = host;
+    public SensorExpr(String cmd, GameStates states) {
         this.cmd = cmd;
         this.states = states;
     }
@@ -28,7 +26,7 @@ public class SensorExpr implements Expr {
     }
 
     @Override
-    public int evaluate(Map<String, Integer> var_map) {
+    public int evaluate(Map<String, Integer> var_map, GeneticEntity host) {
         switch (cmd) {
             case "virus":
                 break;

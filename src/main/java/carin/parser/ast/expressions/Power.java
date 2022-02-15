@@ -1,5 +1,6 @@
 package carin.parser.ast.expressions;
 
+import carin.entities.GeneticEntity;
 import carin.parser.Token;
 
 import java.util.Map;
@@ -19,7 +20,7 @@ public class Power implements Expr {
     }
 
     @Override
-    public int evaluate(Map<String, Integer> var_map) {
+    public int evaluate(Map<String, Integer> var_map, GeneticEntity host) {
         if (Token.isNUM(token))
             return Token.toNumber(token);
         else if (Token.isIDENTIFIER(token)) {

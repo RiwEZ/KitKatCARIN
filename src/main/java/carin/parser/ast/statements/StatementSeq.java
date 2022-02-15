@@ -1,10 +1,12 @@
 package carin.parser.ast.statements;
 
+import carin.entities.GeneticEntity;
+
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-// Program → Statement+
-// https://mitpress.mit.edu/sites/default/files/sicp/full-text/sicp/book/node126.html
+// StatementSeq → Statement*
 public class StatementSeq implements Statement {
     private final List<Statement> sequences;
 
@@ -16,14 +18,10 @@ public class StatementSeq implements Statement {
         sequences.add(statement);
     }
 
-    public int size() {
-        return sequences.size();
-    }
-
     @Override
-    public boolean evaluate() {
+    public boolean evaluate(Map<String, Integer> var_map, GeneticEntity host) {
         for (Statement st : sequences) {
-            if (st.evaluate()) return true;
+            if (st.evaluate(var_map, host)) return true;
         }
         return false;
     }
