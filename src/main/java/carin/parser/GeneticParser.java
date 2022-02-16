@@ -27,7 +27,6 @@ public class GeneticParser {
         this.rand = new Random();
     }
 
-    // TODO: need a way to change host of same program
     public GeneticProgram getProgram() throws SyntaxError {
         GeneticProgram program = new GeneticProgram(parseProgram(), host, var_map); // for inspecting AST in debugger
         return program;
@@ -61,6 +60,7 @@ public class GeneticParser {
         while (Token.isStatement(tk.peek())) {
             seq.add(parseStatement());
         }
+        if (tk.hasNext()) throw new SyntaxError("statement expected", errInfo());
         return seq;
     }
 

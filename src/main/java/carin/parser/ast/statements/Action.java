@@ -5,6 +5,7 @@ import carin.entities.GeneticEntity;
 
 import java.util.Map;
 
+
 // TODO: make this work
 public class Action implements Statement {
     private final Character action; // a = attack, m = move

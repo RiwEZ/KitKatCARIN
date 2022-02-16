@@ -119,5 +119,6 @@ class GeneticParserTest {
         parser_exception_tester("tests/wrong_genetic/gene5.in", "expression expected");
         parser_exception_tester("tests/wrong_genetic/gene6.in", "direction expected");
         parser_exception_tester("tests/wrong_genetic/gene7.in", "\")\" expected");
+        parser_exception_tester("tests/wrong_genetic/gene8.in", "statement expected");
     }
 }
