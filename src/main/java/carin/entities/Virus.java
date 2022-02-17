@@ -5,9 +5,10 @@ import carin.GameStates;
 import carin.gui.StatusBar;
 import carin.parser.GeneticParser;
 import carin.parser.GeneticProgram;
+import carin.parser.SyntaxError;
 import de.gurkenlabs.litiengine.IUpdateable;
-import de.gurkenlabs.litiengine.configuration.ClientConfiguration;
 import de.gurkenlabs.litiengine.entities.*;
+import de.gurkenlabs.litiengine.input.Input;
 
 import java.util.Collection;
 
@@ -34,20 +35,17 @@ public class Virus extends Creature implements GeneticEntity, IUpdateable {
 
     @Override
     public void update() {
+        //if (false) geneticCode.run();
+    }
+
+    @Override
+    public void run() {
         geneticCode.run();
-        /*
-        if(Input.mouse().isRightButtonPressed()){
-            moveRight();
-        }
-        else if(Input.mouse().isLeftButtonPressed()){
-            moveLeft();
-        }
-         */
     }
 
     @Override
     public void move(double x, double y) {
-        this.setLocation(this.getX() + x*3, this.getY() + y*3);
+        this.setLocation(this.getX() + x * 36, this.getY() + y * 36);
     }
 
     public int getID() {
@@ -60,37 +58,5 @@ public class Virus extends Creature implements GeneticEntity, IUpdateable {
 
     public int getDamage() {
         return damage;
-    }
-
-    public void moveLeft() {
-        this.getLocation().setLocation(this.getX() - 36, this.getY());
-    }
-
-    public void moveRight() {
-        this.getLocation().setLocation(this.getX() + 36, this.getY());
-    }
-
-    public void moveUp() {
-        this.getLocation().setLocation(this.getX(), this.getY() + 36);
-    }
-
-    public void moveDown() {
-        this.getLocation().setLocation(this.getX(), this.getY() - 36);
-    }
-
-    public void moveUpRight() {
-        this.getLocation().setLocation(this.getX() + 36, this.getY() + 36);
-    }
-
-    public void moveUpLeft() {
-        this.getLocation().setLocation(this.getX() - 36, this.getY() + 36);
-    }
-
-    public void moveDownRight() {
-        this.getLocation().setLocation(this.getX() + 36, this.getY() - 36);
-    }
-
-    public void moveDownLeft() {
-        this.getLocation().setLocation(this.getX() - 36, this.getY() - 36);
     }
 }

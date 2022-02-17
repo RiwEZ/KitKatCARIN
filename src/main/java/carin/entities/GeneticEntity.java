@@ -7,4 +7,10 @@ public interface GeneticEntity {
      * @param y y position from host
      */
     void move(double x, double y);
+
+    /**
+     * run genetic code
+     */
+    void run();
+
 }

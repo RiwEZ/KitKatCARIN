@@ -21,12 +21,14 @@ public class Antibody extends Creature implements GeneticEntity, IUpdateable {
 
     @Override
     public void update(){
-        if(Input.mouse().isRightButtonPressed()){
-            moveRight();
-        }
-        else if(Input.mouse().isLeftButtonPressed()){
-            moveLeft();
-        }
+    }
+
+    @Override
+    public void run() {
+    }
+
+    @Override
+    public void move(double x, double y) {
     }
 
     public int getID() {
@@ -35,38 +37,6 @@ public class Antibody extends Creature implements GeneticEntity, IUpdateable {
 
     public int getHP(){
         return currentHP;
-    }
-
-    public void moveLeft() {
-        this.getLocation().setLocation(this.getX() - 36, this.getY());
-    }
-
-    public void moveRight() {
-        this.getLocation().setLocation(this.getX() + 36, this.getY());
-    }
-
-    public void moveUp() {
-        this.getLocation().setLocation(this.getX(), this.getY() + 36);
-    }
-
-    public void moveDown() {
-        this.getLocation().setLocation(this.getX(), this.getY() - 36);
-    }
-
-    public void moveUpRight() {
-        this.getLocation().setLocation(this.getX() + 36, this.getY() + 36);
-    }
-
-    public void moveUpLeft() {
-        this.getLocation().setLocation(this.getX() - 36, this.getY() + 36);
-    }
-
-    public void moveDownRight() {
-        this.getLocation().setLocation(this.getX() + 36, this.getY() - 36);
-    }
-
-    public void moveDownLeft() {
-        this.getLocation().setLocation(this.getX() - 36, this.getY() - 36);
     }
 
 }
