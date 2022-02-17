@@ -80,34 +80,24 @@ class GeneticParserTest {
 
     @Test
     void parser_simple_statement_test() {
-        try {
-            GeneticParser parser = new GeneticParser(null, new Antibody(), "tests/genetic2.in");
-            GeneticProgram program = parser.getProgram();
-            program.run();
-            GeneticProgram copy = program.getCopy(new Antibody());
-            copy.run();
+        GeneticParser parser = new GeneticParser(null, new Antibody(), "tests/genetic2.in");
+        GeneticProgram program = parser.getProgram();
+        program.run();
+        GeneticProgram copy = program.getCopy(new Antibody());
+        copy.run();
 
-            Map<String, Integer> expected = Map.of(
-                    "a", 2, "b", -1, "t", 5, "c", 90
-            );
-            assertEquals(expected, program.getVarMap());
-            assertEquals(expected, copy.getVarMap());
-        }
-        catch (IOException | SyntaxError e) {
-            e.printStackTrace();
-        }
+        Map<String, Integer> expected = Map.of(
+                "a", 2, "b", -1, "t", 5, "c", 90
+        );
+        assertEquals(expected, program.getVarMap());
+        assertEquals(expected, copy.getVarMap());
     }
 
     void parser_exception_tester(String path, String expected_msg) {
-        try {
-            GeneticParser parser = new GeneticParser(null, new Antibody(), path);
-            SyntaxError e = assertThrows(SyntaxError.class, parser::getProgram);
-            assertTrue(e.getMessage().contains(expected_msg));
-            System.out.println(e.getMessage());
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        GeneticParser parser = new GeneticParser(null, new Antibody(), path);
+        SyntaxError e = assertThrows(SyntaxError.class, parser::getProgram);
+        assertTrue(e.getMessage().contains(expected_msg));
+        System.out.println(e.getMessage());
     }
 
     @Test

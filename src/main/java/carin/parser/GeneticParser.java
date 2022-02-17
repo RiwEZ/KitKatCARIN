@@ -18,18 +18,23 @@ public class GeneticParser {
     private final String path;
     private final Random rand;
 
-    public GeneticParser(GameStates states, GeneticEntity host, String path) throws IOException {
-        List<String> lines = Files.readAllLines(Path.of(path));
+    public GeneticParser(GameStates states, GeneticEntity host, String path) {
+        try {
+            List<String> lines = Files.readAllLines(Path.of(path));
+            this.tk = new GeneticTokenizer(lines);
+        } catch (IOException e) {e.printStackTrace();}
         this.path = path;
-        this.tk = new GeneticTokenizer(lines);
         this.states = states;
         this.host = host;
         this.rand = new Random();
     }
 
-    public GeneticProgram getProgram() throws SyntaxError {
-        GeneticProgram program = new GeneticProgram(parseProgram(), host, var_map); // for inspecting AST in debugger
-        return program;
+    public GeneticProgram getProgram() {
+        try {
+            GeneticProgram program = new GeneticProgram(parseProgram(), host, var_map); // for inspecting AST in debugger
+            return program;
+        } catch (SyntaxError e) {e.printStackTrace();}
+        return null;
     }
 
     /** this should be use for testing only
