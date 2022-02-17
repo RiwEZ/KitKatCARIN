@@ -1,0 +1,6 @@
+a = random
+if (a - 50) then move left
+else if (a - 40) then move right
+else if (a - 30) then move up
+else if (a - 20) then move down
+else

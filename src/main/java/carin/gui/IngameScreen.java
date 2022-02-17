@@ -11,6 +11,7 @@ import java.awt.*;
 public class IngameScreen extends GameScreen {
     public static final String NAME = "INGAME";
     private ImageComponent playButton;
+    public static boolean isPause = false;
 
     public IngameScreen() {
         super(NAME);
@@ -32,8 +33,14 @@ public class IngameScreen extends GameScreen {
         this.playButton.getAppearanceHovered().setForeColor(new Color(253, 184, 184));
 
         this.playButton.onClicked(e -> {
-            GameStates.getLogicLoop().togglePause();
             // toggle pause
+            GameStates.getLogicLoop().togglePause();
+            if(GameStates.getLogicLoop().isPause()){
+                this.playButton.setText("RESUME");
+            }
+            else{
+                this.playButton.setText("PAUSE");
+            }
         });
 
         this.getComponents().add(this.playButton);

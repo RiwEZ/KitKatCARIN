@@ -15,8 +15,14 @@ import java.util.Collection;
 
 
 public final class GameStates {
-    private static int virusCurrentID;
-    private static int antibodyCurrentID;
+
+    // Min, Max location of Map
+    public static final int minX = 36, maxX = 288;
+    public static final int maxY = 36, minY = 288;
+
+    // Virus and Antibody list
+    private static final ArrayList<Antibody> antibodyList = new ArrayList<>();
+    private static final ArrayList<Virus> virusList = new ArrayList<>();
 
     private static final ArrayList<GeneticEntity> entities = new ArrayList<>();
     private static LogicLoop loop;
@@ -40,22 +46,26 @@ public final class GameStates {
 
         // Get all spawn points from Map
         Collection<Spawnpoint> allSpawn = Game.world().getEnvironment("map2").getSpawnpoints();
-        Collection<MapArea> allArea = Game.world().getEnvironment("map2").getAreas();
+
         Game.world().onLoaded(e -> {
             Player p = Player.instance();
             // test spawn
             for(int i = 0; i < 3; i++){
-                Spawnpoint spawn = Game.random().choose(allSpawn);
+                Spawnpoint spawn = new Spawnpoint();
+                spawn.setLocation(Game.random().choose(allSpawn).getLocation());
                 Virus virus = new Virus();
                 entities.add(virus);
+                virusList.add(virus);
                 spawn.spawn(virus);
             }
             // test spawn
             for(int i = 0; i < 3; i++){
-                Spawnpoint spawn = Game.random().choose(allSpawn);
+                Spawnpoint spawn = new Spawnpoint();
+                spawn.setLocation(Game.random().choose(allSpawn).getLocation());
                 Antibody antibody = new Antibody();
                 p.addAntibody(antibody);
                 entities.add(antibody);
+                antibodyList.add(antibody);
                 spawn.spawn(antibody);
                 }
         });
@@ -65,8 +75,12 @@ public final class GameStates {
         return entities;
     }
 
-    public static Collection<MapArea> getMapArea() {
-        return Game.world().getEnvironment("map2").getAreas();
+    public static ArrayList<Antibody> getListAnti() {
+        return antibodyList;
+    }
+
+    public static ArrayList<Virus> getListVirus() {
+        return virusList;
     }
 
 }

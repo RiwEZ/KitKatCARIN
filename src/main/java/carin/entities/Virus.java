@@ -10,19 +10,21 @@ import de.gurkenlabs.litiengine.IUpdateable;
 import de.gurkenlabs.litiengine.entities.*;
 import de.gurkenlabs.litiengine.input.Input;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @EntityInfo(width = 36, height = 36)
 @CollisionInfo(collisionBoxWidth = 36, collisionBoxHeight = 36, collision = true)
 @MovementInfo(velocity = 0)
 public class Virus extends Creature implements GeneticEntity, IUpdateable {
-    Collection<MapArea> allArea = GameStates.getMapArea();
+
     private final int maxHP = Config.virus_hp;
     private final int damage = Config.virus_dmg;
     private int currentHP;
     private static int ID = 0;
     private int virusID;
     private final GeneticProgram geneticCode;
+    private final Controller entityController;
 
     public Virus() {
         super("virus");
@@ -31,6 +33,8 @@ public class Virus extends Creature implements GeneticEntity, IUpdateable {
         ID++;
         addEntityRenderListener(e -> new StatusBar(this).render(e.getGraphics()));
         geneticCode = new GeneticParser(null, this, "tests/virus1.in").getProgram();
+        // add Controller
+        entityController = new Controller(this);
     }
 
     @Override
@@ -45,7 +49,7 @@ public class Virus extends Creature implements GeneticEntity, IUpdateable {
 
     @Override
     public void move(double x, double y) {
-        this.setLocation(this.getX() + x * 36, this.getY() + y * 36);
+        entityController.move(x,y);
     }
 
     public int getID() {

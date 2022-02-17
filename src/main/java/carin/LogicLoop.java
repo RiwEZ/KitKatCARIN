@@ -19,6 +19,8 @@ public class LogicLoop extends Thread {
         isPause = !isPause;
     }
 
+    public boolean isPause() { return isPause; }
+
     @Override
     public void run() {
         while (!interrupted()) {
