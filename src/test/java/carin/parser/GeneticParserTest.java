@@ -95,7 +95,7 @@ class GeneticParserTest {
 
     void parser_exception_tester(String path, String expected_msg) {
         GeneticParser parser = new GeneticParser(null, new Antibody(), path);
-        SyntaxError e = assertThrows(SyntaxError.class, parser::getProgram);
+        SyntaxError e = assertThrows(SyntaxError.class, parser::testProgram);
         assertTrue(e.getMessage().contains(expected_msg));
         System.out.println(e.getMessage());
     }

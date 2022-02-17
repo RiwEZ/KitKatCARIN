@@ -31,10 +31,19 @@ public class GeneticParser {
 
     public GeneticProgram getProgram() {
         try {
-            GeneticProgram program = new GeneticProgram(parseProgram(), host, var_map); // for inspecting AST in debugger
-            return program;
-        } catch (SyntaxError e) {e.printStackTrace();}
-        return null;
+            return new GeneticProgram(parseProgram(), host, var_map);
+        }
+        catch (SyntaxError e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /** this should be use for testing only
+     * @throws SyntaxError
+     */
+    void testProgram() throws SyntaxError {
+        GeneticProgram program = new GeneticProgram(parseProgram(), host, var_map); // for inspecting AST in debugger
     }
 
     /** this should be use for testing only
@@ -42,7 +51,7 @@ public class GeneticParser {
      * @return Expr AST
      * @throws SyntaxError
      */
-    public Expr testExpr(List<String> expr) throws Exception {
+    Expr testExpr(List<String> expr) throws Exception {
         if (expr.size() != 1) throw new Exception("wrong expr");
         tk = new GeneticTokenizer(expr);
         Expr res = parseExpr(); // for inspecting AST in debugger
