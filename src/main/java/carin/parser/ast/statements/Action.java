@@ -31,22 +31,23 @@ public class Action implements Statement {
         else if (action == 'm') {
             // calc position from host
             // check states if there are anything in that position
+            host.move(x, y);
         }
     }
 
     @Override
     public boolean evaluate(Map<String, Integer> var_map, GeneticEntity host) {
         // direction is numpad number's relative position to number 5
-        this.host = host;
+        if (host == null || this.host != host) this.host = host;
         switch (direction) {
-            case 1: makeActionAt(-1, -1);
-            case 2: makeActionAt(0, -1);
-            case 3: makeActionAt(1, -1);
-            case 4: makeActionAt(-1, 0);
-            case 6: makeActionAt(1, 0);
-            case 7: makeActionAt(-1, 1);
-            case 8: makeActionAt(0, 1);
-            case 9: makeActionAt(1, 1);
+            case 1 -> makeActionAt(-1, -1);
+            case 2 -> makeActionAt(0, -1);
+            case 3 -> makeActionAt(1, -1);
+            case 4 -> makeActionAt(-1, 0);
+            case 6 -> makeActionAt(1, 0);
+            case 7 -> makeActionAt(-1, 1);
+            case 8 -> makeActionAt(0, 1);
+            case 9 -> makeActionAt(1, 1);
         }
         return true;
     }
