@@ -7,9 +7,6 @@ import java.awt.geom.Point2D;
 
 public class Controller {
 
-    public static final int minX = GameStates.minX, maxX = GameStates.maxX;
-    public static final int maxY = GameStates.maxY, minY = GameStates.minY;
-
     private final Creature entity;
     private final GameStates states;
 

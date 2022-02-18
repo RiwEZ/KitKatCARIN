@@ -1,9 +1,11 @@
 package carin;
 
 import carin.entities.*;
+import carin.util.MapGeneration;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.IEntity;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
+import de.gurkenlabs.litiengine.environment.tilemap.IMap;
 import de.gurkenlabs.litiengine.graphics.Camera;
 import de.gurkenlabs.litiengine.graphics.FreeFlightCamera;
 
@@ -15,9 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * this class contains all entities states and utility function to manipulate states
  */
 public final class GameStates {
-    // Min, Max location of Map
-    public static final int minX = 36, maxX = 288;
-    public static final int maxY = 36, minY = 288;
+    // Generate MAP
+    private final IMap MAP = MapGeneration.generateMap(Config.map_m, Config.map_n);
 
     private final ArrayList<GeneticEntity> entities = new ArrayList<>();
     private LogicLoop logic;
@@ -69,7 +70,7 @@ public final class GameStates {
             }
         });
 
-        Game.world().loadEnvironment("map2");
+        Game.world().loadEnvironment(MAP);
     }
 
     public class SensorIterator implements Iterator<GeneticEntity> {
