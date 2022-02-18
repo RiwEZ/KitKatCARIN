@@ -5,7 +5,7 @@ import de.gurkenlabs.litiengine.Game;
 
 public class LogicLoop extends Thread {
     private long delay = 500;
-    private boolean isPause = false;
+    private boolean isPause = true;
 
     public LogicLoop() {}
 
@@ -38,7 +38,7 @@ public class LogicLoop extends Thread {
 
     private void runGeneticCode() {
         if (!Game.isInNoGUIMode()) {
-            for (GeneticEntity g : GameStates.getEntities()) {
+            for (GeneticEntity g : GameStates.states().entities()) {
                 g.run();
             }
         }

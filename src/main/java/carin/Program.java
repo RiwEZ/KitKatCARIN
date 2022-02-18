@@ -20,7 +20,7 @@ public class Program {
         Game.info().setSubTitle("");
         Game.info().setWebsite("https://github.com/RiwEZ/KitKatCARIN");
         Game.init(args);
-        GameStates.init();
+        GameStates.states().init();
         Game.window().getRenderComponent().fadeIn(1000);
         Game.screens().add(new MenuScreen());
         Game.screens().add(new IngameScreen());

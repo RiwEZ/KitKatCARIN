@@ -5,13 +5,10 @@ import carin.GameStates;
 import carin.gui.StatusBar;
 import carin.parser.GeneticParser;
 import carin.parser.GeneticProgram;
-import carin.parser.SyntaxError;
 import de.gurkenlabs.litiengine.IUpdateable;
 import de.gurkenlabs.litiengine.entities.*;
-import de.gurkenlabs.litiengine.input.Input;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.awt.geom.Point2D;
 
 @EntityInfo(width = 36, height = 36)
 @CollisionInfo(collisionBoxWidth = 36, collisionBoxHeight = 36, collision = true)
@@ -32,9 +29,9 @@ public class Virus extends Creature implements GeneticEntity, IUpdateable {
         this.virusID = ID;
         ID++;
         addEntityRenderListener(e -> new StatusBar(this).render(e.getGraphics()));
-        geneticCode = new GeneticParser(null, this, "tests/virus1.in").getProgram();
+        geneticCode = new GeneticParser(GameStates.states(), this, "tests/virus1.in").getProgram();
         // add Controller
-        entityController = new Controller(this);
+        entityController = new Controller(this, GameStates.states());
     }
 
     @Override
@@ -45,6 +42,11 @@ public class Virus extends Creature implements GeneticEntity, IUpdateable {
     @Override
     public void run() {
         geneticCode.run();
+    }
+
+    @Override
+    public Point2D location() {
+        return this.getLocation();
     }
 
     @Override

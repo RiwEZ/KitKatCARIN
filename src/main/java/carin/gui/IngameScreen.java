@@ -33,9 +33,11 @@ public class IngameScreen extends GameScreen {
         this.playButton.getAppearanceHovered().setForeColor(new Color(253, 184, 184));
 
         this.playButton.onClicked(e -> {
+            //Game.world().camera().setZoom(2f, 0);
+
             // toggle pause
-            GameStates.getLogicLoop().togglePause();
-            if(GameStates.getLogicLoop().isPause()){
+            GameStates.states().logicLoop().togglePause();
+            if(GameStates.states().logicLoop().isPause()){
                 this.playButton.setText("RESUME");
             }
             else{

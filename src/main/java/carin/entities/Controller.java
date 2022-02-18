@@ -11,26 +11,21 @@ public class Controller {
     public static final int maxY = GameStates.maxY, minY = GameStates.minY;
 
     private final Creature entity;
+    private final GameStates states;
 
-    public Controller(Creature entity){
+    public Controller(Creature entity, GameStates states){
         this.entity = entity;
-    }
-
-    private boolean isInMap(double x, double y) {
-       return (this.entity.getX() + x*36 >= minX)
-               && (this.entity.getX() + x*36 <= maxX)
-               && (this.entity.getY() + y*36 <= minY)
-               && (this.entity.getY() + y*36 >= maxY);
+        this.states = states;
     }
 
     public void move(double x, double y){
-        if (isInMap(x, y)) {
+        Point2D pos = new Point2D.Double(this.entity.getX()+(x*36), this.entity.getY()+(y*36));
+        if (states.isInMap(pos)) {
             Point2D prevPos = new Point2D.Double(this.entity.getX(), this.entity.getY());
-            Point2D pos = new Point2D.Double(this.entity.getX()+(x*36), this.entity.getY()+(y*36));
 
-            if (GameStates.isUnOccupied(pos)) {
-                GameStates.getEntityMap().put(pos, (GeneticEntity) this.entity);
-                GameStates.getEntityMap().put(prevPos, GameStates.unOccupied());
+            if (states.isUnOccupied(pos)) {
+                states.entityMap().put(pos, (GeneticEntity) this.entity);
+                states.entityMap().put(prevPos, states.unOccupied());
                 this.entity.setLocation(pos);
             }
 
