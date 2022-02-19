@@ -20,7 +20,7 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
     private int currentHP;
     protected final GameStates states = GameStates.states();
     private GeneticProgram geneticCode;
-    private String type;
+    private final String type;
 
     public GeneticEntity(String type) {
         super();
@@ -29,13 +29,13 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
             this.maxHP = Config.virus_hp;
             this.damage = Config.virus_dmg;
             this.leech = Config.virus_leech;
-            this.setSpritesheetName("virus");
+            this.setSpritesheetName(type);
         }
         else if (type.equals("antibody")) {
             this.maxHP = Config.antibody_hp;
             this.damage = Config.antibody_dmg;
             this.leech = Config.antibody_leech;
-            this.setSpritesheetName("antibody");
+            this.setSpritesheetName(type);
         }
         else {
             this.maxHP = 0;

@@ -22,7 +22,7 @@ public final class GameStates {
     private final ArrayList<IGeneticEntity> entities = new ArrayList<>();
     private final ArrayList<IGeneticEntity> toRemove = new ArrayList<>();
     private final ArrayList<IGeneticEntity> toSpawn = new ArrayList<>();
-    private final LogicLoop logic = new LogicLoop();
+    private LogicLoop logic;
 
     private final Map<Point2D, IGeneticEntity> entityMap = new ConcurrentHashMap<>();
     private final IGeneticEntity unoccupied = new UnOccupied();
@@ -69,9 +69,6 @@ public final class GameStates {
 
 
     public void init() {
-        // init LogicLoop and run it
-        logic.start();
-
         // Setup camera
         Camera camera = new FreeFlightCamera();
         camera.setClampToMap(true);
@@ -82,16 +79,20 @@ public final class GameStates {
             for (Spawnpoint point : allSpawn) {
                 entityMap.put(point.getLocation(), unoccupied);
             }
-
             defaultSpawn(allSpawn);
         });
-
         Game.world().loadEnvironment(MAP);
+
+        // init LogicLoop and run it
+        if (logic == null) logic = new LogicLoop();
+        logic.start();
     }
 
     public void spawnGeneticEntity(Spawnpoint point, IGeneticEntity entity) {
-        entities.add(entity);
-        entityMap.put(point.getLocation(), entity);
+        if (entityMap.get(point.getLocation()).equals(unoccupied)) {
+            entities.add(entity);
+            entityMap.put(point.getLocation(), entity);
+        }
         point.spawn(entity);
     }
 
