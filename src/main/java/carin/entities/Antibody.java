@@ -11,7 +11,7 @@ public class Antibody extends GeneticEntity {
 
     public Antibody() {
         super("antibody");
-        GeneticProgram code = new GeneticParser(GameStates.states(), this, "tests/antibody2.in").getProgram();
+        GeneticProgram code = new GeneticParser(GameStates.states(), this, "tests/antibody1.in").getProgram();
         this.setGeneticCode(code);
         this.antibodyID = ID;
         ID++;

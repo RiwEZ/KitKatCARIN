@@ -51,21 +51,19 @@ public final class GameStates {
 
         Game.world().onLoaded(env -> {
             Collection<Spawnpoint> allSpawn = env.getSpawnpoints();
-            Point2D p = null;
             for (Spawnpoint point : allSpawn) {
                 entityMap.put(point.getLocation(), unoccupied);
-                if (p == null) p = point.getLocation();
             }
 
-            //Player p = Player.instance();
-            Spawnpoint spawn = new Spawnpoint();
+            Player p = Player.instance();
+            /*
             spawn.setLocation(p);
             spawnGeneticEntity(spawn, new Virus());
             spawn.setLocation(spawn.getX() + 36, spawn.getY());
             spawnGeneticEntity(spawn, new Antibody());
+            */
 
             // test spawn
-            /*
             Spawnpoint spawn = new Spawnpoint();
             for(int i = 0; i < 3; i++){
                 spawn.setLocation(Game.random().choose(allSpawn).getLocation());
@@ -76,7 +74,6 @@ public final class GameStates {
                 spawn.setLocation(Game.random().choose(allSpawn).getLocation());
                 spawnGeneticEntity(spawn, new Antibody());
             }
-             */
         });
 
         Game.world().loadEnvironment(MAP);
