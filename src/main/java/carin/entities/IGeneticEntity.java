@@ -24,8 +24,9 @@ public interface IGeneticEntity extends IMobileEntity {
     /** attack entity at (x,y) position from host
      * @param x x position from host
      * @param y y position from host
+     * @return true if target die otherwise false
      */
-    void attack(double x, double y);
+    boolean attack(double x, double y);
 
     /**
      * @param dmg receiving dmg

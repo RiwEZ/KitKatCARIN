@@ -14,7 +14,7 @@ class GeneticTokenizerTest {
 
     @Test
     void token_is_correct() throws IOException {
-        Path p = Path.of("tests/genetic2.in");
+        Path p = Path.of("tests/simple_statements.in");
         List<String> lines = Files.readAllLines(p);
         GeneticTokenizer tk = new GeneticTokenizer(lines);
 

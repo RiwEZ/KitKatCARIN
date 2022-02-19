@@ -149,8 +149,8 @@ public class GeneticParser {
             // parse Direction
             if (Token.isDirection(tk.peek())) {
                 int direction = Token.getDirection(tk.consume().val());
-                if (Token.isAttack(token)) cmd = new Action(states,'a', direction);
-                else cmd = new Action(states,'m', direction);
+                if (Token.isAttack(token)) cmd = new Action('a', direction);
+                else cmd = new Action('m', direction);
             }
             else throw new SyntaxError("direction expected", tk.getInfo());
         }

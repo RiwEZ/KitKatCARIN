@@ -77,13 +77,17 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
     }
 
     @Override
-    public void attack(double x, double y) {
+    public boolean attack(double x, double y) {
         Point2D pos = new Point2D.Double(this.getX()+(x*36), this.getY()+(y*36));
         if (states.isInMap(pos)) {
             if (!states.isUnOccupied(pos)) {
-                states.entityMap().get(pos).getAttacked(this, damage);
+                IGeneticEntity target = states.entityMap().get(pos);
+                target.getAttacked(this, damage);
+                currentHP = Math.min(currentHP + leech, maxHP);
+                return target.getCurrHP() == 0;
             }
         }
+        return false;
     }
 
     @Override

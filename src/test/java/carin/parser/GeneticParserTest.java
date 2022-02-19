@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /* TODO
     - SensorExpr Test
-    - Action Test
 */
 class GeneticParserTest {
 
@@ -64,8 +63,8 @@ class GeneticParserTest {
         Map<String, Integer> var_map = new HashMap<>();
         List<String> test_cases = new ArrayList<>();
         try {
-            test_cases = Files.readAllLines(Path.of("tests/expr1.in"));
-            parser = new GeneticParser(null, new Antibody(), "tests/expr1.in");
+            test_cases = Files.readAllLines(Path.of("tests/expression/expr1.in"));
+            parser = new GeneticParser(null, new Antibody(), "tests/expression/expr1.in");
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -80,7 +79,7 @@ class GeneticParserTest {
 
     @Test
     void parser_simple_statement_test() {
-        GeneticParser parser = new GeneticParser(null, new Antibody(), "tests/genetic2.in");
+        GeneticParser parser = new GeneticParser(null, new Antibody(), "tests/simple_statements.in");
         GeneticProgram program = parser.getProgram();
         program.run();
         GeneticProgram copy = program.getCopy(new Antibody());

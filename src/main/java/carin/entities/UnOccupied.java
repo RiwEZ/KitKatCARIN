@@ -24,7 +24,8 @@ public class UnOccupied extends Creature implements IGeneticEntity {
     }
 
     @Override
-    public void attack(double x, double y) {
+    public boolean attack(double x, double y) {
+        return false;
     }
 
     @Override

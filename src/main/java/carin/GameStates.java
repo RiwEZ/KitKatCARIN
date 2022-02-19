@@ -22,10 +22,11 @@ public final class GameStates {
     private final ArrayList<IGeneticEntity> entities = new ArrayList<>();
     private final ArrayList<IGeneticEntity> toRemove = new ArrayList<>();
     private final ArrayList<IGeneticEntity> toSpawn = new ArrayList<>();
-    private LogicLoop logic;
+    private final LogicLoop logic = new LogicLoop();
 
     private final Map<Point2D, IGeneticEntity> entityMap = new ConcurrentHashMap<>();
     private final IGeneticEntity unoccupied = new UnOccupied();
+    private final Player player = Player.instance();
 
     private static final GameStates states = new GameStates();
 
@@ -33,15 +34,42 @@ public final class GameStates {
         return states;
     }
 
-    public void spawnGeneticEntity(Spawnpoint point, IGeneticEntity entity) {
-        entities.add(entity);
-        point.spawn(entity);
-        entityMap.put(point.getLocation(), entity);
+    public void defaultSpawn(Collection<Spawnpoint> allSpawn) {
+        Spawnpoint spawn = new Spawnpoint();
+        // test spawn
+        for(int i = 0; i < 3; i++){
+            spawn.setLocation(Game.random().choose(allSpawn).getLocation());
+            spawnGeneticEntity(spawn, new Virus());
+        }
+        // test spawn
+        for(int i = 0; i < 3; i++){
+            spawn.setLocation(Game.random().choose(allSpawn).getLocation());
+            spawnGeneticEntity(spawn, new Antibody());
+        }
     }
+
+    /**
+     * this should be use for testing only
+     */
+    public void initTest() {
+        if (Game.hasStarted()) Game.exit();
+        IMap map3x3 = MapGeneration.generateMap(3, 3);
+
+        Game.hideGUI(true);
+        Game.init();
+        Game.world().onLoaded(env -> {
+            Collection<Spawnpoint> allSpawn = env.getSpawnpoints();
+            for (Spawnpoint point : allSpawn) {
+                entityMap.put(point.getLocation(), unoccupied);
+            }
+        });
+
+        Game.world().loadEnvironment(map3x3);
+    }
+
 
     public void init() {
         // init LogicLoop and run it
-        if (logic == null) logic = new LogicLoop();
         logic.start();
 
         // Setup camera
@@ -55,28 +83,16 @@ public final class GameStates {
                 entityMap.put(point.getLocation(), unoccupied);
             }
 
-            Player p = Player.instance();
-            /*
-            spawn.setLocation(p);
-            spawnGeneticEntity(spawn, new Virus());
-            spawn.setLocation(spawn.getX() + 36, spawn.getY());
-            spawnGeneticEntity(spawn, new Antibody());
-            */
-
-            // test spawn
-            Spawnpoint spawn = new Spawnpoint();
-            for(int i = 0; i < 3; i++){
-                spawn.setLocation(Game.random().choose(allSpawn).getLocation());
-                spawnGeneticEntity(spawn, new Virus());
-            }
-            // test spawn
-            for(int i = 0; i < 3; i++){
-                spawn.setLocation(Game.random().choose(allSpawn).getLocation());
-                spawnGeneticEntity(spawn, new Antibody());
-            }
+            defaultSpawn(allSpawn);
         });
 
         Game.world().loadEnvironment(MAP);
+    }
+
+    public void spawnGeneticEntity(Spawnpoint point, IGeneticEntity entity) {
+        entities.add(entity);
+        entityMap.put(point.getLocation(), entity);
+        point.spawn(entity);
     }
 
     public class SensorIterator implements Iterator<IGeneticEntity> {
@@ -193,5 +209,9 @@ public final class GameStates {
             spawnGeneticEntity(point, entity);
         }
         toSpawn.clear();
+    }
+
+    public Player player() {
+        return player;
     }
 }

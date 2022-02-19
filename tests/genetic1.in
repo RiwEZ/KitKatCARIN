@@ -1,6 +1,5 @@
-virusLoc=(virus+1) #
 t = t + 1  # keeping track of time unit
-virusLoc = virus #
+virusLoc = virus
 if (virusLoc / 10 - 1)
 then # virus afar
   if (virusLoc % 10 - 7) then move upleft

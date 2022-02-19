@@ -1,20 +1,15 @@
 package carin.parser.ast.statements;
 
-import carin.GameStates;
 import carin.entities.IGeneticEntity;
 
 import java.util.Map;
 
-
-// TODO: make this work
 public class Action implements Statement {
     private final Character action; // a = attack, m = move
     private IGeneticEntity host;
-    private final GameStates states;
     private final int direction;
 
-    public Action(GameStates states, Character action, int direction) {
-        this.states = states;
+    public Action(Character action, int direction) {
         this.action = action;
         this.direction = direction;
     }
@@ -25,13 +20,9 @@ public class Action implements Statement {
      */
     private void makeActionAt(int x, int y) {
         if (action == 'a') {
-            // calc position from host
-            // use states to attack it?
             host.attack(x, y);
         }
         else if (action == 'm') {
-            // calc position from host
-            // check states if there are anything in that position
             host.move(x, y);
         }
     }
