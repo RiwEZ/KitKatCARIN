@@ -12,6 +12,7 @@ public class IngameScreen extends GameScreen {
     public static final String NAME = "INGAME";
     private ImageComponent playButton;
     public static boolean isPause = false;
+    private Hud hud;
 
     public IngameScreen() {
         super(NAME);
@@ -19,6 +20,8 @@ public class IngameScreen extends GameScreen {
 
     @Override
     protected void initializeComponents() {
+        hud = new Hud();
+
         // this is temporary pause button
         super.initializeComponents();
         double x = Game.window().getCenter().getX() / 2;
@@ -46,5 +49,6 @@ public class IngameScreen extends GameScreen {
         });
 
         this.getComponents().add(this.playButton);
+        this.getComponents().add(hud);
     }
 }

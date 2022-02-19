@@ -12,6 +12,7 @@ public class Program {
     public static final Font GUI_FONT = Resources.fonts().get("misc/ARCADECLASSIC.TTF").deriveFont(48f);
     public static final Font GUI_FONT_SMALL = GUI_FONT.deriveFont(30f);
     public static final Font GUI_FONT_SMALLEST = Resources.fonts().get("misc/Kanit-Thin.ttf").deriveFont(8f);
+    public static final Font GUI_FONT_SMALL2 = Resources.fonts().get("misc/PressStart2P-vaV7.ttf").deriveFont(8f);
 
     public static void main(String[] args) {
         GuiProperties.setDefaultFont(GUI_FONT);
