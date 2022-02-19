@@ -1,6 +1,6 @@
 package carin.parser.ast.statements;
 
-import carin.entities.GeneticEntity;
+import carin.entities.IGeneticEntity;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class StatementSeq implements Statement {
     }
 
     @Override
-    public boolean evaluate(Map<String, Integer> var_map, GeneticEntity host) {
+    public boolean evaluate(Map<String, Integer> var_map, IGeneticEntity host) {
         for (Statement st : sequences) {
             if (st.evaluate(var_map, host)) return true;
         }

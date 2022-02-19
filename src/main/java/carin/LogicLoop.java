@@ -1,7 +1,6 @@
 package carin;
 
-import carin.entities.GeneticEntity;
-import de.gurkenlabs.litiengine.Game;
+import carin.entities.IGeneticEntity;
 
 public class LogicLoop extends Thread {
     private long delay = 500;
@@ -37,11 +36,11 @@ public class LogicLoop extends Thread {
     }
 
     private void runGeneticCode() {
-        if (!Game.isInNoGUIMode()) {
-            for (GeneticEntity g : GameStates.states().entities()) {
-                g.run();
-            }
+        for (IGeneticEntity g : GameStates.states().entities()) {
+            g.run();
         }
+        GameStates.states().clearToRemove();
+        GameStates.states().triggerToSpawn();
     }
 
     private void delay() throws InterruptedException {

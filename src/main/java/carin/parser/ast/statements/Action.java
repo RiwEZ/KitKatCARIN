@@ -1,7 +1,7 @@
 package carin.parser.ast.statements;
 
 import carin.GameStates;
-import carin.entities.GeneticEntity;
+import carin.entities.IGeneticEntity;
 
 import java.util.Map;
 
@@ -9,7 +9,7 @@ import java.util.Map;
 // TODO: make this work
 public class Action implements Statement {
     private final Character action; // a = attack, m = move
-    private GeneticEntity host;
+    private IGeneticEntity host;
     private final GameStates states;
     private final int direction;
 
@@ -27,6 +27,7 @@ public class Action implements Statement {
         if (action == 'a') {
             // calc position from host
             // use states to attack it?
+            host.attack(x, y);
         }
         else if (action == 'm') {
             // calc position from host
@@ -36,7 +37,7 @@ public class Action implements Statement {
     }
 
     @Override
-    public boolean evaluate(Map<String, Integer> var_map, GeneticEntity host) {
+    public boolean evaluate(Map<String, Integer> var_map, IGeneticEntity host) {
         // direction is numpad number's relative position to number 5
         if (host == null || this.host != host) this.host = host;
         switch (direction) {

@@ -1,6 +1,6 @@
 package carin.parser.ast.expressions;
 
-import carin.entities.GeneticEntity;
+import carin.entities.IGeneticEntity;
 
 import java.util.Map;
 
@@ -13,7 +13,7 @@ public class Factor implements Expr {
     }
 
     @Override
-    public int evaluate(Map<String, Integer> var_map, GeneticEntity host) {
+    public int evaluate(Map<String, Integer> var_map, IGeneticEntity host) {
         return (int) Math.pow(v.evaluate(var_map, host), u.evaluate(var_map, host));
     }
 }

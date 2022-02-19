@@ -113,8 +113,9 @@ public class Token {
 
     public static boolean isSensor(@NotNull Token tk) {
         return tk.type() == Type.RESERVED
-                && (tk.val().equals("virus")
-                || tk.val().equals("antibody"));
+                && ((tk.val().equals("virus")
+                || tk.val().equals("antibody"))
+                || tk.val().equals("nearby"));
     }
 
     public static boolean isPower(@NotNull Token tk) {

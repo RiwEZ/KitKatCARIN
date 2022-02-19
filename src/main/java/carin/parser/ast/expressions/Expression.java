@@ -1,6 +1,6 @@
 package carin.parser.ast.expressions;
 
-import carin.entities.GeneticEntity;
+import carin.entities.IGeneticEntity;
 
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public class Expression implements Expr {
     }
 
     @Override
-    public int evaluate(Map<String, Integer> var_map, GeneticEntity host) {
+    public int evaluate(Map<String, Integer> var_map, IGeneticEntity host) {
         return switch (op) {
             case '+' -> v.evaluate(var_map, host) + u.evaluate(var_map, host);
             case '-' -> v.evaluate(var_map, host) - u.evaluate(var_map, host);

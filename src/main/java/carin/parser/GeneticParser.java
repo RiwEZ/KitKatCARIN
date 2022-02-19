@@ -1,7 +1,7 @@
 package carin.parser;
 
 import carin.GameStates;
-import carin.entities.GeneticEntity;
+import carin.entities.IGeneticEntity;
 import carin.parser.ast.expressions.*;
 import carin.parser.ast.statements.*;
 
@@ -12,13 +12,13 @@ import java.util.*;
 
 public class GeneticParser {
     private final GameStates states;
-    private final GeneticEntity host;
+    private final IGeneticEntity host;
     private final Map<String, Integer> var_map = new HashMap<>();
     private GeneticTokenizer tk;
     private final String path;
     private final Random rand;
 
-    public GeneticParser(GameStates states, GeneticEntity host, String path) {
+    public GeneticParser(GameStates states, IGeneticEntity host, String path) {
         try {
             List<String> lines = Files.readAllLines(Path.of(path));
             this.tk = new GeneticTokenizer(lines);

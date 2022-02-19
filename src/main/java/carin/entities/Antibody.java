@@ -1,62 +1,34 @@
 package carin.entities;
 
-import carin.Config;
 import carin.GameStates;
-import carin.gui.StatusBar;
 import carin.parser.GeneticParser;
 import carin.parser.GeneticProgram;
-import de.gurkenlabs.litiengine.IUpdateable;
-import de.gurkenlabs.litiengine.entities.*;
 
-import java.awt.geom.Point2D;
 
-@EntityInfo(width = 36, height = 36)
-@CollisionInfo(collisionBoxWidth = 36, collisionBoxHeight = 36, collision = true)
-public class Antibody extends Creature implements GeneticEntity, IUpdateable {
-
-    private final int maxHP = Config.antibody_hp;
-    private int currentHP;
+public class Antibody extends GeneticEntity {
     private static int ID = 0;
-    private int antibodyID;
-    private final GeneticProgram geneticCode;
-    private final Controller entityController;
+    private final int antibodyID;
 
     public Antibody() {
         super("antibody");
-        this.currentHP = this.maxHP;
+        GeneticProgram code = new GeneticParser(GameStates.states(), this, "tests/antibody2.in").getProgram();
+        this.setGeneticCode(code);
         this.antibodyID = ID;
         ID++;
-        addEntityRenderListener(e -> new StatusBar(this).render(e.getGraphics()));
-        geneticCode = new GeneticParser(GameStates.states(), this, "tests/antibody1.in").getProgram();
-        // add Controller
-        entityController = new Controller(this, GameStates.states());
     }
-
     @Override
-    public void update(){
-    }
-
-    @Override
-    public void run() {
-        geneticCode.run();
-    }
-
-    @Override
-    public Point2D location() {
-        return this.getLocation();
-    }
-
-    @Override
-    public void move(double x, double y) {
-        entityController.move(x,y);
+    public void getAttacked(IGeneticEntity entity, int dmg) {
+        super.getAttacked(entity, dmg);
+        if (getCurrHP() == 0) {
+            if (entity instanceof Virus) {
+                IGeneticEntity copy = entity.getCopy();
+                copy.setLocation(this.getLocation());
+                states.addToSpawn(copy);
+            }
+        }
     }
 
     public int getID() {
         return antibodyID;
     }
-
-    public int getHP(){
-        return currentHP;
-    }
-
 }

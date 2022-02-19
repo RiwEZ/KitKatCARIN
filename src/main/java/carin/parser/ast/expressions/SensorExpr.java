@@ -2,7 +2,7 @@ package carin.parser.ast.expressions;
 
 import carin.GameStates;
 import carin.entities.Antibody;
-import carin.entities.GeneticEntity;
+import carin.entities.IGeneticEntity;
 import carin.entities.Virus;
 import java.util.Map;
 
@@ -16,32 +16,37 @@ public class SensorExpr implements Expr {
         this.states = states;
     }
 
-    private int findVirus(GeneticEntity host) {
-        for (GameStates.SensorIterator it = states.sensorIter(host.location()); it.hasNext(); ) {
-            GeneticEntity e = it.next();
+    private int findVirus(IGeneticEntity host) {
+        for (GameStates.SensorIterator it = states.sensorIter(host.getLocation()); it.hasNext(); ) {
+            IGeneticEntity e = it.next();
             if (e instanceof Virus) return it.getLookAt();
         }
         return 0;
     }
 
-    private int findAntibody(GeneticEntity host) {
-        for (GameStates.SensorIterator it = states.sensorIter(host.location()); it.hasNext(); ) {
-            GeneticEntity e = it.next();
+    private int findAntibody(IGeneticEntity host) {
+        for (GameStates.SensorIterator it = states.sensorIter(host.getLocation()); it.hasNext(); ) {
+            IGeneticEntity e = it.next();
             if (e instanceof Antibody) return it.getLookAt();
         }
         return 0;
     }
 
-    private int findNearby(GeneticEntity host) {
-        for (GameStates.SensorIterator it = states.sensorIter(host.location()); it.hasNext(); ) {
-            GeneticEntity e = it.next();
-            if (e != null) return it.getLookAt();
+    private int findNearby(IGeneticEntity host) {
+        for (GameStates.SensorIterator it = states.sensorIter(host.getLocation()); it.hasNext(); ) {
+            IGeneticEntity e = it.next();
+            if (e != null) {
+                if (e instanceof Virus)
+                    return 10*(it.getLookAt()/10)+1;
+                else if (e instanceof Antibody)
+                    return 10*(it.getLookAt()/10)+2;
+            }
         }
         return 0;
     }
 
     @Override
-    public int evaluate(Map<String, Integer> var_map, GeneticEntity host) {
+    public int evaluate(Map<String, Integer> var_map, IGeneticEntity host) {
         return switch (cmd) {
             case "virus" -> findVirus(host);
             case "antibody" -> findAntibody(host);

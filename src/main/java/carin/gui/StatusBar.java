@@ -25,11 +25,11 @@ public class StatusBar implements IRenderable {
         g.setFont(Program.GUI_FONT_SMALLEST);
         if(entity.getClass().equals(Virus.class)){
             ID = ((Virus) entity).getID();
-            HP = ((Virus) entity).getHP();
+            HP = ((Virus) entity).getCurrHP();
         }
         else if(entity.getClass().equals(Antibody.class)){
             ID = ((Antibody) entity).getID();
-            HP = ((Antibody) entity).getHP();
+            HP = ((Antibody) entity).getCurrHP();
         }
         int x = (int) entity.getCenter().getX();
         int y = (int) entity.getCenter().getY();

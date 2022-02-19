@@ -3,7 +3,6 @@ package carin;
 import carin.entities.*;
 import carin.util.MapGeneration;
 import de.gurkenlabs.litiengine.Game;
-import de.gurkenlabs.litiengine.entities.IEntity;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
 import de.gurkenlabs.litiengine.environment.tilemap.IMap;
 import de.gurkenlabs.litiengine.graphics.Camera;
@@ -20,11 +19,13 @@ public final class GameStates {
     // Generate MAP
     private final IMap MAP = MapGeneration.generateMap(Config.map_m, Config.map_n);
 
-    private final ArrayList<GeneticEntity> entities = new ArrayList<>();
+    private final ArrayList<IGeneticEntity> entities = new ArrayList<>();
+    private final ArrayList<IGeneticEntity> toRemove = new ArrayList<>();
+    private final ArrayList<IGeneticEntity> toSpawn = new ArrayList<>();
     private LogicLoop logic;
 
-    private final Map<Point2D, GeneticEntity> entityMap = new ConcurrentHashMap<>();
-    private final GeneticEntity unoccupied = new UnOccupied();
+    private final Map<Point2D, IGeneticEntity> entityMap = new ConcurrentHashMap<>();
+    private final IGeneticEntity unoccupied = new UnOccupied();
 
     private static final GameStates states = new GameStates();
 
@@ -32,9 +33,9 @@ public final class GameStates {
         return states;
     }
 
-    private void spawnGeneticEntity(Spawnpoint point, GeneticEntity entity) {
+    public void spawnGeneticEntity(Spawnpoint point, IGeneticEntity entity) {
         entities.add(entity);
-        point.spawn((IEntity) entity);
+        point.spawn(entity);
         entityMap.put(point.getLocation(), entity);
     }
 
@@ -50,30 +51,38 @@ public final class GameStates {
 
         Game.world().onLoaded(env -> {
             Collection<Spawnpoint> allSpawn = env.getSpawnpoints();
-
+            Point2D p = null;
             for (Spawnpoint point : allSpawn) {
                 entityMap.put(point.getLocation(), unoccupied);
+                if (p == null) p = point.getLocation();
             }
 
-            Player p = Player.instance();
+            //Player p = Player.instance();
+            Spawnpoint spawn = new Spawnpoint();
+            spawn.setLocation(p);
+            spawnGeneticEntity(spawn, new Virus());
+            spawn.setLocation(spawn.getX() + 36, spawn.getY());
+            spawnGeneticEntity(spawn, new Antibody());
+
             // test spawn
+            /*
+            Spawnpoint spawn = new Spawnpoint();
             for(int i = 0; i < 3; i++){
-                Spawnpoint spawn = new Spawnpoint();
                 spawn.setLocation(Game.random().choose(allSpawn).getLocation());
                 spawnGeneticEntity(spawn, new Virus());
             }
             // test spawn
             for(int i = 0; i < 3; i++){
-                Spawnpoint spawn = new Spawnpoint();
                 spawn.setLocation(Game.random().choose(allSpawn).getLocation());
                 spawnGeneticEntity(spawn, new Antibody());
             }
+             */
         });
 
         Game.world().loadEnvironment(MAP);
     }
 
-    public class SensorIterator implements Iterator<GeneticEntity> {
+    public class SensorIterator implements Iterator<IGeneticEntity> {
         Point2D host;
         int lookAt;
 
@@ -113,7 +122,7 @@ public final class GameStates {
         }
 
         @Override
-        public GeneticEntity next() {
+        public IGeneticEntity next() {
             if (!hasNext()) return null;
             lookAt++;
             Point2D p = lookingPos();
@@ -144,7 +153,7 @@ public final class GameStates {
         return !(entityMap.get(pos) == null);
     }
 
-    public ArrayList<GeneticEntity> entities() {
+    public ArrayList<IGeneticEntity> entities() {
         return entities;
     }
 
@@ -152,7 +161,7 @@ public final class GameStates {
         return logic;
     }
 
-    public Map<Point2D, GeneticEntity> entityMap() {
+    public Map<Point2D, IGeneticEntity> entityMap() {
         return entityMap;
     }
 
@@ -160,7 +169,32 @@ public final class GameStates {
         return entityMap.get(pos).equals(unoccupied);
     }
 
-    public GeneticEntity unOccupied() {
+    public IGeneticEntity unOccupied() {
         return unoccupied;
+    }
+
+    public void addToRemove(IGeneticEntity entity) {
+        toRemove.add(entity);
+    }
+
+    public void clearToRemove() {
+        for (IGeneticEntity entity : toRemove) {
+            entityMap.put(entity.getLocation(), states.unOccupied());
+            entities.remove(entity);
+        }
+        toRemove.clear();
+    }
+
+    public void addToSpawn(IGeneticEntity entity) {
+        toSpawn.add(entity);
+    }
+
+    public void triggerToSpawn() {
+        for (IGeneticEntity entity : toSpawn) {
+            Spawnpoint point = new Spawnpoint();
+            point.setLocation(entity.getLocation());
+            spawnGeneticEntity(point, entity);
+        }
+        toSpawn.clear();
     }
 }
