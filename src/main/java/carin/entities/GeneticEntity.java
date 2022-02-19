@@ -71,6 +71,15 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
         }
     }
 
+    public void manualMove(Point2D loc) {
+        Point2D prevPos = new Point2D.Double(this.getX(), this.getY());
+        if (states.isUnOccupied(GameStates.getSnapPoint(loc).getLocation())) {
+            states.entityMap().put(GameStates.getSnapPoint(loc).getLocation(), this);
+            states.entityMap().put(prevPos, states.unOccupied());
+            this.setLocation(GameStates.getSnapPoint(loc).getLocation());
+        }
+    }
+
     @Override
     public void run() {
         geneticCode.run();
