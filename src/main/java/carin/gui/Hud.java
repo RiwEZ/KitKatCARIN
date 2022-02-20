@@ -54,8 +54,8 @@ public class Hud extends GuiComponent {
         g.setColor(Color.WHITE);
 
         // render Antibody, Virus number
-        String numberAnti = "Antibody: " + "9999";
-        String numberVirus = "Virus: " + "9999";
+        String numberAnti = "Antibody: " + GameStates.states().getAntibodyCount();
+        String numberVirus = "Virus: " + GameStates.states().getVirusCount();
         double numberX =  PADDING * 10;
         TextRenderer.renderWithOutline(g, numberVirus, numberX, textY+12, COLOR_OUTLINE);
         TextRenderer.renderWithOutline(g, numberAnti, numberX, textY+28,COLOR_OUTLINE);

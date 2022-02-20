@@ -23,6 +23,7 @@ public final class GameStates {
     private final ArrayList<IGeneticEntity> entities = new ArrayList<>();
     private final Map<Point2D, IGeneticEntity> entityMap = new ConcurrentHashMap<>();
     private int antibodyCount = 0;
+    private int virusCount = 0;
 
     private final ArrayList<IGeneticEntity> toRemove = new ArrayList<>();
     private final ArrayList<IGeneticEntity> toSpawn = new ArrayList<>();
@@ -80,6 +81,8 @@ public final class GameStates {
     }
 
     public void init() {
+        initialized = true;
+
         availableAntibody = GeneticEntityFactory.getAvailableAntibody();
         availableVirus = GeneticEntityFactory.getAvailableVirus();
 
@@ -113,8 +116,6 @@ public final class GameStates {
         // init LogicLoop and run it
         if (logic == null) logic = new LogicLoop();
         logic.start();
-
-        initialized = true;
     }
 
     public boolean isInit() {
@@ -126,6 +127,7 @@ public final class GameStates {
             entities.add(entity);
             entityMap.put(point.getLocation(), entity);
             if (entity.getClass() == Antibody.class) antibodyCount++;
+            if (entity.getClass() == Virus.class) virusCount++;
         }
         point.spawn(entity);
     }
@@ -217,6 +219,10 @@ public final class GameStates {
         return antibodyCount;
     }
 
+    public int getVirusCount() {
+        return virusCount;
+    }
+
     public boolean isUnOccupied(Point2D pos) {
         return entityMap.get(pos).equals(unoccupied);
     }
@@ -247,6 +253,7 @@ public final class GameStates {
             entityMap.put(entity.getLocation(), states.unOccupied());
             entities.remove(entity); // this will slow things down
             if (entity.getClass() == Antibody.class) antibodyCount--;
+            if (entity.getClass() == Virus.class) virusCount--;
         }
         toRemove.clear();
     }

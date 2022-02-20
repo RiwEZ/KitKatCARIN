@@ -2,6 +2,7 @@ package carin.entities;
 
 import carin.parser.GeneticProgram;
 import de.gurkenlabs.litiengine.entities.Creature;
+import de.gurkenlabs.litiengine.graphics.RenderType;
 
 import java.awt.geom.Point2D;
 
@@ -9,6 +10,10 @@ import java.awt.geom.Point2D;
  * Representing empty space on entityMap.
  */
 public class UnOccupied extends Creature implements IGeneticEntity {
+
+    public UnOccupied() {
+        this.setRenderType(RenderType.NONE);
+    }
 
     @Override
     public int getCurrHP() {
