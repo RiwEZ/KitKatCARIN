@@ -66,9 +66,15 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
         if (states.isInMap(pos)) {
             Point2D prevPos = new Point2D.Double(this.getX(), this.getY());
             if (states.isUnOccupied(pos)) {
-                states.entityMap().put(pos, this);
-                states.entityMap().put(prevPos, states.unOccupied());
-                this.setLocation(pos);
+                boolean empty = true;
+                for (IGeneticEntity entity : states.getToSpawn()) {
+                    if (entity.getLocation().equals(pos)) empty = false;
+                }
+                if (empty) {
+                    states.entityMap().put(pos, this);
+                    states.entityMap().put(prevPos, states.unOccupied());
+                    this.setLocation(pos);
+                }
             }
         }
     }

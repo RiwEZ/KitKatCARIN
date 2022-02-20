@@ -3,11 +3,11 @@ package carin.gui;
 import carin.GameStates;
 import carin.Program;
 import de.gurkenlabs.litiengine.Game;
-import de.gurkenlabs.litiengine.graphics.DebugRenderer;
 import de.gurkenlabs.litiengine.graphics.ShapeRenderer;
 import de.gurkenlabs.litiengine.graphics.TextRenderer;
 import de.gurkenlabs.litiengine.graphics.animation.AnimationController;
 import de.gurkenlabs.litiengine.gui.GuiComponent;
+import de.gurkenlabs.litiengine.gui.ImageComponent;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -20,6 +20,8 @@ public class Hud extends GuiComponent {
     private static final Color COLOR_GOOD = new Color(143, 212, 61, 220);
     private static final int PADDING = 10;
 
+    private ImageComponent speedUp;
+
     private AnimationController logoAnimationController;
 
     public Hud() {
@@ -30,6 +32,28 @@ public class Hud extends GuiComponent {
     public void render(final Graphics2D g){
         this.renderGameInfo(g);
         super.render(g);
+    }
+
+    @Override
+    protected void initializeComponents() {
+        super.initializeComponents();
+        double x = Game.window().getCenter().getX() / 2;
+        double y = Game.window().getHeight() - 100;
+        this.speedUp = new ImageComponent(x, y, 100, 100, "x2");
+        this.speedUp.setFont(Program.GUI_FONT.deriveFont(50f));
+        this.speedUp.getAppearance().setForeColor(new Color(215, 82, 82));
+        this.speedUp.onClicked(e -> {
+            if (this.speedUp.getText().equals("x2")) {
+                GameStates.states().logicLoop().setXSpeed(2);
+                this.speedUp.setText("x1");
+            }
+            else {
+                GameStates.states().logicLoop().setXSpeed(1);
+                this.speedUp.setText("x2");
+            }
+        });
+
+        this.getComponents().add(speedUp);
     }
 
     private void renderGameInfo(Graphics2D g) {
@@ -59,8 +83,5 @@ public class Hud extends GuiComponent {
         double numberX =  PADDING * 10;
         TextRenderer.renderWithOutline(g, numberVirus, numberX, textY+12, COLOR_OUTLINE);
         TextRenderer.renderWithOutline(g, numberAnti, numberX, textY+28,COLOR_OUTLINE);
-
-
-
     }
 }

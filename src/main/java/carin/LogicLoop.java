@@ -1,15 +1,16 @@
 package carin;
 
-import carin.entities.Antibody;
 import carin.entities.IGeneticEntity;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
+import de.gurkenlabs.litiengine.util.TimeUtilities;
 
 import java.awt.geom.Point2D;
 import java.util.Random;
 
 public class LogicLoop extends Thread {
-    private long delay = 500;
+    private final long defaultDelay = 500;
+    private long delay = defaultDelay;
     private boolean isPause = true;
     private boolean isGameOver = false;
     private final float spawn_rate = Config.spawn_rate;
@@ -19,9 +20,8 @@ public class LogicLoop extends Thread {
     public LogicLoop() {}
 
     // should have mode like 1 -> normal, 2 -> x2 speed, 3 -> x3 speed
-    public void setSpeed(int mode) {
-        if (delay == 500) delay = 1000;
-        else delay = 500;
+    public void setXSpeed(int multiplier) {
+        delay = defaultDelay / multiplier;
     }
 
     public void togglePause() {
@@ -37,11 +37,13 @@ public class LogicLoop extends Thread {
     @Override
     public void run() {
         while (!interrupted()) {
+            final long start = System.nanoTime();
+            if (!isPause)
+                runGeneticCode();
+            final double processTime = TimeUtilities.nanoToMs(System.nanoTime() - start);
+
             try {
-                if (!isPause) {
-                    runGeneticCode();
-                    delay();
-                }
+                delay(Math.round(processTime));
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
@@ -57,7 +59,7 @@ public class LogicLoop extends Thread {
     }
 
     private void runGeneticCode() {
-        if (states.getAntibodyCount() == 0) {
+        if (states.getAntibodyCount() == 0 || states.getVirusCount() == 0) {
             isGameOver = true;
             isPause = true;
             return;
@@ -70,7 +72,7 @@ public class LogicLoop extends Thread {
         states.triggerToSpawn();
     }
 
-    private void delay() throws InterruptedException {
-        sleep(delay);
+    private void delay(long processTime) throws InterruptedException {
+        sleep(Math.max(0, delay - processTime));
     }
 }

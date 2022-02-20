@@ -262,6 +262,10 @@ public final class GameStates {
         toSpawn.add(entity);
     }
 
+    public ArrayList<IGeneticEntity> getToSpawn() {
+        return toSpawn;
+    }
+
     public void triggerToSpawn() {
         for (IGeneticEntity entity : toSpawn) {
             Spawnpoint point = new Spawnpoint();
