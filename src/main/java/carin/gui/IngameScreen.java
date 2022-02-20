@@ -30,23 +30,25 @@ public class IngameScreen extends GameScreen {
         double height = Game.window().getResolution().getWidth() / 6;
         this.playButton = new ImageComponent(x - width / 2.0, y + height / 3.0, width, height);
         this.playButton.setImage(null);
-        this.playButton.setText("PAUSE");
+        this.playButton.setText("RESUME");
         this.playButton.setFont(Program.GUI_FONT.deriveFont(100f));
         this.playButton.getAppearance().setForeColor(new Color(215, 82, 82));
         this.playButton.getAppearanceHovered().setForeColor(new Color(253, 184, 184));
 
         this.playButton.onClicked(e -> {
-            //Game.world().camera().setZoom(2f, 0);
-
+            //Game.world().camera().setZoom(0.1f, 0);
             // toggle pause
-            GameStates.states().logicLoop().togglePause();
-            if(GameStates.states().logicLoop().isPause()){
-                this.playButton.setText("RESUME");
-            }
-            else{
-                this.playButton.setText("PAUSE");
+            if (!GameStates.states().logicLoop().isGameOver()) {
+                GameStates.states().logicLoop().togglePause();
+                if(GameStates.states().logicLoop().isPause()){
+                    this.playButton.setText("RESUME");
+                }
+                else{
+                    this.playButton.setText("PAUSE");
+                }
             }
         });
+
 
         this.getComponents().add(this.playButton);
         this.getComponents().add(hud);

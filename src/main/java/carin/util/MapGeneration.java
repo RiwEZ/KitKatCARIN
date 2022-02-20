@@ -19,10 +19,9 @@ public final class MapGeneration {
 
         try (Maps.MapGenerator generator = Resources.maps().generate(MapOrientations.ORTHOGONAL, MAP_NAME, m, n, TILE_WIDTH, TILE_HEIGHT, Resources.tilesets().get("map/tiles-club.tsx"))) {
             // add spawn points
-            tileLayer = generator.addTileLayer(RenderType.NONE, (x,y) -> {
-                Spawnpoint s = new Spawnpoint(x * 36,y * 36);
-                s.setWidth(36);
-                s.setHeight(36);
+            generator.addTileLayer(RenderType.NONE, (x,y) -> {
+                Spawnpoint s = new Spawnpoint(x * TILE_WIDTH,y * TILE_HEIGHT);
+                s.setSize(TILE_WIDTH, TILE_HEIGHT);
                 generator.add(s);
                 return -1; // return tile texture id -1 is no texture
             });

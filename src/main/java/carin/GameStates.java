@@ -21,12 +21,14 @@ public final class GameStates {
     private final IMap MAP = MapGeneration.generateMap(Config.map_m, Config.map_n);
 
     private final ArrayList<IGeneticEntity> entities = new ArrayList<>();
+    private final Map<Point2D, IGeneticEntity> entityMap = new ConcurrentHashMap<>();
+    private int antibodyCount = 0;
+
     private final ArrayList<IGeneticEntity> toRemove = new ArrayList<>();
     private final ArrayList<IGeneticEntity> toSpawn = new ArrayList<>();
 
     private LogicLoop logic;
 
-    private final Map<Point2D, IGeneticEntity> entityMap = new ConcurrentHashMap<>();
     private final IGeneticEntity unoccupied = new UnOccupied();
     private final Player player = Player.instance();
 
@@ -46,13 +48,13 @@ public final class GameStates {
 
     private void defaultSpawn() {
         Spawnpoint spawn = new Spawnpoint();
-        // test spawn
+        // virus spawn
         for(int i = 0; i < 3; i++){
             spawn.setLocation(Game.random().choose(unoccupiedPos()));
             spawnGeneticEntity(spawn, Game.random().choose(availableVirus).getCopy());
         }
-        // test spawn
-        for(int i = 0; i < 3; i++){
+        // antibody spawn
+        for(int i = 0; i < 5; i++){
             spawn.setLocation(Game.random().choose(unoccupiedPos()));
             spawnGeneticEntity(spawn, Game.random().choose(availableAntibody).getCopy());
         }
@@ -119,11 +121,11 @@ public final class GameStates {
         return initialized;
     }
 
-
     public void spawnGeneticEntity(Spawnpoint point, IGeneticEntity entity) {
         if (entityMap.get(point.getLocation()).equals(unoccupied)) {
             entities.add(entity);
             entityMap.put(point.getLocation(), entity);
+            if (entity.getClass() == Antibody.class) antibodyCount++;
         }
         point.spawn(entity);
     }
@@ -211,6 +213,10 @@ public final class GameStates {
         return entityMap;
     }
 
+    public int getAntibodyCount() {
+        return antibodyCount;
+    }
+
     public boolean isUnOccupied(Point2D pos) {
         return entityMap.get(pos).equals(unoccupied);
     }
@@ -239,7 +245,8 @@ public final class GameStates {
     public void clearToRemove() {
         for (IGeneticEntity entity : toRemove) {
             entityMap.put(entity.getLocation(), states.unOccupied());
-            entities.remove(entity);
+            entities.remove(entity); // this will slow things down
+            if (entity.getClass() == Antibody.class) antibodyCount--;
         }
         toRemove.clear();
     }

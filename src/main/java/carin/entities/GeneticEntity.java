@@ -4,15 +4,10 @@ import carin.Config;
 import carin.GameStates;
 import carin.gui.StatusBar;
 import carin.parser.GeneticProgram;
-import de.gurkenlabs.litiengine.entities.CollisionInfo;
-import de.gurkenlabs.litiengine.entities.Creature;
-import de.gurkenlabs.litiengine.entities.EntityInfo;
+import de.gurkenlabs.litiengine.entities.*;
 
 import java.awt.geom.Point2D;
 
-
-@EntityInfo(width = 36, height = 36)
-@CollisionInfo(collisionBoxWidth = 36, collisionBoxHeight = 36, collision = true)
 public abstract class GeneticEntity extends Creature implements IGeneticEntity {
     private final int maxHP;
     private final int damage;
@@ -45,13 +40,18 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
             this.leech = 0;
             this.die();
         }
-
         this.currentHP = maxHP;
-        addEntityRenderListener(e -> new StatusBar(this).render(e.getGraphics()));
+
+        this.setScaling(true);
+        this.setSize(36, 36);
+
+        EntityRenderListener status = e -> new StatusBar(this).render(e.getGraphics());
+        this.addEntityRenderListener(status);
 
         this.onDeath(e -> {
             states.addToRemove(this);
             e.setVisible(false);
+            this.removeListener(status);
         });
     }
 

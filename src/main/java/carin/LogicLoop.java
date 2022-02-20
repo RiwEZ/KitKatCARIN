@@ -1,5 +1,6 @@
 package carin;
 
+import carin.entities.Antibody;
 import carin.entities.IGeneticEntity;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
@@ -10,6 +11,7 @@ import java.util.Random;
 public class LogicLoop extends Thread {
     private long delay = 500;
     private boolean isPause = true;
+    private boolean isGameOver = false;
     private final float spawn_rate = Config.spawn_rate;
     private final Random rand = new Random();
     private final GameStates states = GameStates.states();
@@ -27,6 +29,10 @@ public class LogicLoop extends Thread {
     }
 
     public boolean isPause() { return isPause; }
+
+    public boolean isGameOver() {
+        return isGameOver;
+    }
 
     @Override
     public void run() {
@@ -51,6 +57,11 @@ public class LogicLoop extends Thread {
     }
 
     private void runGeneticCode() {
+        if (states.getAntibodyCount() == 0) {
+            isGameOver = true;
+            isPause = true;
+            return;
+        }
         spawnVirus();
         for (IGeneticEntity g : states.entities()) {
             g.run();
