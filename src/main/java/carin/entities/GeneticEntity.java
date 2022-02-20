@@ -112,6 +112,7 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
         if (this.isDead()) return;
         currentHP = Math.max(currentHP - dmg, 0);
         if (currentHP == 0) {
+            GameStates.dieScreenShake();
             this.die();
         }
     }

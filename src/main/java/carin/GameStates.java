@@ -6,7 +6,6 @@ import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
 import de.gurkenlabs.litiengine.environment.tilemap.IMap;
 import de.gurkenlabs.litiengine.graphics.Camera;
-import de.gurkenlabs.litiengine.graphics.FreeFlightCamera;
 import de.gurkenlabs.litiengine.input.Input;
 
 import java.awt.geom.Point2D;
@@ -46,6 +45,14 @@ public final class GameStates {
     // focus on The antibody
     private static Antibody currentFocus;
     private Point2D mouseManual;
+
+    // Camera things
+    private static Camera camera;
+    private static float zoomAmount;
+    private static float MaxZoomOut;
+    private static float defaultFocusX, defaultFocusY;
+    private static float currentFocusX, currentFocusY;
+    private static float mouseX, mouseY;
 
     private void defaultSpawn() {
         Spawnpoint spawn = new Spawnpoint();
@@ -87,11 +94,12 @@ public final class GameStates {
         availableVirus = GeneticEntityFactory.getAvailableVirus();
 
         // Setup camera
-        Camera camera = new FreeFlightCamera();
-        camera.setClampToMap(true);
-        Game.world().setCamera(camera);
+        camera = new Camera();
+        camera.setClampToMap(false);
 
         Game.world().onLoaded(env -> {
+            defaultCamSetup();
+            camFunction();
             Collection<Spawnpoint> allSpawn = env.getSpawnpoints();
             for (Spawnpoint point : allSpawn) {
                 entityMap.put(point.getLocation(), unoccupied);
@@ -301,4 +309,73 @@ public final class GameStates {
         Optional<Antibody> selectAntibody = antibodies.stream().filter(x -> x.getHitBox().contains(Input.mouse().getMapLocation())).findAny();
         return selectAntibody.orElse(null);
     }
+
+    // Setup camera
+    private static void defaultCamSetup() {
+        MaxZoomOut = (float) ((float) 1 / ((Game.world().environment().getCenter().getX() + Game.world().environment().getCenter().getY()) * 0.005));
+        zoomAmount = MaxZoomOut;
+        defaultFocusX = (float) (Game.world().environment().getCenter().getX() - Game.world().environment().getCenter().getX());
+        defaultFocusY = (float) Game.world().environment().getCenter().getY();
+        currentFocusX = defaultFocusX;
+        currentFocusY = defaultFocusY;
+        camera.setFocus(currentFocusX, currentFocusY);
+        camera.setZoom(zoomAmount, 0);
+        Game.world().setCamera(camera);
+    }
+
+    // still buggy...
+    private static void camFunction() {
+        // Zoom-in / Zoom-out by MouseWheel
+        Input.mouse().onWheelMoved(x -> {
+            if(Input.keyboard().isPressed(17)){
+                if(x.getPreciseWheelRotation() == -1){
+                    zoomAmount += x.getScrollAmount() * 0.0125;
+                }
+                else{
+                    zoomAmount -= x.getScrollAmount() * 0.0125;
+                    if(zoomAmount <= MaxZoomOut){
+                        zoomAmount = MaxZoomOut;
+                        camera.setFocus(defaultFocusX, defaultFocusY);
+                    }
+                }
+                camera.setZoom(zoomAmount, 0);
+            }
+        });
+        // Pan Camera by Dragging
+        Input.mouse().onPressed(k -> {
+            mouseX = k.getXOnScreen();
+            mouseY = k.getYOnScreen();
+        });
+        Input.mouse().onDragged(x -> {
+            if(Input.keyboard().isPressed(17)){
+                if (zoomAmount > MaxZoomOut + 0.1) {
+                    if(Math.abs((x.getXOnScreen() - mouseX)) > Math.abs((x.getYOnScreen() - mouseY))){
+                        if(x.getXOnScreen() > mouseX){
+                            currentFocusX -= 1.5;
+                            camera.setFocus(currentFocusX, currentFocusY);
+                        }
+                        if (x.getXOnScreen() < mouseX){
+                            currentFocusX += 1.5;
+                            camera.setFocus(currentFocusX, currentFocusY);
+                        }
+                    }
+                    if (Math.abs((x.getYOnScreen() - mouseY)) > Math.abs((x.getXOnScreen() - mouseX))){
+                        if(x.getYOnScreen() > mouseY){
+                            currentFocusY -= 1.5;
+                            camera.setFocus(currentFocusX, currentFocusY);
+                        }
+                        if (x.getYOnScreen() < mouseY){
+                            currentFocusY += 1.5;
+                            camera.setFocus(currentFocusX, currentFocusY);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public static void dieScreenShake() {
+        camera.shake(2,0, 300);
+    }
+
 }
