@@ -4,46 +4,42 @@ import carin.GameStates;
 import carin.entities.IGeneticEntity;
 import carin.parser.ast.expressions.*;
 import carin.parser.ast.statements.*;
+import de.gurkenlabs.litiengine.Game;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.logging.Level;
 
+/**
+ * Action and SensorExpr is depending on GameStates to init
+ */
 public class GeneticParser {
-    private final GameStates states;
-    private final IGeneticEntity host;
     private final Map<String, Integer> var_map = new HashMap<>();
     private GeneticTokenizer tk;
     private final String path;
     private final Random rand;
 
-    public GeneticParser(GameStates states, IGeneticEntity host, String path) {
+    public GeneticParser(Path path) {
         try {
-            List<String> lines = Files.readAllLines(Path.of(path));
+            List<String> lines = Files.readAllLines(path);
             this.tk = new GeneticTokenizer(lines);
         } catch (IOException e) {e.printStackTrace();}
-        this.path = path;
-        this.states = states;
-        this.host = host;
+        this.path = path.toString();
         this.rand = new Random();
     }
 
-    public GeneticProgram getProgram() {
-        try {
-            return new GeneticProgram(parseProgram(), host, var_map);
-        }
-        catch (SyntaxError e) {
-            e.printStackTrace();
-            return null;
-        }
+    public GeneticParser(String path) {
+        this(Path.of(path));
     }
 
-    /** this should be use for testing only
-     * @throws SyntaxError
-     */
-    void testProgram() throws SyntaxError {
-        GeneticProgram program = new GeneticProgram(parseProgram(), host, var_map); // for inspecting AST in debugger
+    public GeneticProgram getProgram(IGeneticEntity host) throws SyntaxError {
+        if (!GameStates.states().isInit()) {
+            Game.log().warning("at " + new Throwable().getStackTrace()[1] +
+                    " GameStates didn't init, Action and SensorExpr will not work");
+        }
+        return new GeneticProgram(parseProgram(), host, var_map);
     }
 
     /** this should be use for testing only
@@ -204,7 +200,7 @@ public class GeneticParser {
         else if (Token.isPower(tk.peek()))
             v = new Power(tk.consume(), rand);
         else if (Token.isSensor(tk.peek()))
-            v = new SensorExpr(tk.consume().val(), states);
+            v = new SensorExpr(tk.consume().val());
         else if (tk.consume("(")) {
             v = parseExpr();
             if (!tk.consume(")"))

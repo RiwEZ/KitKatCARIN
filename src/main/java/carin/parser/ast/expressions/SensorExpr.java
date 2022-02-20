@@ -11,9 +11,9 @@ public class SensorExpr implements Expr {
     private final GameStates states;
 
     // maybe change cmd to expr
-    public SensorExpr(String cmd, GameStates states) {
+    public SensorExpr(String cmd) {
         this.cmd = cmd;
-        this.states = states;
+        this.states = GameStates.states();
     }
 
     private int findVirus(IGeneticEntity host) {

@@ -1,6 +1,7 @@
 package carin.parser;
 
 import carin.entities.Antibody;
+import de.gurkenlabs.litiengine.Game;
 import org.junit.jupiter.api.DynamicTest;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
@@ -64,7 +65,7 @@ class GeneticParserTest {
         List<String> test_cases = new ArrayList<>();
         try {
             test_cases = Files.readAllLines(Path.of("tests/expression/expr1.in"));
-            parser = new GeneticParser(null, new Antibody(), "tests/expression/expr1.in");
+            parser = new GeneticParser("tests/expression/expr1.in");
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -78,9 +79,9 @@ class GeneticParserTest {
     }
 
     @Test
-    void parser_simple_statement_test() {
-        GeneticParser parser = new GeneticParser(null, new Antibody(), "tests/simple_statements.in");
-        GeneticProgram program = parser.getProgram();
+    void parser_simple_statement_test() throws SyntaxError {
+        GeneticParser parser = new GeneticParser("tests/simple_statements.in");
+        GeneticProgram program = parser.getProgram(new Antibody());
         program.run();
         GeneticProgram copy = program.getCopy(new Antibody());
         copy.run();
@@ -93,8 +94,8 @@ class GeneticParserTest {
     }
 
     void parser_exception_tester(String path, String expected_msg) {
-        GeneticParser parser = new GeneticParser(null, new Antibody(), path);
-        SyntaxError e = assertThrows(SyntaxError.class, parser::testProgram);
+        GeneticParser parser = new GeneticParser(path);
+        SyntaxError e = assertThrows(SyntaxError.class, () -> parser.getProgram(new Antibody()));
         assertTrue(e.getMessage().contains(expected_msg));
         System.out.println(e.getMessage());
     }

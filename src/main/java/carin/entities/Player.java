@@ -6,8 +6,6 @@ import de.gurkenlabs.litiengine.entities.CollisionInfo;
 import de.gurkenlabs.litiengine.entities.Creature;
 import de.gurkenlabs.litiengine.entities.EntityInfo;
 import de.gurkenlabs.litiengine.entities.MovementInfo;
-import de.gurkenlabs.litiengine.input.PlatformingMovementController;
-import de.gurkenlabs.litiengine.physics.IMovementController;
 
 import java.util.ArrayList;
 
@@ -16,7 +14,6 @@ import java.util.ArrayList;
 @MovementInfo(velocity = 70)
 @CollisionInfo(collisionBoxWidth = 8, collisionBoxHeight = 16, collision = false)
 public class Player extends Creature implements IUpdateable {
-
     private int initialCredit = Config.initial_credits;
     private int currentCredit;
     private ArrayList<Antibody> antibodyList = new ArrayList<>();
@@ -27,7 +24,6 @@ public class Player extends Creature implements IUpdateable {
         if (instance == null) {
             instance = new Player();
         }
-
         return instance;
     }
 

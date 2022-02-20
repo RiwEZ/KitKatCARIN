@@ -1,0 +1,10 @@
+t = t + 1  # keeping track of time unit
+antibodyLoc = antibody
+if (antibodyLoc % 10 - 7) then shoot upleft
+else if (antibodyLoc % 10 - 6) then shoot left
+else if (antibodyLoc % 10 - 5) then shoot downleft
+else if (antibodyLoc % 10 - 4) then shoot down
+else if (antibodyLoc % 10 - 3) then shoot downright
+else if (antibodyLoc % 10 - 2) then shoot right
+else if (antibodyLoc % 10 - 1) then shoot upright
+else shoot up

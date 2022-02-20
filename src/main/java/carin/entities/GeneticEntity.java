@@ -21,10 +21,12 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
     protected final GameStates states = GameStates.states();
     private GeneticProgram geneticCode;
     private final String type;
+    private final String name;
 
-    public GeneticEntity(String type) {
+    public GeneticEntity(String type, String name) {
         super();
         this.type = type;
+        this.name = name;
         if (type.equals("virus")) {
             this.maxHP = Config.virus_hp;
             this.damage = Config.virus_dmg;
@@ -117,11 +119,11 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
     public IGeneticEntity getCopy() {
         IGeneticEntity g = states.unOccupied();
         if (type.equals("virus")) {
-            g = new Virus();
+            g = new Virus(name);
             g.setGeneticCode(geneticCode.getCopy(g));
         }
         else if (type.equals("antibody")) {
-            g = new Antibody();
+            g = new Antibody(name);
             g.setGeneticCode(geneticCode.getCopy(g));
         }
         return g;

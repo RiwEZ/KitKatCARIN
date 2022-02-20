@@ -31,7 +31,7 @@ class ActionTest {
 
         @BeforeAll
         static void setup() {
-            st.initTest();
+            st.initTest(3, 3);
         }
 
         @Test
@@ -104,7 +104,7 @@ class ActionTest {
 
         @BeforeAll
         static void setup() {
-            st.initTest();
+            st.initTest(3, 3);
             host.setGeneticCode(null);
             st.spawnGeneticEntity(new Spawnpoint(center), host);
         }

@@ -1,15 +1,11 @@
 package carin;
 
 import carin.entities.IGeneticEntity;
-import carin.entities.Virus;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
 
 import java.awt.geom.Point2D;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 public class LogicLoop extends Thread {
     private long delay = 500;
@@ -49,13 +45,8 @@ public class LogicLoop extends Thread {
 
     private void spawnVirus() {
         if (rand.nextFloat() <= spawn_rate) {
-            Set<Point2D> empty = new HashSet<>();
-            for (Map.Entry<Point2D, IGeneticEntity> m : states.entityMap().entrySet()) {
-                if (m.getValue().equals(states.unOccupied()))
-                    empty.add(m.getKey());
-            }
-            Point2D p = Game.random().choose(empty);
-            if (p != null) states.spawnGeneticEntity(new Spawnpoint(p), new Virus());
+            Point2D p = Game.random().choose(states.unoccupiedPos());
+            if (p != null) states.spawnGeneticEntity(new Spawnpoint(p), states.randomVirus());
         }
     }
 

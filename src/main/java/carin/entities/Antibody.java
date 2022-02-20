@@ -1,9 +1,11 @@
 package carin.entities;
 
 import carin.Config;
-import carin.GameStates;
 import carin.parser.GeneticParser;
 import carin.parser.GeneticProgram;
+import carin.parser.SyntaxError;
+
+import java.nio.file.Path;
 
 
 public class Antibody extends GeneticEntity {
@@ -12,11 +14,29 @@ public class Antibody extends GeneticEntity {
     private final int cred_gain = Config.antibody_cred_gain;
 
     public Antibody() {
-        super("antibody");
-        GeneticProgram code = new GeneticParser(GameStates.states(), this, "tests/genetic1.in").getProgram();
-        this.setGeneticCode(code);
+        this("");
+    }
+
+    public Antibody(String name) {
+        super("antibody", name);
         this.antibodyID = ID;
         ID++;
+    }
+
+    /**
+     * @param name name of antibody
+     * @param path path to genetic code
+     */
+    public Antibody(String name, Path path) {
+        this(name);
+
+        GeneticProgram code = null;
+        try {
+            code = new GeneticParser(path).getProgram(this);
+        } catch (SyntaxError e) {
+            e.printStackTrace();
+        }
+        this.setGeneticCode(code);
     }
 
     @Override

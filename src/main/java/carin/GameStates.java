@@ -9,8 +9,6 @@ import de.gurkenlabs.litiengine.graphics.Camera;
 import de.gurkenlabs.litiengine.graphics.FreeFlightCamera;
 import de.gurkenlabs.litiengine.input.Input;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,6 +30,10 @@ public final class GameStates {
     private final IGeneticEntity unoccupied = new UnOccupied();
     private final Player player = Player.instance();
 
+    private boolean initialized = false;
+    private ArrayList<Antibody> availableAntibody;
+    private ArrayList<Virus> availableVirus;
+
     private static final GameStates states = new GameStates();
 
     public static GameStates states() {
@@ -42,27 +44,26 @@ public final class GameStates {
     private static Antibody currentFocus;
     private Point2D mouseManual;
 
-    public void defaultSpawn(Collection<Spawnpoint> allSpawn) {
+    private void defaultSpawn() {
         Spawnpoint spawn = new Spawnpoint();
         // test spawn
         for(int i = 0; i < 3; i++){
-            spawn.setLocation(Game.random().choose(allSpawn).getLocation());
-            spawnGeneticEntity(spawn, new Virus());
+            spawn.setLocation(Game.random().choose(unoccupiedPos()));
+            spawnGeneticEntity(spawn, Game.random().choose(availableVirus).getCopy());
         }
         // test spawn
         for(int i = 0; i < 3; i++){
-            spawn.setLocation(Game.random().choose(allSpawn).getLocation());
-            Antibody antibody = new Antibody();
-            spawnGeneticEntity(spawn, antibody);
+            spawn.setLocation(Game.random().choose(unoccupiedPos()));
+            spawnGeneticEntity(spawn, Game.random().choose(availableAntibody).getCopy());
         }
     }
 
     /**
      * this should be use for testing only
      */
-    public void initTest() {
+    public void initTest(int m, int n) {
         if (Game.hasStarted()) Game.exit();
-        IMap map3x3 = MapGeneration.generateMap(3, 3);
+        IMap map3x3 = MapGeneration.generateMap(m, n);
 
         Game.hideGUI(true);
         Game.init();
@@ -76,8 +77,10 @@ public final class GameStates {
         Game.world().loadEnvironment(map3x3);
     }
 
-
     public void init() {
+        availableAntibody = GeneticEntityFactory.getAvailableAntibody();
+        availableVirus = GeneticEntityFactory.getAvailableVirus();
+
         // Setup camera
         Camera camera = new FreeFlightCamera();
         camera.setClampToMap(true);
@@ -88,9 +91,8 @@ public final class GameStates {
             for (Spawnpoint point : allSpawn) {
                 entityMap.put(point.getLocation(), unoccupied);
             }
-            defaultSpawn(allSpawn);
+            defaultSpawn();
         });
-
 
         // Manual move antibody by pressing and drag
         Input.mouse().onPressing(() -> {
@@ -109,7 +111,14 @@ public final class GameStates {
         // init LogicLoop and run it
         if (logic == null) logic = new LogicLoop();
         logic.start();
+
+        initialized = true;
     }
+
+    public boolean isInit() {
+        return initialized;
+    }
+
 
     public void spawnGeneticEntity(Spawnpoint point, IGeneticEntity entity) {
         if (entityMap.get(point.getLocation()).equals(unoccupied)) {
@@ -208,6 +217,19 @@ public final class GameStates {
 
     public IGeneticEntity unOccupied() {
         return unoccupied;
+    }
+
+    public Set<Point2D> unoccupiedPos() {
+        Set<Point2D> empty = new HashSet<>();
+        for (Map.Entry<Point2D, IGeneticEntity> m : states.entityMap().entrySet()) {
+            if (m.getValue().equals(states.unOccupied()))
+                empty.add(m.getKey());
+        }
+        return empty;
+    }
+
+    public Virus randomVirus() {
+        return (Virus) Game.random().choose(availableVirus).getCopy();
     }
 
     public void addToRemove(IGeneticEntity entity) {
