@@ -7,9 +7,10 @@ import carin.util.SensorIterator;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
 import de.gurkenlabs.litiengine.environment.tilemap.IMap;
-import de.gurkenlabs.litiengine.graphics.Camera;
+import de.gurkenlabs.litiengine.graphics.emitters.Emitter;
 import de.gurkenlabs.litiengine.input.Input;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,9 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class GameStates {
     private static final GameStates states = new GameStates();
 
-    // Generate MAP
-    private final IMap MAP = MapGeneration.generateMap(Config.map_m, Config.map_n);
-
     private final ArrayList<IGeneticEntity> entities = new ArrayList<>();
     private final Map<Point2D, IGeneticEntity> entityMap = new ConcurrentHashMap<>();
     private int antibodyCount = 0;
@@ -30,8 +28,6 @@ public final class GameStates {
 
     private final ArrayList<IGeneticEntity> toRemove = new ArrayList<>();
     private final ArrayList<IGeneticEntity> toSpawn = new ArrayList<>();
-
-    private LogicLoop logic;
 
     private final IGeneticEntity unoccupied = new UnOccupied();
     private final Spawnpoint spawnpoint = new Spawnpoint();
@@ -41,7 +37,8 @@ public final class GameStates {
     private ArrayList<Antibody> availableAntibody;
     private ArrayList<Virus> availableVirus;
 
-    private static Antibody currentFocus;
+    private Antibody currentFocus;
+    private Point2D prevPos;
 
     public static GameStates states() {
         return states;
@@ -101,24 +98,33 @@ public final class GameStates {
         });
 
         // Manual move antibody by pressing and drag
-        Input.mouse().onPressed((e) -> {
-            setCurrentFocus(getFocusedAntibody());
+        Input.mouse().onPressed(e -> {
+            Point2D snap = getSnap(Input.mouse().getMapLocation());
+            currentFocus = getFocusedAntibody(snap);
+            if (currentFocus != null)
+                prevPos = currentFocus.getLocation();
+            //LogicLoop.instance().togglePause();
         });
         Input.mouse().onDragged(e -> {
             mouseManual = Input.mouse().getMapLocation();
+            double xOffset = Config.tile_width/2.0;
+            double yOffset = Config.tile_height/2.0;
+            Point2D pos = new Point2D.Double(mouseManual.getX() - xOffset, mouseManual.getY() - yOffset);
+            if (currentFocus != null)
+                currentFocus.setLocation(pos);
         });
         Input.mouse().onReleased(k -> {
-            if(getCurrentFocus() != null){
-                getCurrentFocus().manualMove(mouseManual);
+            if (currentFocus != null) {
+                currentFocus.manualMove(prevPos, getSnap(mouseManual));
             }
+            //LogicLoop.instance().togglePause();
         });
-
-
+        // generate map and load it to the game
+        IMap MAP = MapGeneration.generateMap(Config.map_m, Config.map_n);
         Game.world().loadEnvironment(MAP);
 
         // init LogicLoop and run it
-        if (logic == null) logic = new LogicLoop();
-        logic.start();
+        LogicLoop.instance().start();
     }
 
     public boolean isInit() {
@@ -146,10 +152,6 @@ public final class GameStates {
 
     public ArrayList<IGeneticEntity> entities() {
         return entities;
-    }
-
-    public LogicLoop logicLoop() {
-        return logic;
     }
 
     public Map<Point2D, IGeneticEntity> entityMap() {
@@ -218,26 +220,19 @@ public final class GameStates {
         return player;
     }
 
-    public static Antibody getCurrentFocus() {
-        return currentFocus;
+    public Point2D getSnap(Point2D mouse) {
+        double x = Config.tile_width * Math.floor(mouse.getX()/Config.tile_width);
+        double y = Config.tile_height * Math.floor(mouse.getY()/Config.tile_height);
+        return new Point2D.Double(x, y);
     }
 
-    public static void setCurrentFocus(Antibody focus){
-        currentFocus = focus;
-    }
-
-    public static Spawnpoint getSnapPoint(Point2D mouse) {
-        Collection<Spawnpoint> points = Game.world().environment().getSpawnpoints();
-        Optional<Spawnpoint> point = points.stream().filter(x -> x.getBoundingBox().contains(mouse)).findAny();
-        return point.orElse(null);
-    }
-
-    private static Antibody getFocusedAntibody() {
+    private Antibody getFocusedAntibody(Point2D snap) {
         if(Game.world().getEnvironments() == null){
             return null;
         }
-        Collection<Antibody> antibodies = Game.world().environment().getEntities(Antibody.class);
-        Optional<Antibody> selectAntibody = antibodies.stream().filter(x -> x.getCollisionBox().contains(Input.mouse().getMapLocation())).findFirst();
-        return selectAntibody.orElse(null);
+        if (entityMap.get(snap) != null && entityMap.get(snap).getClass() == Antibody.class) {
+            return (Antibody) entityMap.get(snap);
+        }
+        return null;
     }
 }

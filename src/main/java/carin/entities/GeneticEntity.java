@@ -8,6 +8,7 @@ import carin.util.CameraManager;
 import de.gurkenlabs.litiengine.entities.*;
 
 import java.awt.geom.Point2D;
+import java.util.Map;
 
 public abstract class GeneticEntity extends Creature implements IGeneticEntity {
     private final int maxHP;
@@ -61,6 +62,12 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
         this.geneticCode = p;
     }
 
+    private void setLoc(Point2D prevPos, Point2D pos) {
+        states.entityMap().put(pos, this);
+        states.entityMap().put(prevPos, states.unOccupied());
+        this.setLocation(pos);
+    }
+
     @Override
     public void move(double x, double y) {
         Point2D pos = new Point2D.Double(this.getX()+(x*Config.tile_width), this.getY()+(y*Config.tile_height));
@@ -72,21 +79,33 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
                     if (entity.getLocation().equals(pos)) empty = false;
                 }
                 if (empty) {
-                    states.entityMap().put(pos, this);
-                    states.entityMap().put(prevPos, states.unOccupied());
-                    this.setLocation(pos);
+                    setLoc(prevPos, pos);
                 }
             }
         }
     }
 
-    public void manualMove(Point2D loc) {
-        Point2D prevPos = new Point2D.Double(this.getX(), this.getY());
-        if (states.isUnOccupied(GameStates.getSnapPoint(loc).getLocation())) {
-            states.entityMap().put(GameStates.getSnapPoint(loc).getLocation(), this);
-            states.entityMap().put(prevPos, states.unOccupied());
-            this.setLocation(GameStates.getSnapPoint(loc).getLocation());
+    public void manualMove(Point2D prevPos, Point2D pos) {
+        Map<Point2D, IGeneticEntity> entityMap = states.entityMap();
+        IGeneticEntity unoccupied = states.unOccupied();
+        IGeneticEntity atSnap = entityMap.get(pos);
+        Player p = states.player();
+        int cost = Config.move_cost;
+        int hp_cost = Config.move_hp_cost;
+
+        if (atSnap != null && atSnap.equals(unoccupied)) {
+            if (p.getCredit() >= cost) {
+                p.changeCredit(cost);
+                setLoc(prevPos, pos);
+                return;
+            }
+            else if (currentHP > hp_cost) {
+                currentHP -= hp_cost;
+                setLoc(prevPos, pos);
+                return;
+            }
         }
+        this.setLocation(prevPos);
     }
 
     @Override

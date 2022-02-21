@@ -1,6 +1,7 @@
 package carin.gui;
 
 import carin.GameStates;
+import carin.LogicLoop;
 import carin.Program;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.graphics.ShapeRenderer;
@@ -44,11 +45,11 @@ public class Hud extends GuiComponent {
         this.speedUp.getAppearance().setForeColor(new Color(215, 82, 82));
         this.speedUp.onClicked(e -> {
             if (this.speedUp.getText().equals("x2")) {
-                GameStates.states().logicLoop().setXSpeed(2);
+                LogicLoop.instance().setXSpeed(2);
                 this.speedUp.setText("x1");
             }
             else {
-                GameStates.states().logicLoop().setXSpeed(1);
+                LogicLoop.instance().setXSpeed(1);
                 this.speedUp.setText("x2");
             }
         });

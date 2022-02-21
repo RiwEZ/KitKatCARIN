@@ -2,7 +2,6 @@ package carin;
 
 import carin.entities.IGeneticEntity;
 import de.gurkenlabs.litiengine.Game;
-import de.gurkenlabs.litiengine.entities.Spawnpoint;
 import de.gurkenlabs.litiengine.util.TimeUtilities;
 
 import java.awt.geom.Point2D;
@@ -17,7 +16,12 @@ public class LogicLoop extends Thread {
     private final Random rand = new Random();
     private final GameStates states = GameStates.states();
 
-    public LogicLoop() {}
+    private static LogicLoop instance;
+
+    public static LogicLoop instance() {
+        if (instance == null) instance = new LogicLoop();
+        return instance;
+    }
 
     // should have mode like 1 -> normal, 2 -> x2 speed, 3 -> x3 speed
     public void setXSpeed(int multiplier) {
