@@ -5,6 +5,7 @@ import carin.GameStates;
 import carin.gui.StatusBar;
 import carin.parser.GeneticProgram;
 import carin.util.CameraManager;
+import carin.util.SoundManager;
 import de.gurkenlabs.litiengine.entities.*;
 
 import java.awt.geom.Point2D;
@@ -94,6 +95,7 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
         Point2D pos = new Point2D.Double(this.getX()+(x*Config.tile_width), this.getY()+(y*Config.tile_height));
         if (states.isInMap(pos)) {
             if (!states.isUnOccupied(pos)) {
+                SoundManager.attackSound();
                 IGeneticEntity target = states.entityMap().get(pos);
                 target.getAttacked(this, damage);
                 currentHP = Math.min(currentHP + leech, maxHP);
@@ -108,7 +110,9 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
         if (this.isDead()) return;
         currentHP = Math.max(currentHP - dmg, 0);
         if (currentHP == 0) {
+            SoundManager.lastHitSound();
             CameraManager.dieScreenShake();
+            SoundManager.knockSound();
             this.die();
         }
     }
