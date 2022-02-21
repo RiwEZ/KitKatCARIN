@@ -4,10 +4,11 @@ import carin.Config;
 import carin.parser.GeneticParser;
 import carin.parser.GeneticProgram;
 import carin.parser.SyntaxError;
+import de.gurkenlabs.litiengine.entities.CollisionInfo;
 
 import java.nio.file.Path;
 
-
+@CollisionInfo(collisionBoxWidth = 36, collisionBoxHeight = 36, collision = false)
 public class Antibody extends GeneticEntity {
     private static int ID = 0;
     private final int antibodyID;

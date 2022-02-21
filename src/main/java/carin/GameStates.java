@@ -108,11 +108,13 @@ public final class GameStates {
         });
 
         // Manual move antibody by pressing and drag
-        Input.mouse().onPressing(() -> {
+        Input.mouse().onPressed((e) -> {
             setCurrentFocus(getFocusedAntibody());
         });
         Input.mouse().onDragged(e -> {
             mouseManual = Input.mouse().getMapLocation();
+        });
+        Input.mouse().onReleased(k -> {
             if(getCurrentFocus() != null){
                 getCurrentFocus().manualMove(mouseManual);
             }
@@ -296,7 +298,7 @@ public final class GameStates {
 
     public static Spawnpoint getSnapPoint(Point2D mouse) {
         Collection<Spawnpoint> points = Game.world().environment().getSpawnpoints();
-        Optional<Spawnpoint> point = points.stream().filter(x -> x.getBoundingBox().contains(mouse)).findFirst();
+        Optional<Spawnpoint> point = points.stream().filter(x -> x.getBoundingBox().contains(mouse)).findAny();
         return point.orElse(null);
     }
 
@@ -305,7 +307,7 @@ public final class GameStates {
             return null;
         }
         Collection<Antibody> antibodies = Game.world().environment().getEntities(Antibody.class);
-        Optional<Antibody> selectAntibody = antibodies.stream().filter(x -> x.getHitBox().contains(Input.mouse().getMapLocation())).findAny();
+        Optional<Antibody> selectAntibody = antibodies.stream().filter(x -> x.getCollisionBox().contains(Input.mouse().getMapLocation())).findFirst();
         return selectAntibody.orElse(null);
     }
 
