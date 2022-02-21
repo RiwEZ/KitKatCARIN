@@ -1,9 +1,9 @@
 package carin.parser.ast.statements;
 
+import carin.Config;
 import carin.GameStates;
 import carin.entities.Antibody;
 import carin.entities.IGeneticEntity;
-import de.gurkenlabs.litiengine.entities.Spawnpoint;
 import org.junit.jupiter.api.*;
 
 import java.awt.geom.Point2D;
@@ -12,13 +12,15 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ActionTest {
-    private static final Point2D center = new Point2D.Double(36, 36);
+    private static final int width = Config.tile_width;
+    private static final int height = Config.tile_height;
+    private static final Point2D center = new Point2D.Double(width, height);
 
     void movingTester(GameStates states, Action a, Point2D expected) {
         // spawn Antibody at center and test if they're moving to right place
         IGeneticEntity host = new Antibody();
         host.setGeneticCode(null);
-        states.spawnGeneticEntity(new Spawnpoint(center), host);
+        states.spawnGeneticEntity(center, host);
         a.evaluate(new HashMap<>(), host);
 
         assertEquals(expected, host.getLocation());
@@ -37,31 +39,31 @@ class ActionTest {
         @Test
         void downleft() {
             Action downleft = new Action('m', 1);
-            movingTester(st, downleft, new Point2D.Double(0, 72));
+            movingTester(st, downleft, new Point2D.Double(0, height*2));
         }
 
         @Test
         void down() {
             Action down = new Action('m', 2);
-            movingTester(st, down, new Point2D.Double(36, 72));
+            movingTester(st, down, new Point2D.Double(width, height*2));
         }
 
         @Test
         void downright() {
             Action downright = new Action('m', 3);
-            movingTester(st, downright, new Point2D.Double(72, 72));
+            movingTester(st, downright, new Point2D.Double(width*2, height*2));
         }
 
         @Test
         void left() {
             Action left = new Action('m', 4);
-            movingTester(st, left, new Point2D.Double(0, 36));
+            movingTester(st, left, new Point2D.Double(0, height));
         }
 
         @Test
         void right() {
             Action right = new Action('m', 6);
-            movingTester(st, right, new Point2D.Double(72, 36));
+            movingTester(st, right, new Point2D.Double(width*2, height));
         }
 
         @Test
@@ -73,22 +75,22 @@ class ActionTest {
         @Test
         void up() {
             Action up = new Action('m', 8);
-            movingTester(st, up, new Point2D.Double(36, 0));
+            movingTester(st, up, new Point2D.Double(width, 0));
         }
 
         @Test
         void upright() {
             Action upright = new Action('m', 9);
-            movingTester(st, upright, new Point2D.Double(72, 0));
+            movingTester(st, upright, new Point2D.Double(width*2, 0));
         }
     }
 
-
+    // Attack damage is depend on Config
     void attackingTester(GameStates states, IGeneticEntity host, Action a, Point2D expected) {
         // spawn Antibody at center and test if they're moving to right place
         IGeneticEntity target = new Antibody();
         target.setGeneticCode(null);
-        states.spawnGeneticEntity(new Spawnpoint(expected), target);
+        states.spawnGeneticEntity(expected, target);
 
         int prevHp = target.getCurrHP();
         a.evaluate(new HashMap<>(), host);
@@ -106,37 +108,37 @@ class ActionTest {
         static void setup() {
             st.initTest(3, 3);
             host.setGeneticCode(null);
-            st.spawnGeneticEntity(new Spawnpoint(center), host);
+            st.spawnGeneticEntity(center, host);
         }
 
         @Test
         void downleft() {
             Action downleft = new Action('a', 1);
-            attackingTester(st, host, downleft, new Point2D.Double(0, 72));
+            attackingTester(st, host, downleft, new Point2D.Double(0, height*2));
         }
 
         @Test
         void down() {
             Action down = new Action('a', 2);
-            attackingTester(st, host, down, new Point2D.Double(36, 72));
+            attackingTester(st, host, down, new Point2D.Double(width, height*2));
         }
 
         @Test
         void downright() {
             Action downright = new Action('a', 3);
-            attackingTester(st, host, downright, new Point2D.Double(72, 72));
+            attackingTester(st, host, downright, new Point2D.Double(width*2, height*2));
         }
 
         @Test
         void left() {
             Action left = new Action('a', 4);
-            attackingTester(st, host, left, new Point2D.Double(0, 36));
+            attackingTester(st, host, left, new Point2D.Double(0, height));
         }
 
         @Test
         void right() {
             Action right = new Action('a', 6);
-            attackingTester(st, host, right, new Point2D.Double(72, 36));
+            attackingTester(st, host, right, new Point2D.Double(width*2, height));
         }
 
         @Test
@@ -148,13 +150,13 @@ class ActionTest {
         @Test
         void up() {
             Action up = new Action('a', 8);
-            attackingTester(st, host, up, new Point2D.Double(36, 0));
+            attackingTester(st, host, up, new Point2D.Double(width, 0));
         }
 
         @Test
         void upright() {
             Action upright = new Action('a', 9);
-            attackingTester(st, host, upright, new Point2D.Double(72, 0));
+            attackingTester(st, host, upright, new Point2D.Double(width*2, 0));
         }
     }
 }

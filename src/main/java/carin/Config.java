@@ -23,6 +23,9 @@ public class Config {
         return Integer.parseInt(config.getProperty(key));
     }
 
+    public static final int tile_width = 36;
+    public static final int tile_height = 36;
+
     public static final int map_m = get("map.m");
     public static final int map_n = get("map.n");
     public static final float spawn_rate = Float.parseFloat(config.getProperty("spawn_rate"));

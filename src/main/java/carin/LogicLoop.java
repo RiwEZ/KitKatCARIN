@@ -54,7 +54,7 @@ public class LogicLoop extends Thread {
     private void spawnVirus() {
         if (rand.nextFloat() <= spawn_rate) {
             Point2D p = Game.random().choose(states.unoccupiedPos());
-            if (p != null) states.spawnGeneticEntity(new Spawnpoint(p), states.randomVirus());
+            if (p != null) states.spawnGeneticEntity(p, states.randomVirus());
         }
     }
 

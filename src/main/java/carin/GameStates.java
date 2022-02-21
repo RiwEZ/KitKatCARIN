@@ -30,6 +30,7 @@ public final class GameStates {
     private LogicLoop logic;
 
     private final IGeneticEntity unoccupied = new UnOccupied();
+    private final Spawnpoint spawnpoint = new Spawnpoint();
     private final Player player = Player.instance();
 
     private boolean initialized = false;
@@ -55,16 +56,15 @@ public final class GameStates {
     private static float mouseX, mouseY;
 
     private void defaultSpawn() {
-        Spawnpoint spawn = new Spawnpoint();
         // virus spawn
         for(int i = 0; i < 3; i++){
-            spawn.setLocation(Game.random().choose(unoccupiedPos()));
-            spawnGeneticEntity(spawn, Game.random().choose(availableVirus).getCopy());
+            Point2D pos = Game.random().choose(unoccupiedPos());
+            spawnGeneticEntity(pos, Game.random().choose(availableVirus).getCopy());
         }
         // antibody spawn
-        for(int i = 0; i < 5; i++){
-            spawn.setLocation(Game.random().choose(unoccupiedPos()));
-            spawnGeneticEntity(spawn, Game.random().choose(availableAntibody).getCopy());
+        for(int i = 0; i < 3; i++){
+            Point2D pos = Game.random().choose(unoccupiedPos());
+            spawnGeneticEntity(pos, Game.random().choose(availableAntibody).getCopy());
         }
     }
 
@@ -130,14 +130,15 @@ public final class GameStates {
         return initialized;
     }
 
-    public void spawnGeneticEntity(Spawnpoint point, IGeneticEntity entity) {
-        if (entityMap.get(point.getLocation()).equals(unoccupied)) {
+    public void spawnGeneticEntity(Point2D pos, IGeneticEntity entity) {
+        spawnpoint.setLocation(pos);
+        if (entityMap.get(pos).equals(unoccupied)) {
             entities.add(entity);
-            entityMap.put(point.getLocation(), entity);
+            entityMap.put(pos, entity);
             if (entity.getClass() == Antibody.class) antibodyCount++;
             if (entity.getClass() == Virus.class) virusCount++;
         }
-        point.spawn(entity);
+        spawnpoint.spawn(entity);
     }
 
     public class SensorIterator implements Iterator<IGeneticEntity> {
@@ -176,7 +177,7 @@ public final class GameStates {
 
         @Override
         public boolean hasNext() {
-            return lookingPos() != null;
+            return lookAt == 10 || lookingPos() != null;
         }
 
         @Override
@@ -276,9 +277,7 @@ public final class GameStates {
 
     public void triggerToSpawn() {
         for (IGeneticEntity entity : toSpawn) {
-            Spawnpoint point = new Spawnpoint();
-            point.setLocation(entity.getLocation());
-            spawnGeneticEntity(point, entity);
+            spawnGeneticEntity(entity.getLocation(), entity);
         }
         toSpawn.clear();
     }

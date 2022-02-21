@@ -43,7 +43,7 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
         this.currentHP = maxHP;
 
         this.setScaling(true);
-        this.setSize(36, 36);
+        this.setSize(Config.tile_width, Config.tile_height);
 
         EntityRenderListener status = e -> new StatusBar(this).render(e.getGraphics());
         this.addEntityRenderListener(status);
@@ -62,7 +62,7 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
 
     @Override
     public void move(double x, double y) {
-        Point2D pos = new Point2D.Double(this.getX()+(x*36), this.getY()+(y*36));
+        Point2D pos = new Point2D.Double(this.getX()+(x*Config.tile_width), this.getY()+(y*Config.tile_height));
         if (states.isInMap(pos)) {
             Point2D prevPos = new Point2D.Double(this.getX(), this.getY());
             if (states.isUnOccupied(pos)) {
@@ -95,7 +95,7 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
 
     @Override
     public boolean attack(double x, double y) {
-        Point2D pos = new Point2D.Double(this.getX()+(x*36), this.getY()+(y*36));
+        Point2D pos = new Point2D.Double(this.getX()+(x*Config.tile_width), this.getY()+(y*Config.tile_height));
         if (states.isInMap(pos)) {
             if (!states.isUnOccupied(pos)) {
                 IGeneticEntity target = states.entityMap().get(pos);
