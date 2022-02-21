@@ -4,6 +4,7 @@ import carin.Config;
 import carin.GameStates;
 import carin.gui.StatusBar;
 import carin.parser.GeneticProgram;
+import carin.util.CameraManager;
 import de.gurkenlabs.litiengine.entities.*;
 
 import java.awt.geom.Point2D;
@@ -112,7 +113,7 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
         if (this.isDead()) return;
         currentHP = Math.max(currentHP - dmg, 0);
         if (currentHP == 0) {
-            GameStates.dieScreenShake();
+            CameraManager.dieScreenShake();
             this.die();
         }
     }

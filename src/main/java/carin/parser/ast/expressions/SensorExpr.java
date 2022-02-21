@@ -5,6 +5,7 @@ import carin.entities.Antibody;
 import carin.entities.IGeneticEntity;
 import carin.entities.Virus;
 import java.util.Map;
+import carin.util.SensorIterator;
 
 public class SensorExpr implements Expr {
     private final String cmd;
@@ -17,7 +18,7 @@ public class SensorExpr implements Expr {
     }
 
     private int findVirus(IGeneticEntity host) {
-        for (GameStates.SensorIterator it = states.sensorIter(host.getLocation()); it.hasNext(); ) {
+        for (SensorIterator it = states.sensorIter(host.getLocation()); it.hasNext(); ) {
             IGeneticEntity e = it.next();
             if (e instanceof Virus) return it.getLookAt();
         }
@@ -25,7 +26,7 @@ public class SensorExpr implements Expr {
     }
 
     private int findAntibody(IGeneticEntity host) {
-        for (GameStates.SensorIterator it = states.sensorIter(host.getLocation()); it.hasNext(); ) {
+        for (SensorIterator it = states.sensorIter(host.getLocation()); it.hasNext(); ) {
             IGeneticEntity e = it.next();
             if (e instanceof Antibody) return it.getLookAt();
         }
@@ -33,7 +34,7 @@ public class SensorExpr implements Expr {
     }
 
     private int findNearby(IGeneticEntity host) {
-        for (GameStates.SensorIterator it = states.sensorIter(host.getLocation()); it.hasNext(); ) {
+        for (SensorIterator it = states.sensorIter(host.getLocation()); it.hasNext(); ) {
             IGeneticEntity e = it.next();
             if (e != null) {
                 if (e instanceof Virus)

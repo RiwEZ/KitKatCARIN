@@ -1,7 +1,9 @@
 package carin;
 
 import carin.entities.*;
+import carin.util.CameraManager;
 import carin.util.MapGeneration;
+import carin.util.SensorIterator;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
 import de.gurkenlabs.litiengine.environment.tilemap.IMap;
@@ -16,6 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * this class contains all entities states and utility function to manipulate states
  */
 public final class GameStates {
+    private static final GameStates states = new GameStates();
+
     // Generate MAP
     private final IMap MAP = MapGeneration.generateMap(Config.map_m, Config.map_n);
 
@@ -37,23 +41,13 @@ public final class GameStates {
     private ArrayList<Antibody> availableAntibody;
     private ArrayList<Virus> availableVirus;
 
-    private static final GameStates states = new GameStates();
+    private static Antibody currentFocus;
 
     public static GameStates states() {
         return states;
     }
 
-    // focus on The antibody
-    private static Antibody currentFocus;
     private Point2D mouseManual;
-
-    // Camera things
-    private static Camera camera;
-    private static float zoomAmount;
-    private static float MaxZoomOut;
-    private static float defaultFocusX, defaultFocusY;
-    private static float currentFocusX, currentFocusY;
-    private static float mouseX, mouseY;
 
     private void defaultSpawn() {
         // virus spawn
@@ -94,12 +88,11 @@ public final class GameStates {
         availableVirus = GeneticEntityFactory.getAvailableVirus();
 
         // Setup camera
-        camera = new Camera();
-        camera.setClampToMap(false);
+        CameraManager.getCamera().setClampToMap(false);
 
         Game.world().onLoaded(env -> {
-            defaultCamSetup();
-            camFunction();
+            CameraManager.defaultCamSetup();
+            CameraManager.camFunction();
             Collection<Spawnpoint> allSpawn = env.getSpawnpoints();
             for (Spawnpoint point : allSpawn) {
                 entityMap.put(point.getLocation(), unoccupied);
@@ -143,71 +136,8 @@ public final class GameStates {
         spawnpoint.spawn(entity);
     }
 
-    public class SensorIterator implements Iterator<IGeneticEntity> {
-        Point2D host;
-        int lookAt;
-
-        public SensorIterator(Point2D host) {
-            this.host = host;
-            this.lookAt = 10;
-        }
-
-        private Point2D pos(double x, double y) {
-            return new Point2D.Double(host.getX() + 36*x, host.getY() + 36*y);
-        }
-
-        private Point2D lookingPos() {
-            int m = lookAt / 10;
-            int i = lookAt % 10;
-
-            return switch (i) {
-                case 1 -> pos(0, -1*m);
-                case 2 -> pos(m, -1*m);
-                case 3 -> pos(m, 0);
-                case 4 -> pos(m, m);
-                case 5 -> pos(0, m);
-                case 6 -> pos(-1*m, m);
-                case 7 -> pos(-1*m, 0);
-                case 8 -> pos(-1*m, -1*m);
-                default -> null;
-            };
-        }
-
-        public int getLookAt() {
-            return lookAt;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return lookAt == 10 || lookingPos() != null;
-        }
-
-        @Override
-        public IGeneticEntity next() {
-            if (!hasNext()) return null;
-            lookAt++;
-            Point2D p = lookingPos();
-
-            while (lookAt != 0) {
-                if ((lookAt % 10) > 8) {
-                    lookAt = lookAt + 10 - 8;
-                    p = lookingPos();
-                }
-                if (lookAt > 40) {
-                    lookAt = 0;
-                    return null;
-                }
-
-                if (isInMap(p) && !isUnOccupied(p)) break;
-                lookAt++;
-                p = lookingPos();
-            }
-            return entityMap.get(p);
-        }
-    }
-
     public SensorIterator sensorIter(Point2D host) {
-        return new SensorIterator(host);
+        return new SensorIterator(host, this);
     }
 
     public boolean isInMap(Point2D pos) {
@@ -310,73 +240,4 @@ public final class GameStates {
         Optional<Antibody> selectAntibody = antibodies.stream().filter(x -> x.getCollisionBox().contains(Input.mouse().getMapLocation())).findFirst();
         return selectAntibody.orElse(null);
     }
-
-    // Setup camera
-    private static void defaultCamSetup() {
-        MaxZoomOut = (float) ((float) 1 / ((Game.world().environment().getCenter().getX() + Game.world().environment().getCenter().getY()) * 0.005));
-        zoomAmount = MaxZoomOut;
-        defaultFocusX = (float) (Game.world().environment().getCenter().getX() - Game.world().environment().getCenter().getX());
-        defaultFocusY = (float) Game.world().environment().getCenter().getY();
-        currentFocusX = defaultFocusX;
-        currentFocusY = defaultFocusY;
-        camera.setFocus(currentFocusX, currentFocusY);
-        camera.setZoom(zoomAmount, 0);
-        Game.world().setCamera(camera);
-    }
-
-    // still buggy...
-    private static void camFunction() {
-        // Zoom-in / Zoom-out by MouseWheel
-        Input.mouse().onWheelMoved(x -> {
-            if(Input.keyboard().isPressed(17)){
-                if(x.getPreciseWheelRotation() == -1){
-                    zoomAmount += x.getScrollAmount() * 0.0125;
-                }
-                else{
-                    zoomAmount -= x.getScrollAmount() * 0.0125;
-                    if(zoomAmount <= MaxZoomOut){
-                        zoomAmount = MaxZoomOut;
-                        camera.setFocus(defaultFocusX, defaultFocusY);
-                    }
-                }
-                camera.setZoom(zoomAmount, 0);
-            }
-        });
-        // Pan Camera by Dragging
-        Input.mouse().onPressed(k -> {
-            mouseX = k.getXOnScreen();
-            mouseY = k.getYOnScreen();
-        });
-        Input.mouse().onDragged(x -> {
-            if(Input.keyboard().isPressed(17)){
-                if (zoomAmount > MaxZoomOut + 0.1) {
-                    if(Math.abs((x.getXOnScreen() - mouseX)) > Math.abs((x.getYOnScreen() - mouseY))){
-                        if(x.getXOnScreen() > mouseX){
-                            currentFocusX -= 1.5;
-                            camera.setFocus(currentFocusX, currentFocusY);
-                        }
-                        if (x.getXOnScreen() < mouseX){
-                            currentFocusX += 1.5;
-                            camera.setFocus(currentFocusX, currentFocusY);
-                        }
-                    }
-                    if (Math.abs((x.getYOnScreen() - mouseY)) > Math.abs((x.getXOnScreen() - mouseX))){
-                        if(x.getYOnScreen() > mouseY){
-                            currentFocusY -= 1.5;
-                            camera.setFocus(currentFocusX, currentFocusY);
-                        }
-                        if (x.getYOnScreen() < mouseY){
-                            currentFocusY += 1.5;
-                            camera.setFocus(currentFocusX, currentFocusY);
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    public static void dieScreenShake() {
-        camera.shake(2,0, 300);
-    }
-
 }
