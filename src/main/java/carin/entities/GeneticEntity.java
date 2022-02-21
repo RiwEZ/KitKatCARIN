@@ -79,6 +79,7 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
                     if (entity.getLocation().equals(pos)) empty = false;
                 }
                 if (empty) {
+                    SoundManager.moveSound();
                     setLoc(prevPos, pos);
                 }
             }

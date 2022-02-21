@@ -4,6 +4,7 @@ import carin.entities.*;
 import carin.util.CameraManager;
 import carin.util.MapGeneration;
 import carin.util.SensorIterator;
+import carin.util.SoundManager;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
 import de.gurkenlabs.litiengine.environment.tilemap.IMap;
@@ -132,6 +133,7 @@ public final class GameStates {
     public void spawnGeneticEntity(Point2D pos, IGeneticEntity entity) {
         spawnpoint.setLocation(pos);
         if (entityMap.get(pos).equals(unoccupied)) {
+            SoundManager.spawnSound();
             entities.add(entity);
             entityMap.put(pos, entity);
             if (entity.getClass() == Antibody.class) antibodyCount++;

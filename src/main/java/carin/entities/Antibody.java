@@ -4,6 +4,7 @@ import carin.Config;
 import carin.parser.GeneticParser;
 import carin.parser.GeneticProgram;
 import carin.parser.SyntaxError;
+import carin.util.SoundManager;
 
 import java.awt.geom.Point2D;
 import java.nio.file.Path;
@@ -66,9 +67,9 @@ public class Antibody extends GeneticEntity {
         IGeneticEntity unoccupied = states.unOccupied();
         IGeneticEntity atSnap = entityMap.get(pos);
         int hp_cost = Config.move_hp_cost;
-
         if (super.getCurrHP() > hp_cost && atSnap != null && atSnap.equals(unoccupied)) {
             super.setCurrHP(super.getCurrHP() - hp_cost);
+            SoundManager.moveSound();
             setLoc(prevPos, pos);
             return;
         }
