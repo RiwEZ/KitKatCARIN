@@ -18,6 +18,8 @@ public class LogicLoop extends Thread {
 
     private static LogicLoop instance;
 
+    private LogicLoop() {}
+
     public static LogicLoop instance() {
         if (instance == null) instance = new LogicLoop();
         return instance;
@@ -43,7 +45,7 @@ public class LogicLoop extends Thread {
         while (!interrupted()) {
             final long start = System.nanoTime();
             if (!isPause)
-                runGeneticCode();
+                process();
             final double processTime = TimeUtilities.nanoToMs(System.nanoTime() - start);
 
             try {
@@ -62,7 +64,7 @@ public class LogicLoop extends Thread {
         }
     }
 
-    private void runGeneticCode() {
+    private void process() {
         if (states.getAntibodyCount() == 0 || states.getVirusCount() == 0) {
             isGameOver = true;
             isPause = true;

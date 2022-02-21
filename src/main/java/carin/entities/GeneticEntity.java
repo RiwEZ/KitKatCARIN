@@ -8,7 +8,6 @@ import carin.util.CameraManager;
 import de.gurkenlabs.litiengine.entities.*;
 
 import java.awt.geom.Point2D;
-import java.util.Map;
 
 public abstract class GeneticEntity extends Creature implements IGeneticEntity {
     private final int maxHP;
@@ -62,7 +61,7 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
         this.geneticCode = p;
     }
 
-    private void setLoc(Point2D prevPos, Point2D pos) {
+    protected void setLoc(Point2D prevPos, Point2D pos) {
         states.entityMap().put(pos, this);
         states.entityMap().put(prevPos, states.unOccupied());
         this.setLocation(pos);
@@ -83,29 +82,6 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
                 }
             }
         }
-    }
-
-    public void manualMove(Point2D prevPos, Point2D pos) {
-        Map<Point2D, IGeneticEntity> entityMap = states.entityMap();
-        IGeneticEntity unoccupied = states.unOccupied();
-        IGeneticEntity atSnap = entityMap.get(pos);
-        Player p = states.player();
-        int cost = Config.move_cost;
-        int hp_cost = Config.move_hp_cost;
-
-        if (atSnap != null && atSnap.equals(unoccupied)) {
-            if (p.getCredit() >= cost) {
-                p.changeCredit(cost);
-                setLoc(prevPos, pos);
-                return;
-            }
-            else if (currentHP > hp_cost) {
-                currentHP -= hp_cost;
-                setLoc(prevPos, pos);
-                return;
-            }
-        }
-        this.setLocation(prevPos);
     }
 
     @Override
@@ -140,6 +116,11 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
     @Override
     public int getCurrHP() {
         return currentHP;
+    }
+
+    @Override
+    public void setCurrHP(int hp) {
+        this.currentHP = Math.max(hp, 0);
     }
 
     @Override

@@ -10,6 +10,12 @@ public interface IGeneticEntity extends IMobileEntity {
      */
     int getCurrHP();
 
+
+    /**
+     * set current hp of this entity
+     */
+    void setCurrHP(int hp);
+
     /** move from host position (x,y)
      * @param x x position from host
      * @param y y position from host

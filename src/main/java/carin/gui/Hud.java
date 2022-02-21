@@ -3,6 +3,7 @@ package carin.gui;
 import carin.GameStates;
 import carin.LogicLoop;
 import carin.Program;
+import carin.entities.Player;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.graphics.ShapeRenderer;
 import de.gurkenlabs.litiengine.graphics.TextRenderer;
@@ -81,8 +82,11 @@ public class Hud extends GuiComponent {
         // render Antibody, Virus number
         String numberAnti = "Antibody: " + GameStates.states().getAntibodyCount();
         String numberVirus = "Virus: " + GameStates.states().getVirusCount();
+        String numberCredit = "Credit: " + Player.instance().getCredit();
         double numberX =  PADDING * 10;
         TextRenderer.renderWithOutline(g, numberVirus, numberX, textY+12, COLOR_OUTLINE);
         TextRenderer.renderWithOutline(g, numberAnti, numberX, textY+28,COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, numberCredit, numberX + 120, textY+12,COLOR_OUTLINE);
+
     }
 }

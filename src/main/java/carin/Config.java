@@ -33,7 +33,6 @@ public class Config {
     public static final int initial_credits = get("initial_credits");
 
     public static final int placement_cost = get("placement_cost");
-    public static final int move_cost = get("move_cost");
     public static final int move_hp_cost = get("move_hp_cost");
     public static final int antibody_cred_gain = get("antibody_cred_gain");
 

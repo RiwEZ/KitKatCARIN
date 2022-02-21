@@ -21,6 +21,10 @@ public class UnOccupied extends Creature implements IGeneticEntity {
     }
 
     @Override
+    public void setCurrHP(int hp) {
+    }
+
+    @Override
     public void move(double x, double y) {
     }
 

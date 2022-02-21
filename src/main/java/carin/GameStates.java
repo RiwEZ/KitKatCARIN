@@ -7,10 +7,8 @@ import carin.util.SensorIterator;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
 import de.gurkenlabs.litiengine.environment.tilemap.IMap;
-import de.gurkenlabs.litiengine.graphics.emitters.Emitter;
 import de.gurkenlabs.litiengine.input.Input;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -147,7 +145,7 @@ public final class GameStates {
     }
 
     public boolean isInMap(Point2D pos) {
-        return !(entityMap.get(pos) == null);
+        return entityMap.get(pos) != null;
     }
 
     public ArrayList<IGeneticEntity> entities() {
