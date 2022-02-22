@@ -1,11 +1,13 @@
 package carin.util;
 
 import carin.Config;
-import de.gurkenlabs.litiengine.entities.Spawnpoint;
+import carin.GameStates;
 import de.gurkenlabs.litiengine.environment.tilemap.*;
 import de.gurkenlabs.litiengine.graphics.RenderType;
 import de.gurkenlabs.litiengine.resources.Maps;
 import de.gurkenlabs.litiengine.resources.Resources;
+
+import java.awt.geom.Point2D;
 
 public final class MapGeneration {
 
@@ -21,15 +23,12 @@ public final class MapGeneration {
                                      TILE_WIDTH, TILE_HEIGHT, Resources.tilesets().get("map/tiles-club.tsx"))) {
 
 
-            // add spawn points
-            generator.addTileLayer(RenderType.NONE, (x,y) -> {
-                Spawnpoint s = new Spawnpoint(x * TILE_WIDTH,y * TILE_HEIGHT);
-                s.setRenderType(RenderType.NONE);
-                s.setSize(TILE_WIDTH, TILE_HEIGHT);
-                generator.add(s);
-                return -1; // return tile texture id -1 is no texture
+            GameStates states = GameStates.states();
+            generator.addTileLayer(RenderType.BACKGROUND, (x, y) -> {
+                Point2D s = new Point2D.Double(x * TILE_WIDTH,y * TILE_HEIGHT);
+                states.entityMap().put(s, states.unOccupied());
+                return -1;
             });
-
             map = generator.getMap();
         }
         return map;

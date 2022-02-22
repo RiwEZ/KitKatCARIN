@@ -84,15 +84,9 @@ public final class GameStates {
         CameraManager.getCamera().setClampToMap(false);
 
         Game.world().onLoaded(env -> {
-            final long s = System.nanoTime();
             CameraManager.defaultCamSetup();
             CameraManager.camFunction();
-            Collection<Spawnpoint> allSpawn = env.getSpawnpoints();
-            for (Spawnpoint point : allSpawn) {
-                entityMap.put(point.getLocation(), unoccupied);
-            }
             defaultSpawn();
-            final double e = TimeUtilities.nanoToMs(System.nanoTime() - s);
             //env.clear();
         });
 
@@ -131,7 +125,7 @@ public final class GameStates {
         initialized = true;
         availableAntibody = GeneticEntityFactory.getAvailableAntibody();
         availableVirus = GeneticEntityFactory.getAvailableVirus();
-        Game.world().loadEnvironment(MAP); // rendering huge number of entities in environment is slow
+        Game.world().loadEnvironment(MAP); // load huge number of tile is slow
         initTime = TimeUtilities.nanoToMs(System.nanoTime() - start);
     }
 
