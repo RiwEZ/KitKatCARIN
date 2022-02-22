@@ -2,8 +2,10 @@ package carin;
 
 import carin.entities.IGeneticEntity;
 import de.gurkenlabs.litiengine.Game;
+import de.gurkenlabs.litiengine.graphics.RenderEngine;
 import de.gurkenlabs.litiengine.util.TimeUtilities;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Random;
 
@@ -15,6 +17,7 @@ public class LogicLoop extends Thread {
     private final float spawn_rate = Config.spawn_rate;
     private final Random rand = new Random();
     private final GameStates states = GameStates.states();
+    private int tick = 0;
 
     private static LogicLoop instance;
 
@@ -40,14 +43,19 @@ public class LogicLoop extends Thread {
         return isGameOver;
     }
 
+    public int getTick() {
+        return tick;
+    }
+
     @Override
     public void run() {
         while (!interrupted()) {
             final long start = System.nanoTime();
-            if (!isPause)
+            if (!isPause) {
+                tick++;
                 process();
+            }
             final double processTime = TimeUtilities.nanoToMs(System.nanoTime() - start);
-
             try {
                 delay(Math.round(processTime));
             }

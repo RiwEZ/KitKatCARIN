@@ -44,7 +44,7 @@ public class Antibody extends GeneticEntity {
     @Override
     public boolean attack(double x, double y) {
         if (super.attack(x, y)) {
-            states.player().addCredit(cred_gain);
+            Player.instance().addCredit(cred_gain);
             return true;
         }
         return false;

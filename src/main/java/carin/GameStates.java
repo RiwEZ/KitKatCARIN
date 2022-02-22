@@ -9,6 +9,7 @@ import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
 import de.gurkenlabs.litiengine.environment.tilemap.IMap;
 import de.gurkenlabs.litiengine.input.Input;
+import de.gurkenlabs.litiengine.util.TimeUtilities;
 
 import java.awt.geom.Point2D;
 import java.util.*;
@@ -30,9 +31,9 @@ public final class GameStates {
 
     private final IGeneticEntity unoccupied = new UnOccupied();
     private final Spawnpoint spawnpoint = new Spawnpoint();
-    private final Player player = Player.instance();
 
     private boolean initialized = false;
+    private double initTime;
     private ArrayList<Antibody> availableAntibody;
     private ArrayList<Virus> availableVirus;
 
@@ -78,15 +79,12 @@ public final class GameStates {
     }
 
     public void init() {
-        initialized = true;
-
-        availableAntibody = GeneticEntityFactory.getAvailableAntibody();
-        availableVirus = GeneticEntityFactory.getAvailableVirus();
-
+        final long start = System.nanoTime();
         // Setup camera
         CameraManager.getCamera().setClampToMap(false);
 
         Game.world().onLoaded(env -> {
+            final long s = System.nanoTime();
             CameraManager.defaultCamSetup();
             CameraManager.camFunction();
             Collection<Spawnpoint> allSpawn = env.getSpawnpoints();
@@ -94,6 +92,8 @@ public final class GameStates {
                 entityMap.put(point.getLocation(), unoccupied);
             }
             defaultSpawn();
+            final double e = TimeUtilities.nanoToMs(System.nanoTime() - s);
+            //env.clear();
         });
 
         // Manual move antibody by pressing and drag
@@ -118,16 +118,29 @@ public final class GameStates {
             }
             //LogicLoop.instance().togglePause();
         });
+
         // generate map and load it to the game
         IMap MAP = MapGeneration.generateMap(Config.map_m, Config.map_n);
-        Game.world().loadEnvironment(MAP);
 
         // init LogicLoop and run it
         LogicLoop.instance().start();
+
+        // init Player
+        Player.instance();
+
+        initialized = true;
+        availableAntibody = GeneticEntityFactory.getAvailableAntibody();
+        availableVirus = GeneticEntityFactory.getAvailableVirus();
+        Game.world().loadEnvironment(MAP); // rendering huge number of entities in environment is slow
+        initTime = TimeUtilities.nanoToMs(System.nanoTime() - start);
     }
 
     public boolean isInit() {
         return initialized;
+    }
+
+    public double initTime() {
+        return initTime;
     }
 
     public void spawnGeneticEntity(Point2D pos, IGeneticEntity entity) {
@@ -176,8 +189,8 @@ public final class GameStates {
 
     public Set<Point2D> unoccupiedPos() {
         Set<Point2D> empty = new HashSet<>();
-        for (Map.Entry<Point2D, IGeneticEntity> m : states.entityMap().entrySet()) {
-            if (m.getValue().equals(states.unOccupied()))
+        for (Map.Entry<Point2D, IGeneticEntity> m : entityMap().entrySet()) {
+            if (m.getValue().equals(unoccupied))
                 empty.add(m.getKey());
         }
         return empty;
@@ -214,10 +227,6 @@ public final class GameStates {
             spawnGeneticEntity(entity.getLocation(), entity);
         }
         toSpawn.clear();
-    }
-
-    public Player player() {
-        return player;
     }
 
     public Point2D getSnap(Point2D mouse) {

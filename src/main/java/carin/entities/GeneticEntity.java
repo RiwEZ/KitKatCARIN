@@ -7,6 +7,7 @@ import carin.parser.GeneticProgram;
 import carin.util.CameraManager;
 import carin.util.SoundManager;
 import de.gurkenlabs.litiengine.entities.*;
+import de.gurkenlabs.litiengine.graphics.RenderType;
 
 import java.awt.geom.Point2D;
 
@@ -42,11 +43,11 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
             this.leech = 0;
             this.die();
         }
-        this.currentHP = maxHP;
+        this.setRenderType(RenderType.GROUND);
 
+        this.currentHP = maxHP;
         this.setScaling(true);
         this.setSize(Config.tile_width, Config.tile_height);
-
         EntityRenderListener status = e -> new StatusBar(this).render(e.getGraphics());
         this.addEntityRenderListener(status);
 

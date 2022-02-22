@@ -83,10 +83,14 @@ public class Hud extends GuiComponent {
         String numberAnti = "Antibody: " + GameStates.states().getAntibodyCount();
         String numberVirus = "Virus: " + GameStates.states().getVirusCount();
         String numberCredit = "Credit: " + Player.instance().getCredit();
+        String tick = "Tick: " + LogicLoop.instance().getTick();
+        String initTime = "InitTime: " + GameStates.states().initTime();
         double numberX =  PADDING * 10;
         TextRenderer.renderWithOutline(g, numberVirus, numberX, textY+12, COLOR_OUTLINE);
         TextRenderer.renderWithOutline(g, numberAnti, numberX, textY+28,COLOR_OUTLINE);
         TextRenderer.renderWithOutline(g, numberCredit, numberX + 120, textY+12,COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, tick, numberX + 120, textY+28,COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, initTime, getWidth() - 200, textY+16,COLOR_OUTLINE);
 
     }
 }
