@@ -19,7 +19,7 @@ public class CameraManager {
 
     // Setup camera
     public static void defaultCamSetup() {
-        MaxZoomOut = (float) ((float) 1 / ((Game.world().environment().getCenter().getX() + Game.world().environment().getCenter().getY()) * 0.005));
+        MaxZoomOut = (float) ((float) 1 / ((Game.world().environment().getCenter().getX() + Game.world().environment().getCenter().getY()) * 0.004));
         zoomAmount = MaxZoomOut;
         defaultFocusX = (float) (Game.world().environment().getCenter().getX() - Game.world().environment().getCenter().getX());
         defaultFocusY = (float) Game.world().environment().getCenter().getY();

@@ -20,14 +20,14 @@ public final class MapGeneration {
         try (Maps.MapGenerator generator =
                      Resources.maps()
                              .generate(MapOrientations.ORTHOGONAL, MAP_NAME, m, n,
-                                     TILE_WIDTH, TILE_HEIGHT, Resources.tilesets().get("map/tiles-club.tsx"))) {
+                                     TILE_WIDTH, TILE_HEIGHT, Resources.tilesets().get("map/tiles-carin.tsx"))) {
 
 
             GameStates states = GameStates.states();
             generator.addTileLayer(RenderType.BACKGROUND, (x, y) -> {
                 Point2D s = new Point2D.Double(x * TILE_WIDTH,y * TILE_HEIGHT);
                 states.entityMap().put(s, states.unOccupied());
-                return -1;
+                return 0;
             });
             map = generator.getMap();
         }

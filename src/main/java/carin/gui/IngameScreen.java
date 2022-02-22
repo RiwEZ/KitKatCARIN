@@ -1,18 +1,19 @@
 package carin.gui;
 
-import carin.GameStates;
+
 import carin.LogicLoop;
-import carin.Program;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.gui.ImageComponent;
 import de.gurkenlabs.litiengine.gui.screens.GameScreen;
+import de.gurkenlabs.litiengine.resources.Resources;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class IngameScreen extends GameScreen {
     public static final String NAME = "INGAME";
     private ImageComponent playButton;
-    public static boolean isPause = false;
+    private static final BufferedImage resume = Resources.images().get("misc/resume.png");
+    private static final BufferedImage pause = Resources.images().get("misc/pause.png");
     private Hud hud;
 
     public IngameScreen() {
@@ -25,32 +26,24 @@ public class IngameScreen extends GameScreen {
 
         // this is temporary pause button
         super.initializeComponents();
-        double x = Game.window().getCenter().getX() / 2;
-        double y = Game.window().getCenter().getY() / 2;
-        double width = Game.window().getResolution().getWidth() / 4;
-        double height = Game.window().getResolution().getWidth() / 6;
-        this.playButton = new ImageComponent(x - width / 2.0, y + height / 3.0, width, height);
-        this.playButton.setImage(null);
-        this.playButton.setText("RESUME");
-        this.playButton.setFont(Program.GUI_FONT.deriveFont(100f));
-        this.playButton.getAppearance().setForeColor(new Color(215, 82, 82));
-        this.playButton.getAppearanceHovered().setForeColor(new Color(253, 184, 184));
+        this.playButton = new ImageComponent(Game.window().getResolution().getWidth() - 80, Game.window().getResolution().getHeight() - 45, 36, 36);
+        this.playButton.setImage(resume);
 
         this.playButton.onClicked(e -> {
             // toggle pause
             if (!LogicLoop.instance().isGameOver()) {
                 LogicLoop.instance().togglePause();
                 if(LogicLoop.instance().isPause()){
-                    this.playButton.setText("RESUME");
+                    this.playButton.setImage(resume);
                 }
                 else{
-                    this.playButton.setText("PAUSE");
+                    this.playButton.setImage(pause);
                 }
             }
         });
 
 
-        this.getComponents().add(this.playButton);
         this.getComponents().add(hud);
+        this.getComponents().add(this.playButton);
     }
 }

@@ -174,6 +174,7 @@ public final class GameStates {
     }
 
     public boolean isUnOccupied(Point2D pos) {
+        Game.window().cursor().set(Program.Cursor);
         return entityMap.get(pos).equals(unoccupied);
     }
 
@@ -237,5 +238,9 @@ public final class GameStates {
             return (Antibody) entityMap.get(snap);
         }
         return null;
+    }
+
+    public ArrayList<Antibody> getAvailableAntibody() {
+        return availableAntibody;
     }
 }

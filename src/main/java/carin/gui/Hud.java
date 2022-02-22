@@ -1,30 +1,38 @@
 package carin.gui;
 
+import carin.Config;
 import carin.GameStates;
 import carin.LogicLoop;
 import carin.Program;
+
 import carin.entities.Player;
+import carin.util.SoundManager;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.graphics.ShapeRenderer;
 import de.gurkenlabs.litiengine.graphics.TextRenderer;
-import de.gurkenlabs.litiengine.graphics.animation.AnimationController;
 import de.gurkenlabs.litiengine.gui.GuiComponent;
+import de.gurkenlabs.litiengine.gui.HorizontalSlider;
 import de.gurkenlabs.litiengine.gui.ImageComponent;
+import de.gurkenlabs.litiengine.input.Input;
+import de.gurkenlabs.litiengine.resources.Resources;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 public class Hud extends GuiComponent {
     public static final Color COLOR_OUTLINE = new Color(0, 0, 0, 180);
     private static final Color COLOR_BG = new Color(70, 70, 70, 255);
-    private static final Color COLOR_BAD = new Color(247, 152, 0, 220);
-    private static final Color COLOR_AVG = new Color(252, 248, 118, 220);
-    private static final Color COLOR_GOOD = new Color(143, 212, 61, 220);
+    private static final Color COLOR_SHOP = new Color(30, 30, 30, 255);
     private static final int PADDING = 10;
+    private static final BufferedImage antibody = Resources.images().get("sprites/antibody-shop.png");
+    private static final BufferedImage antiCursor = Resources.images().get("misc/antibody-cursor.png");
+    private static final BufferedImage Cursor = Resources.images().get("misc/cursor.png");
+    private static Point2D mouseManual;
+    private static boolean isBuyPress;
 
-    private ImageComponent speedUp;
 
-    private AnimationController logoAnimationController;
 
     public Hud() {
         super(0, 0, Game.window().getResolution().getWidth(), Game.window().getResolution().getHeight());
@@ -32,6 +40,7 @@ public class Hud extends GuiComponent {
 
     @Override
     public void render(final Graphics2D g){
+        this.renderShop(g);
         this.renderGameInfo(g);
         super.render(g);
     }
@@ -39,23 +48,8 @@ public class Hud extends GuiComponent {
     @Override
     protected void initializeComponents() {
         super.initializeComponents();
-        double x = Game.window().getCenter().getX() / 2;
-        double y = Game.window().getHeight() - 100;
-        this.speedUp = new ImageComponent(x, y, 100, 100, "x2");
-        this.speedUp.setFont(Program.GUI_FONT.deriveFont(50f));
-        this.speedUp.getAppearance().setForeColor(new Color(215, 82, 82));
-        this.speedUp.onClicked(e -> {
-            if (this.speedUp.getText().equals("x2")) {
-                LogicLoop.instance().setXSpeed(2);
-                this.speedUp.setText("x1");
-            }
-            else {
-                LogicLoop.instance().setXSpeed(1);
-                this.speedUp.setText("x2");
-            }
-        });
-
-        this.getComponents().add(speedUp);
+        this.getComponents().add(speedSlider());
+        this.getComponents().add(antibodyBuy());
     }
 
     private void renderGameInfo(Graphics2D g) {
@@ -72,7 +66,6 @@ public class Hud extends GuiComponent {
         ShapeRenderer.render(g, bottomBg);
 
         // render top HUD
-        // render bottom HUD
         Rectangle2D topBg = new Rectangle2D.Double(0, 0, Game.window().getResolution().getWidth(), 36);
         g.setColor(COLOR_BG);
         ShapeRenderer.render(g, topBg);
@@ -80,17 +73,70 @@ public class Hud extends GuiComponent {
         g.setColor(Color.WHITE);
 
         // render Antibody, Virus number
-        String numberAnti = "Antibody: " + GameStates.states().getAntibodyCount();
-        String numberVirus = "Virus: " + GameStates.states().getVirusCount();
-        String numberCredit = "Credit: " + Player.instance().getCredit();
-        String tick = "Tick: " + LogicLoop.instance().getTick();
-        String initTime = "InitTime: " + GameStates.states().initTime();
-        double numberX =  PADDING * 10;
-        TextRenderer.renderWithOutline(g, numberVirus, numberX, textY+12, COLOR_OUTLINE);
-        TextRenderer.renderWithOutline(g, numberAnti, numberX, textY+28,COLOR_OUTLINE);
-        TextRenderer.renderWithOutline(g, numberCredit, numberX + 120, textY+12,COLOR_OUTLINE);
-        TextRenderer.renderWithOutline(g, tick, numberX + 120, textY+28,COLOR_OUTLINE);
-        TextRenderer.renderWithOutline(g, initTime, getWidth() - 200, textY+16,COLOR_OUTLINE);
+        String numberAnti = "ANTIBODY: " + GameStates.states().getAntibodyCount();
+        String numberVirus = "VIRUS: " + GameStates.states().getVirusCount();
+        String numberCredit = "CREDIT: " + Player.instance().getCredit() + "$";
+        String tick = "TIME: " + LogicLoop.instance().getTick();
+//        String initTime = "InitTime: " + GameStates.states().initTime();
+        String speedControl = "SPEED CONTROL";
+        g.setFont(Program.GUI_FONT_SMALL2.deriveFont(12f));
+        TextRenderer.renderWithOutline(g, numberVirus, 200, textY+8, COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, numberAnti, 200, textY+29,COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, numberCredit, 200, 17,COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, tick, 470, Game.window().getResolution().getHeight() - 70,COLOR_OUTLINE);
+        g.setFont(Program.GUI_FONT_SMALL2);
+        TextRenderer.renderWithOutline(g, speedControl, getWidth() - 155, textY+7,COLOR_OUTLINE);
 
     }
+
+    private HorizontalSlider speedSlider() {
+        HorizontalSlider speedControlSlider = new HorizontalSlider(Game.window().getResolution().getWidth() - 200, Game.window().getResolution().getHeight() - 27, 90, 16,
+                1, 3, 1);
+        speedControlSlider.setShowTicks(true);
+        speedControlSlider.onChange(c -> {
+            LogicLoop.instance().setXSpeed(Math.max(c.intValue(), 1));
+        });
+        return speedControlSlider;
+    }
+
+    private ImageComponent antibodyBuy() {
+        ImageComponent antibodyShop = new ImageComponent(164,175,72,72);
+        antibodyShop.setImage(antibody);
+        isBuyPress = false;
+        antibodyShop.onMousePressed(e -> {
+            isBuyPress = true;
+            Game.window().cursor().set(antiCursor);
+        });
+        Input.mouse().onDragged(e -> {
+            mouseManual = GameStates.states().getSnap(Input.mouse().getMapLocation());
+        });
+        Input.mouse().onReleased(k -> {
+            if(isBuyPress){
+                if(GameStates.states().isUnOccupied(mouseManual)){
+                    SoundManager.purchaseSound();
+                    GameStates.states().spawnGeneticEntity(mouseManual, Game.random().choose(GameStates.states().getAvailableAntibody()).getCopy());
+                    Player.instance().addCredit(-10);
+                }
+            }
+            Game.window().cursor().set(Cursor);
+            isBuyPress = false;
+        });
+        return antibodyShop;
+    }
+
+    private void renderShop(Graphics2D g) {
+        Rectangle2D shopBg = new Rectangle2D.Double(0, 0, 400, Game.window().getResolution().getHeight());
+        g.setColor(COLOR_SHOP);
+        ShapeRenderer.render(g, shopBg);
+        g.setFont(Program.GUI_FONT_SMALL2.deriveFont(30f));
+        g.setColor(Color.WHITE);
+        String header = "SHOP";
+        TextRenderer.renderWithOutline(g, header, shopBg.getCenterX(), 100, COLOR_OUTLINE);
+        g.setFont(Program.GUI_FONT_SMALL2);
+        String moveCost = "MANUAL MOVE COST: " + Config.move_hp_cost + " HP";
+        String placeCost = "PLACEMENT COST: " + Config.placement_cost + " $";
+        TextRenderer.renderWithOutline(g, moveCost, shopBg.getCenterX(), 300, COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, placeCost, shopBg.getCenterX(), 320, COLOR_OUTLINE);
+    }
+
 }
