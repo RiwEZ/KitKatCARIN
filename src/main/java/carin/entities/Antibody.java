@@ -14,6 +14,7 @@ public class Antibody extends GeneticEntity {
     private static int ID = 0;
     private final int antibodyID;
     private final int cred_gain = Config.antibody_cred_gain;
+    private boolean turnToVirus = false;
 
     public Antibody() {
         this("");
@@ -53,11 +54,12 @@ public class Antibody extends GeneticEntity {
     @Override
     public void getAttacked(IGeneticEntity entity, int dmg) {
         super.getAttacked(entity, dmg);
-        if (this.isDead()) {
+        if (this.isDead() && !turnToVirus) {
             if (entity instanceof Virus) {
                 IGeneticEntity copy = entity.getCopy();
                 copy.setLocation(this.getLocation());
                 states.addToSpawn(copy);
+                turnToVirus = true;
             }
         }
     }

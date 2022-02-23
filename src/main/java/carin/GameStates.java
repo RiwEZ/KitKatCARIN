@@ -21,21 +21,21 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class GameStates {
     private static final GameStates states = new GameStates();
 
-    private final ArrayList<IGeneticEntity> entities = new ArrayList<>();
+    private final List<IGeneticEntity> entities = new LinkedList<>();
     private final Map<Point2D, IGeneticEntity> entityMap = new ConcurrentHashMap<>();
     private int antibodyCount = 0;
     private int virusCount = 0;
 
-    private final ArrayList<IGeneticEntity> toRemove = new ArrayList<>();
-    private final ArrayList<IGeneticEntity> toSpawn = new ArrayList<>();
+    private final List<IGeneticEntity> toRemove = new LinkedList<>();
+    private final List<IGeneticEntity> toSpawn = new ArrayList<>();
 
     private final IGeneticEntity unoccupied = new UnOccupied();
     private final Spawnpoint spawnpoint = new Spawnpoint();
 
     private boolean initialized = false;
     private double initTime;
-    private ArrayList<Antibody> availableAntibody;
-    private ArrayList<Virus> availableVirus;
+    private List<Antibody> availableAntibody;
+    private List<Virus> availableVirus;
 
     private Antibody currentFocus;
     private Point2D prevPos;
@@ -68,12 +68,6 @@ public final class GameStates {
 
         Game.hideGUI(true);
         Game.init();
-        Game.world().onLoaded(env -> {
-            Collection<Spawnpoint> allSpawn = env.getSpawnpoints();
-            for (Spawnpoint point : allSpawn) {
-                entityMap.put(point.getLocation(), unoccupied);
-            }
-        });
 
         Game.world().loadEnvironment(map3x3);
     }
@@ -157,7 +151,7 @@ public final class GameStates {
         return entityMap.get(pos) != null;
     }
 
-    public ArrayList<IGeneticEntity> entities() {
+    public List<IGeneticEntity> entities() {
         return entities;
     }
 
@@ -213,7 +207,7 @@ public final class GameStates {
         toSpawn.add(entity);
     }
 
-    public ArrayList<IGeneticEntity> getToSpawn() {
+    public List<IGeneticEntity> getToSpawn() {
         return toSpawn;
     }
 
@@ -240,7 +234,7 @@ public final class GameStates {
         return null;
     }
 
-    public ArrayList<Antibody> getAvailableAntibody() {
+    public List<Antibody> getAvailableAntibody() {
         return availableAntibody;
     }
 }

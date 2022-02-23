@@ -1,5 +1,6 @@
 package carin.util;
 
+import carin.Config;
 import carin.GameStates;
 import carin.entities.IGeneticEntity;
 
@@ -18,7 +19,9 @@ public class SensorIterator implements Iterator<IGeneticEntity> {
     }
 
     private Point2D pos(double x, double y) {
-        return new Point2D.Double(host.getX() + 36*x, host.getY() + 36*y);
+        int tile_width = Config.tile_width;
+        int tile_height = Config.tile_height;
+        return new Point2D.Double(host.getX() + tile_width *x, host.getY() + tile_height *y);
     }
 
     private Point2D lookingPos() {
@@ -40,6 +43,10 @@ public class SensorIterator implements Iterator<IGeneticEntity> {
 
     public int getLookAt() {
         return lookAt;
+    }
+
+    public Point2D getPoint() {
+        return lookingPos();
     }
 
     @Override
