@@ -1,7 +1,6 @@
 package carin.parser;
 
 import carin.entities.Antibody;
-import de.gurkenlabs.litiengine.Game;
 import org.junit.jupiter.api.DynamicTest;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
@@ -16,9 +15,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/* TODO
-    - SensorExpr Test
-*/
 class GeneticParserTest {
 
     // should have expected result

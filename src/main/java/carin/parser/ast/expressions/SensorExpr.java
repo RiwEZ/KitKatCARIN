@@ -11,7 +11,6 @@ public class SensorExpr implements Expr {
     private final String cmd;
     private final GameStates states;
 
-    // maybe change cmd to expr
     public SensorExpr(String cmd) {
         this.cmd = cmd;
         this.states = GameStates.states();
