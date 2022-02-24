@@ -180,12 +180,12 @@ public class GeneticParser {
         return v;
     }
 
-    // Factor → Power (^Power)*
+    // Factor → Power (^Factor)*
     private Expr parseFactor() throws SyntaxError {
         Expr v = parsePower();
-        while (tk.peek("^")) {
+        if (tk.peek("^")) {
             tk.consume();
-            v = new Factor(v, parsePower());
+            v = new Factor(v, parseFactor());
         }
         if (Token.isNUM(tk.peek()))
             throw new SyntaxError("not a statement", errInfo());
