@@ -17,6 +17,7 @@ public class MenuScreen extends Screen {
 
     public static final String NAME = "MENU";
     private ImageComponent playButton;
+    private ImageComponent exitButton;
     private boolean locked;
 
     public MenuScreen() {
@@ -51,7 +52,7 @@ public class MenuScreen extends Screen {
         double y = Game.window().getCenter().getY();
         double width = Game.window().getResolution().getWidth() / 3;
         double height = Game.window().getResolution().getWidth() / 6;
-        this.playButton = new ImageComponent(x - width / 2.0, y + height / 3.0, width, height);
+        this.playButton = new ImageComponent(x - width / 2.0, y - height / 3.0, width, height);
         this.playButton.setImage(null);
         this.playButton.setText("START");
         this.playButton.setFont(Program.GUI_FONT.deriveFont(100f));
@@ -73,6 +74,19 @@ public class MenuScreen extends Screen {
             });
         });
         this.getComponents().add(this.playButton);
+
+        // exit button
+        this.exitButton = new ImageComponent(x - width / 2.0, y + height / 6.0, width, height);
+        this.exitButton.setImage(null);
+        this.exitButton.setText("EXIT");
+        this.exitButton.setFont(Program.GUI_FONT.deriveFont(75f));
+        this.exitButton.getAppearance().setForeColor(new Color(215, 82, 82));
+        this.exitButton.getAppearanceHovered().setForeColor(new Color(253, 184, 184));
+
+        this.exitButton.onClicked(e -> {
+            System.exit(0);
+        });
+        this.getComponents().add(this.exitButton);
     }
 
     private static void displayIngameScreen() {
