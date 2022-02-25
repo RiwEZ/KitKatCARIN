@@ -7,6 +7,7 @@ import carin.util.SensorIterator;
 import carin.util.SoundManager;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
+import de.gurkenlabs.litiengine.environment.EnvironmentLoadedListener;
 import de.gurkenlabs.litiengine.environment.tilemap.IMap;
 import de.gurkenlabs.litiengine.input.Input;
 import de.gurkenlabs.litiengine.util.TimeUtilities;
@@ -18,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * this class contains all entities states and utility function to manipulate states
  */
-public final class GameStates {
+public class GameStates {
     private static final GameStates states = new GameStates();
 
     private final List<IGeneticEntity> entities = new LinkedList<>();
@@ -39,6 +40,8 @@ public final class GameStates {
 
     private Antibody currentFocus;
     private Point2D prevPos;
+
+    private static LogicLoop loop;
 
     public static GameStates states() {
         return states;
@@ -74,14 +77,30 @@ public final class GameStates {
 
     public void init() {
         final long start = System.nanoTime();
-        // Setup camera
-        CameraManager.getCamera().setClampToMap(false);
 
-        Game.world().onLoaded(env -> {
+        EnvironmentLoadedListener onLoad = env -> {
             CameraManager.defaultCamSetup();
             CameraManager.camFunction();
             defaultSpawn();
-            //env.clear();
+        };
+
+        if (initialized) {
+            entities.clear();
+            entityMap.clear();
+            antibodyCount = 0;
+            virusCount = 0;
+            toSpawn.clear();
+            toRemove.clear();
+            Game.world().unloadEnvironment();
+        }
+
+        // Setup camera
+        CameraManager.getCamera().setClampToMap(false);
+
+        Game.world().onLoaded(onLoad);
+        Game.world().onUnloaded(e -> {
+            Game.world().removeLoadedListener(onLoad);
+            e.clear();
         });
 
         // Manual move antibody by pressing and drag
@@ -110,17 +129,23 @@ public final class GameStates {
         // generate map and load it to the game
         IMap MAP = MapGeneration.generateMap(Config.map_m, Config.map_n);
 
-        // init LogicLoop and run it
-        LogicLoop.instance().start();
-
         // init Player
-        Player.instance();
+        Player.instance().setCredit(Config.initial_credits);
 
         initialized = true;
         availableAntibody = GeneticEntityFactory.getAvailableAntibody();
         availableVirus = GeneticEntityFactory.getAvailableVirus();
         Game.world().loadEnvironment(MAP); // load huge number of tile is slow
+
+        // init LogicLoop and run it
+        loop = new LogicLoop();
+        loop.start();
+
         initTime = TimeUtilities.nanoToMs(System.nanoTime() - start);
+    }
+
+    public static LogicLoop loop() {
+        return loop;
     }
 
     public boolean isInit() {
@@ -144,7 +169,7 @@ public final class GameStates {
     }
 
     public SensorIterator sensorIter(Point2D host) {
-        return new SensorIterator(host, this);
+        return new SensorIterator(host, this, Config.tile_width, Config.tile_height);
     }
 
     public boolean isInMap(Point2D pos) {

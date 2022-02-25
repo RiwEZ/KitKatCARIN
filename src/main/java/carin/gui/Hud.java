@@ -32,8 +32,6 @@ public class Hud extends GuiComponent {
     private static Point2D mouseManual;
     private static boolean isBuyPress;
 
-
-
     public Hud() {
         super(0, 0, Game.window().getResolution().getWidth(), Game.window().getResolution().getHeight());
     }
@@ -76,7 +74,7 @@ public class Hud extends GuiComponent {
         String numberAnti = "ANTIBODY: " + GameStates.states().getAntibodyCount();
         String numberVirus = "VIRUS: " + GameStates.states().getVirusCount();
         String numberCredit = "CREDIT: " + Player.instance().getCredit() + "$";
-        String tick = "TIME: " + LogicLoop.instance().getTick();
+        String tick = "TIME: " + GameStates.loop().getTick();
 //        String initTime = "InitTime: " + GameStates.states().initTime();
         String speedControl = "SPEED CONTROL";
         g.setFont(Program.GUI_FONT_SMALL2.deriveFont(12f));
@@ -94,7 +92,7 @@ public class Hud extends GuiComponent {
                 1, 3, 1);
         speedControlSlider.setShowTicks(true);
         speedControlSlider.onChange(c -> {
-            LogicLoop.instance().setXSpeed(Math.max(c.intValue(), 1));
+            GameStates.loop().setXSpeed(Math.max(c.intValue(), 1));
         });
         return speedControlSlider;
     }

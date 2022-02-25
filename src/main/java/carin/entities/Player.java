@@ -1,9 +1,7 @@
 package carin.entities;
 
-import carin.Config;
-
 public class Player {
-    private int currentCredit = Config.initial_credits;
+    private int currentCredit = 0; // default value is 0
     private static Player instance;
 
     public static Player instance() {
@@ -14,6 +12,10 @@ public class Player {
     }
 
     private Player() {}
+
+    public void setCredit(int initCredit) {
+        currentCredit = initCredit;
+    }
 
     public int getCredit() {
         return currentCredit;

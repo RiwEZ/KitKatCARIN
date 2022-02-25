@@ -1,6 +1,7 @@
 package carin.gui;
 
 
+import carin.GameStates;
 import carin.LogicLoop;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.gui.ImageComponent;
@@ -31,14 +32,17 @@ public class IngameScreen extends GameScreen {
 
         this.playButton.onClicked(e -> {
             // toggle pause
-            if (!LogicLoop.instance().isGameOver()) {
-                LogicLoop.instance().togglePause();
-                if(LogicLoop.instance().isPause()){
+            if (!GameStates.loop().isGameOver()) {
+                GameStates.loop().togglePause();
+                if(GameStates.loop().isPause()){
                     this.playButton.setImage(resume);
                 }
                 else{
                     this.playButton.setImage(pause);
                 }
+            }
+            else {
+                GameStates.states().init();
             }
         });
 
