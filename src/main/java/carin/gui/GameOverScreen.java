@@ -39,7 +39,7 @@ public class GameOverScreen extends Screen {
         double y = Game.window().getCenter().getY();
         double width = Game.window().getResolution().getWidth() / 3;
         double height = Game.window().getResolution().getWidth() / 6;
-        this.restartButton = new ImageComponent(x - width / 2.0, y - height / 3.0, width, height);
+        this.restartButton = new ImageComponent(x - width / 2.0, y - height / 8.0, width, height / 2.0);
         this.restartButton.setImage(null);
         this.restartButton.setText("RESTART");
         this.restartButton.setFont(Program.GUI_FONT.deriveFont(80f));
@@ -66,7 +66,7 @@ public class GameOverScreen extends Screen {
         this.getComponents().add(this.restartButton);
 
         // exit button
-        ImageComponent exitButton = new ImageComponent(x - width / 2.0, y + height / 6.0, width, height);
+        ImageComponent exitButton = new ImageComponent(x - width / 2.0, y + height / 2.0, width, height / 2.0);
         exitButton.setImage(null);
         exitButton.setText("EXIT");
         exitButton.setFont(Program.GUI_FONT.deriveFont(75f));

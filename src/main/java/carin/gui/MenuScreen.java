@@ -53,7 +53,7 @@ public class MenuScreen extends Screen {
         double y = Game.window().getCenter().getY();
         double width = Game.window().getResolution().getWidth() / 3;
         double height = Game.window().getResolution().getWidth() / 6;
-        this.playButton = new ImageComponent(x - width / 2.0, y - height / 3.0, width, height);
+        this.playButton = new ImageComponent(x - width / 2.0, y - height / 4.0, width, height / 2);
         this.playButton.setImage(null);
         this.playButton.setText("START");
         this.playButton.setFont(Program.GUI_FONT.deriveFont(100f));
@@ -80,7 +80,7 @@ public class MenuScreen extends Screen {
         this.getComponents().add(this.playButton);
 
         // exit button
-        this.exitButton = new ImageComponent(x - width / 2.0, y + height / 6.0, width, height);
+        this.exitButton = new ImageComponent(x - width / 2.0, y + height / 3.0, width, height / 2.0);
         this.exitButton.setImage(null);
         this.exitButton.setText("EXIT");
         this.exitButton.setFont(Program.GUI_FONT.deriveFont(75f));
