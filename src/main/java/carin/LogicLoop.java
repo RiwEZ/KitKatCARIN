@@ -16,6 +16,7 @@ public class LogicLoop extends Thread {
     private final Random rand = new Random();
     private final GameStates states = GameStates.states();
     private int tick = 0;
+    public static boolean isPlayerWin = false;
 
     public LogicLoop() {}
 
@@ -55,6 +56,12 @@ public class LogicLoop extends Thread {
                 e.printStackTrace();
             }
         }
+        if(isGameOver){
+            Game.loop().perform(1000, () -> {
+                Game.window().getRenderComponent().fadeIn(1000);
+                Game.screens().display("GAMEOVER");
+            });
+        }
     }
 
     private void spawnVirus() {
@@ -66,6 +73,7 @@ public class LogicLoop extends Thread {
 
     private void process() {
         if (states.getAntibodyCount() == 0 || states.getVirusCount() == 0) {
+            isPlayerWin = states.getAntibodyCount() > states.getVirusCount();
             isGameOver = true;
             isPause = true;
             return;

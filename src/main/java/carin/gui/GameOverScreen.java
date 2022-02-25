@@ -1,5 +1,7 @@
 package carin.gui;
 
+import carin.GameStates;
+import carin.LogicLoop;
 import carin.Program;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.graphics.ShapeRenderer;
@@ -14,8 +16,7 @@ public class GameOverScreen extends Screen {
     public static final String NAME = "GAMEOVER";
     public static final Color COLOR_OUTLINE = new Color(0, 0, 0, 180);
     private static final Color COLOR_BG = new Color(70, 70, 70, 255);
-    private static final Color COLOR_SHOP = new Color(30, 30, 30, 255);
-    private ImageComponent exitButton;
+
     private ImageComponent restartButton;
     private boolean locked;
 
@@ -24,13 +25,13 @@ public class GameOverScreen extends Screen {
     @Override
     public void render(final Graphics2D g) {
         renderGameOverLogo(g);
-
         super.render(g);
     }
     @Override
     public void prepare() {
         super.prepare();
     }
+
     protected void initializeComponents() {
         super.initializeComponents();
         // restart button
@@ -53,7 +54,10 @@ public class GameOverScreen extends Screen {
             this.restartButton.setEnabled(false);
             Game.window().getRenderComponent().fadeOut(1000);
             Game.loop().perform(1500, () -> {
-                displayMenuScreen();
+                GameStates.states().init();
+                IngameScreen.resetPlayButton();
+                Hud.resetSpeedSlide();
+                Game.screens().display("INGAME");
                 Game.window().getRenderComponent().fadeIn(1000);
                 this.locked = false;
                 this.restartButton.setEnabled(true);
@@ -62,17 +66,32 @@ public class GameOverScreen extends Screen {
         this.getComponents().add(this.restartButton);
 
         // exit button
-        this.exitButton = new ImageComponent(x - width / 2.0, y + height / 6.0, width, height);
-        this.exitButton.setImage(null);
-        this.exitButton.setText("EXIT");
-        this.exitButton.setFont(Program.GUI_FONT.deriveFont(75f));
-        this.exitButton.getAppearance().setForeColor(new Color(255,255,255));
-        this.exitButton.getAppearanceHovered().setForeColor(new Color(215, 82, 82));
+        ImageComponent exitButton = new ImageComponent(x - width / 2.0, y + height / 6.0, width, height);
+        exitButton.setImage(null);
+        exitButton.setText("EXIT");
+        exitButton.setFont(Program.GUI_FONT.deriveFont(75f));
+        exitButton.getAppearance().setForeColor(new Color(255,255,255));
+        exitButton.getAppearanceHovered().setForeColor(new Color(215, 82, 82));
 
-        this.exitButton.onClicked(e -> {
-            System.exit(0);
+            Game.window().getRenderComponent().fadeOut(1000);
+            Game.screens().display("MENU");
+            Game.window().getRenderComponent().fadeIn(1000);
+
+        exitButton.onClicked(e -> {
+            if (this.locked) {
+                return;
+            }
+            this.locked = true;
+            exitButton.setEnabled(false);
+            Game.window().getRenderComponent().fadeOut(1000);
+            Game.loop().perform(1500, () -> {
+                Game.screens().display("MENU");
+                Game.window().getRenderComponent().fadeIn(1000);
+                this.locked = false;
+                exitButton.setEnabled(true);
+            });
         });
-        this.getComponents().add(this.exitButton);
+        this.getComponents().add(exitButton);
     }
 
     private void renderGameOverLogo(Graphics2D g) {
@@ -81,17 +100,18 @@ public class GameOverScreen extends Screen {
 
         Rectangle2D greyBg = new Rectangle2D.Double(40, 40, 1280, 691);
         g.setColor(COLOR_BG);
-
+        String endWith;
         ShapeRenderer.render(g, greyBg);
-
-        String gameOver = "GAME OVER!";
+        if(LogicLoop.isPlayerWin){
+            endWith = "Player win!";
+            g.setColor(Color.GREEN);
+        }
+        else {
+            endWith = "Game Over!";
+            g.setColor(Color.RED);
+        }
         g.setFont(Program.GUI_FONT.deriveFont(150f));
-        g.setColor(Color.RED);
-        TextRenderer.renderWithOutline(g, gameOver, x, y,COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, endWith, x, y,COLOR_OUTLINE);
     }
 
-    private static void displayMenuScreen() {
-        // menu screen
-        Game.screens().display("MENU");
-    }
 }

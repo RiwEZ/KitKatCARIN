@@ -1,5 +1,6 @@
 package carin;
 
+import carin.gui.GameOverScreen;
 import carin.gui.IngameScreen;
 import carin.gui.MenuScreen;
 import de.gurkenlabs.litiengine.Game;
@@ -24,10 +25,11 @@ public class Program {
         Game.info().setSubTitle("");
         Game.info().setWebsite("https://github.com/RiwEZ/KitKatCARIN");
         Game.init(args);
-        GameStates.states().init();
-        //Game.window().getRenderComponent().fadeIn(1000);
-        //Game.screens().add(new MenuScreen());
+//        GameStates.states().init();
+        Game.window().getRenderComponent().fadeIn(1000);
+        Game.screens().add(new MenuScreen());
         Game.screens().add(new IngameScreen());
+        Game.screens().add(new GameOverScreen());
         Game.start();
         Game.window().cursor().set(Cursor);
         // Prevent Resize Game window

@@ -1,5 +1,6 @@
 package carin.gui;
 
+import carin.GameStates;
 import carin.Program;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.graphics.ImageRenderer;
@@ -67,7 +68,10 @@ public class MenuScreen extends Screen {
             this.playButton.setEnabled(false);
             Game.window().getRenderComponent().fadeOut(1000);
             Game.loop().perform(1500, () -> {
-                displayIngameScreen();
+                GameStates.states().init();
+                IngameScreen.resetPlayButton();
+                Hud.resetSpeedSlide();
+                Game.screens().display("INGAME");
                 Game.window().getRenderComponent().fadeIn(1000);
                 this.locked = false;
                 this.playButton.setEnabled(true);
@@ -87,11 +91,6 @@ public class MenuScreen extends Screen {
             System.exit(0);
         });
         this.getComponents().add(this.exitButton);
-    }
-
-    private static void displayIngameScreen() {
-        // gameplay screen
-        Game.screens().display("INGAME");
     }
 
     public static void renderGameLogo(Graphics2D g) {

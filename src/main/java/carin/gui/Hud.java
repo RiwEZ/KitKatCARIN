@@ -2,7 +2,6 @@ package carin.gui;
 
 import carin.Config;
 import carin.GameStates;
-import carin.LogicLoop;
 import carin.Program;
 
 import carin.entities.Player;
@@ -31,6 +30,7 @@ public class Hud extends GuiComponent {
     private static final BufferedImage Cursor = Resources.images().get("misc/cursor.png");
     private static Point2D mouseManual;
     private static boolean isBuyPress;
+    private static HorizontalSlider speedSlider;
 
     public Hud() {
         super(0, 0, Game.window().getResolution().getWidth(), Game.window().getResolution().getHeight());
@@ -46,7 +46,13 @@ public class Hud extends GuiComponent {
     @Override
     protected void initializeComponents() {
         super.initializeComponents();
-        this.getComponents().add(speedSlider());
+        speedSlider = new HorizontalSlider(Game.window().getResolution().getWidth() - 200, Game.window().getResolution().getHeight() - 27, 90, 16,
+                1, 3, 1);
+        speedSlider.setShowTicks(true);
+        speedSlider.onChange(c -> {
+            GameStates.loop().setXSpeed(Math.max(c.intValue(), 1));
+        });
+        this.getComponents().add(speedSlider);
         this.getComponents().add(antibodyBuy());
     }
 
@@ -87,16 +93,6 @@ public class Hud extends GuiComponent {
 
     }
 
-    private HorizontalSlider speedSlider() {
-        HorizontalSlider speedControlSlider = new HorizontalSlider(Game.window().getResolution().getWidth() - 200, Game.window().getResolution().getHeight() - 27, 90, 16,
-                1, 3, 1);
-        speedControlSlider.setShowTicks(true);
-        speedControlSlider.onChange(c -> {
-            GameStates.loop().setXSpeed(Math.max(c.intValue(), 1));
-        });
-        return speedControlSlider;
-    }
-
     private ImageComponent antibodyBuy() {
         ImageComponent antibodyShop = new ImageComponent(164,175,72,72);
         antibodyShop.setImage(antibody);
@@ -135,6 +131,10 @@ public class Hud extends GuiComponent {
         String placeCost = "PLACEMENT COST: " + Config.placement_cost + " $";
         TextRenderer.renderWithOutline(g, moveCost, shopBg.getCenterX(), 300, COLOR_OUTLINE);
         TextRenderer.renderWithOutline(g, placeCost, shopBg.getCenterX(), 320, COLOR_OUTLINE);
+    }
+
+    public static void resetSpeedSlide() {
+        speedSlider.setCurrentValue(1f);
     }
 
 }
