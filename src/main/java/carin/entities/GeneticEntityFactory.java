@@ -35,7 +35,7 @@ public class GeneticEntityFactory {
             stream.forEach(p -> {
                 String name = p.getFileName().toString();
                 name = name.substring(0, name.lastIndexOf('.'));
-                System.out.println("name: " + name + " " + "p: " + p);
+//                System.out.println("name: " + name + " " + "p: " + p);
                 res.add(new Antibody(name, p));
             });
             return res;
@@ -48,7 +48,7 @@ public class GeneticEntityFactory {
     public static Antibody getAntibody(String geneticFile) {
         String path = "genetic_codes/antibody/" + geneticFile;
         String name = geneticFile.substring(0, geneticFile.lastIndexOf('.'));
-        System.out.println("name: " + name + " path: " + path);
+//        System.out.println("name: " + name + " path: " + path);
         return new Antibody(name, Path.of(path));
     }
 

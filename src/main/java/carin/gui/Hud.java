@@ -56,10 +56,10 @@ public class Hud extends GuiComponent {
         speedSlider.onChange(c -> {
             GameStates.loop().setXSpeed(Math.max(c.intValue(), 1));
         });
-        dropDownGenetic();
+
         this.getComponents().add(speedSlider);
+        this.getComponents().add(dropDownGenetic());
         this.getComponents().add(antibodyBuy());
-        this.getComponents().add(ddList);
     }
 
     private void renderGameInfo(Graphics2D g) {
@@ -113,9 +113,17 @@ public class Hud extends GuiComponent {
         Input.mouse().onReleased(k -> {
             if(isBuyPress){
                 if(GameStates.states().isUnOccupied(mouseManual)){
-                    SoundManager.purchaseSound();
-                    GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody(ddList.getSelectedObject().toString()).getCopy());
-                    Player.instance().addCredit(-10);
+                    if(ddList.getSelectedIndex() == -1) {
+                        SoundManager.purchaseSound();
+                        GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody("default1.in").getCopy());
+                        Player.instance().addCredit(-10);
+                    }
+                    else {
+                        SoundManager.purchaseSound();
+                        GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody(ddList.getSelectedObject().toString()).getCopy());
+                        System.out.println(ddList.getSelectedObject().toString());
+                        Player.instance().addCredit(-10);
+                    }
                 }
             }
             Game.window().cursor().set(Cursor);
@@ -147,10 +155,11 @@ public class Hud extends GuiComponent {
         speedSlider.setCurrentValue(1f);
     }
 
-    private void dropDownGenetic() {
+    private DropdownListField dropDownGenetic() {
         String[] listFile = ListFile.getList();
         ddList = new DropdownListField(50, 450,300,100, listFile, listFile.length);
-        ddList.setTextShadow(true);
+        ddList.setSelection(0);
+        return ddList;
     }
 
 }
