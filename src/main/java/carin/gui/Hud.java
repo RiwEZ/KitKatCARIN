@@ -4,11 +4,14 @@ import carin.Config;
 import carin.GameStates;
 import carin.Program;
 
+import carin.entities.GeneticEntityFactory;
 import carin.entities.Player;
+import carin.util.ListFile;
 import carin.util.SoundManager;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.graphics.ShapeRenderer;
 import de.gurkenlabs.litiengine.graphics.TextRenderer;
+import de.gurkenlabs.litiengine.gui.DropdownListField;
 import de.gurkenlabs.litiengine.gui.GuiComponent;
 import de.gurkenlabs.litiengine.gui.HorizontalSlider;
 import de.gurkenlabs.litiengine.gui.ImageComponent;
@@ -31,6 +34,7 @@ public class Hud extends GuiComponent {
     private static Point2D mouseManual;
     private static boolean isBuyPress;
     private static HorizontalSlider speedSlider;
+    private static DropdownListField ddList;
 
     public Hud() {
         super(0, 0, Game.window().getResolution().getWidth(), Game.window().getResolution().getHeight());
@@ -52,8 +56,10 @@ public class Hud extends GuiComponent {
         speedSlider.onChange(c -> {
             GameStates.loop().setXSpeed(Math.max(c.intValue(), 1));
         });
+        dropDownGenetic();
         this.getComponents().add(speedSlider);
         this.getComponents().add(antibodyBuy());
+        this.getComponents().add(ddList);
     }
 
     private void renderGameInfo(Graphics2D g) {
@@ -108,7 +114,7 @@ public class Hud extends GuiComponent {
             if(isBuyPress){
                 if(GameStates.states().isUnOccupied(mouseManual)){
                     SoundManager.purchaseSound();
-                    GameStates.states().spawnGeneticEntity(mouseManual, Game.random().choose(GameStates.states().getAvailableAntibody()).getCopy());
+                    GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody(ddList.getSelectedObject().toString()).getCopy());
                     Player.instance().addCredit(-10);
                 }
             }
@@ -131,10 +137,20 @@ public class Hud extends GuiComponent {
         String placeCost = "PLACEMENT COST: " + Config.placement_cost + " $";
         TextRenderer.renderWithOutline(g, moveCost, shopBg.getCenterX(), 300, COLOR_OUTLINE);
         TextRenderer.renderWithOutline(g, placeCost, shopBg.getCenterX(), 320, COLOR_OUTLINE);
+        String SelectGC = "SELECT GENETIC CODE";
+        g.setFont(Program.GUI_FONT_SMALL2.deriveFont(18f));
+        TextRenderer.renderWithOutline(g, SelectGC, shopBg.getCenterX(), 400, COLOR_OUTLINE);
+
     }
 
     public static void resetSpeedSlide() {
         speedSlider.setCurrentValue(1f);
+    }
+
+    private void dropDownGenetic() {
+        String[] listFile = ListFile.getList();
+        ddList = new DropdownListField(50, 450,300,100, listFile, listFile.length);
+        ddList.setTextShadow(true);
     }
 
 }

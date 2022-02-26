@@ -259,7 +259,4 @@ public class GameStates {
         return null;
     }
 
-    public List<Antibody> getAvailableAntibody() {
-        return availableAntibody;
-    }
 }

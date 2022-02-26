@@ -19,15 +19,15 @@ public class Program {
     public static final BufferedImage Cursor = Resources.images().get("misc/cursor.png");
 
     public static void main(String[] args) {
-        GuiProperties.setDefaultFont(GUI_FONT);
+        GuiProperties.setDefaultFont(GUI_FONT_SMALL2.deriveFont(10f));
         Resources.load("game.litidata");
         Game.info().setName("C.A.R.I.N | by KitKat");
         Game.info().setSubTitle("");
         Game.info().setWebsite("https://github.com/RiwEZ/KitKatCARIN");
         Game.init(args);
-//        GameStates.states().init();
-        Game.window().getRenderComponent().fadeIn(1000);
-        Game.screens().add(new MenuScreen());
+        GameStates.states().init();
+//        Game.window().getRenderComponent().fadeIn(1000);
+//        Game.screens().add(new MenuScreen());
         Game.screens().add(new IngameScreen());
         Game.screens().add(new GameOverScreen());
         Game.start();
