@@ -23,5 +23,6 @@ public class Player {
 
     public void addCredit(int amount) {
         currentCredit += amount;
+        if(currentCredit <= 0) currentCredit = 0;
     }
 }

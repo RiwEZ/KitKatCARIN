@@ -114,15 +114,20 @@ public class Hud extends GuiComponent {
             if(isBuyPress){
                 if(GameStates.states().isUnOccupied(mouseManual)){
                     if(ddList.getSelectedIndex() == -1) {
-                        SoundManager.purchaseSound();
-                        GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody("default1.in").getCopy());
-                        Player.instance().addCredit(-10);
+                        if(Player.instance().getCredit() - 10 >= 0){
+                            Player.instance().addCredit(-10);
+                            SoundManager.purchaseSound();
+                            GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody("default1.in").getCopy());
+                        }
+                        else SoundManager.deniedSound();
                     }
                     else {
-                        SoundManager.purchaseSound();
-                        GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody(ddList.getSelectedObject().toString()).getCopy());
-                        System.out.println(ddList.getSelectedObject().toString());
-                        Player.instance().addCredit(-10);
+                        if(Player.instance().getCredit() - 10 >= 0){
+                            Player.instance().addCredit(-10);
+                            SoundManager.purchaseSound();
+                            GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody(ddList.getSelectedObject().toString()).getCopy());
+                        }
+                        else SoundManager.deniedSound();
                     }
                 }
             }
