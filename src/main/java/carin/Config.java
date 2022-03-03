@@ -1,5 +1,6 @@
 package carin;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -11,8 +12,29 @@ public class Config {
 
     static {
         try {
-            // Path.of(config file location)
-            Reader reader = Files.newBufferedReader(Path.of("gameconfig.properties"));
+            Path p = Path.of("gameconfig.properties");
+
+            if (!Files.exists(p)) {
+                Files.createFile(p);
+                BufferedWriter wr = Files.newBufferedWriter(p);
+                // default config when there's no config file
+                wr.write("map.m = 10\n");
+                wr.write("map.n = 10\n");
+                wr.write("spawn_rate = 0.1\n");
+                wr.write("initial_credits = 100\n");
+                wr.write("placement_cost = 10\n");
+                wr.write("antibody_hp = 11\n");
+                wr.write("antibody_dmg = 2\n");
+                wr.write("antibody_leech = 1\n");
+                wr.write("virus_hp = 10\n");
+                wr.write("virus_dmg = 2\n");
+                wr.write("virus_leech = 1\n");
+                wr.write("move_hp_cost = 8\n");
+                wr.write("antibody_cred_gain = 10\n");
+                wr.flush();
+            }
+
+            Reader reader = Files.newBufferedReader(p);
             config = new Properties();
             config.load(reader);
         }
