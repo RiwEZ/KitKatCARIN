@@ -3,6 +3,7 @@ package carin.parser;
 import carin.entities.IGeneticEntity;
 import carin.parser.ast.statements.StatementSeq;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,9 +26,8 @@ public class GeneticProgram {
         return seq;
     }
 
-    // this should be use for testing only
     public Map<String, Integer> getVarMap() {
-        return var_map;
+        return Collections.unmodifiableMap(var_map);
     }
 
     public void run() {

@@ -77,7 +77,10 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
             if (states.isUnOccupied(pos)) {
                 boolean empty = true;
                 for (IGeneticEntity entity : states.getToSpawn()) {
-                    if (entity.getLocation().equals(pos)) empty = false;
+                    if (entity.getLocation().equals(pos)) {
+                        empty = false;
+                        break;
+                    }
                 }
                 if (empty) {
                     SoundManager.moveSound();
