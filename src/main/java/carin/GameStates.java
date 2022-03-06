@@ -91,6 +91,7 @@ public class GameStates {
             virusCount = 0;
             toSpawn.clear();
             toRemove.clear();
+            Input.mouse().clearExplicitListeners();
             Game.world().unloadEnvironment();
         }
 
