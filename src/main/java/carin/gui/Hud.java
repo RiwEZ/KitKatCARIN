@@ -106,33 +106,33 @@ public class Hud extends GuiComponent {
         antibodyShop.onMousePressed(e -> {
             isBuyPress = true;
             Game.window().cursor().set(antiCursor);
-        });
-        Input.mouse().onDragged(e -> {
-            mouseManual = GameStates.states().getSnap(Input.mouse().getMapLocation());
-        });
-        Input.mouse().onReleased(k -> {
-            if(isBuyPress){
-                if(GameStates.states().isUnOccupied(mouseManual)){
-                    if(ddList.getSelectedIndex() == -1) {
-                        if(Player.instance().getCredit() - 10 >= 0){
-                            Player.instance().addCredit(-10);
-                            SoundManager.purchaseSound();
-                            GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody("default1.in").getCopy());
+            Input.mouse().onDragged(x -> {
+                mouseManual = GameStates.states().getSnap(Input.mouse().getMapLocation());
+            });
+            Input.mouse().onReleased(k -> {
+                if(isBuyPress){
+                    if(GameStates.states().isUnOccupied(mouseManual)){
+                        if(ddList.getSelectedIndex() == -1) {
+                            if(Player.instance().getCredit() - 10 >= 0){
+                                Player.instance().addCredit(-10);
+                                SoundManager.purchaseSound();
+                                GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody("default1.in").getCopy());
+                            }
+                            else SoundManager.deniedSound();
                         }
-                        else SoundManager.deniedSound();
-                    }
-                    else {
-                        if(Player.instance().getCredit() - 10 >= 0){
-                            Player.instance().addCredit(-10);
-                            SoundManager.purchaseSound();
-                            GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody(ddList.getSelectedObject().toString()).getCopy());
+                        else {
+                            if(Player.instance().getCredit() - 10 >= 0){
+                                Player.instance().addCredit(-10);
+                                SoundManager.purchaseSound();
+                                GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody(ddList.getSelectedObject().toString()).getCopy());
+                            }
+                            else SoundManager.deniedSound();
                         }
-                        else SoundManager.deniedSound();
                     }
                 }
-            }
-            Game.window().cursor().set(Cursor);
-            isBuyPress = false;
+                Game.window().cursor().set(Cursor);
+                isBuyPress = false;
+            });
         });
         return antibodyShop;
     }
