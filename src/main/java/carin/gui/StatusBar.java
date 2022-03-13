@@ -2,18 +2,24 @@ package carin.gui;
 
 import carin.Program;
 import carin.entities.Antibody;
+import carin.entities.GeneticEntity;
 import carin.entities.Virus;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Creature;
+import de.gurkenlabs.litiengine.graphics.Camera;
 import de.gurkenlabs.litiengine.graphics.IRenderable;
 import de.gurkenlabs.litiengine.graphics.TextRenderer;
+import de.gurkenlabs.litiengine.resources.Resources;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class StatusBar implements IRenderable {
     private final Creature entity;
     private int ID;
-    private int HP;
+    private double HP;
+    private double maxHP;
+    private double fac;
 
     public StatusBar(Creature entity) {
         this.entity = entity;
@@ -26,18 +32,20 @@ public class StatusBar implements IRenderable {
         if(entity.getClass().equals(Virus.class)){
             ID = ((Virus) entity).getID();
             HP = ((Virus) entity).getCurrHP();
+            maxHP = ((Virus) entity).getMaxHP();
+            fac = HP / maxHP;
+            String image = Math.round(fac * 10) * 10 + "-hp";
+            BufferedImage bar = Resources.images().get("sprites/hpbar/virus/" + image + ".png");
+            g.drawImage(bar, (int) (Game.world().camera().getViewportLocation(entity.getCenter()).getX() - (bar.getWidth() / 2.0)), (int) (Game.world().camera().getViewportLocation(entity.getCenter()).getY() - 22), (bar.getWidth()), (bar.getHeight()), null);
         }
         else if(entity.getClass().equals(Antibody.class)){
             ID = ((Antibody) entity).getID();
             HP = ((Antibody) entity).getCurrHP();
+            maxHP = ((Antibody) entity).getMaxHP();
+            fac = HP / maxHP;
+            String image = Math.round(fac * 10) * 10 + "-hp";
+            BufferedImage bar = Resources.images().get("sprites/hpbar/antibody/" + image + ".png");
+            g.drawImage(bar, (int) (Game.world().camera().getViewportLocation(entity.getCenter()).getX() - (bar.getWidth() / 2.0)), (int) (Game.world().camera().getViewportLocation(entity.getCenter()).getY() - 22), (bar.getWidth()), (bar.getHeight()), null);
         }
-        int x = (int) entity.getCenter().getX();
-        int y = (int) entity.getCenter().getY();
-        String textID = "ID " + String.valueOf(ID);
-        String textHP = "HP " + String.valueOf(HP);
-        String textLoc = "X " + String.valueOf(x) + " Y " + String.valueOf(y);
-        TextRenderer.render(g, textID, (entity.getLocation().getX() - Game.world().camera().getFocus().getX() + 298  / Game.world().camera().getZoom()), (entity.getLocation().getY() - Game.world().camera().getFocus().getY() + 195 / Game.world().camera().getZoom()));
-        TextRenderer.render(g, textHP, (entity.getLocation().getX() - Game.world().camera().getFocus().getX() + 298 / Game.world().camera().getZoom()), (entity.getLocation().getY() - Game.world().camera().getFocus().getY() + 185 / Game.world().camera().getZoom()));
-        TextRenderer.render(g, textLoc, (entity.getLocation().getX() - Game.world().camera().getFocus().getX() + 298 / Game.world().camera().getZoom()), (entity.getLocation().getY() - Game.world().camera().getFocus().getY() + 175 / Game.world().camera().getZoom()));
     }
 }

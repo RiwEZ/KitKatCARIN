@@ -145,4 +145,6 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
         }
         return g;
     }
+
+    public int getMaxHP() {return maxHP;}
 }
