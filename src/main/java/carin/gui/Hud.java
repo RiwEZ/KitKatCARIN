@@ -28,8 +28,12 @@ public class Hud extends GuiComponent {
     private static final Color COLOR_BG = new Color(70, 70, 70, 255);
     private static final Color COLOR_SHOP = new Color(30, 30, 30, 255);
     private static final int PADDING = 10;
-    private static final BufferedImage antibody = Resources.images().get("sprites/antibody1-shop.png");
-    private static final BufferedImage antiCursor = Resources.images().get("misc/antibody1-cursor.png");
+    private static final BufferedImage antibody1 = Resources.images().get("sprites/antibody1-shop.png");
+    private static final BufferedImage anti1Cursor = Resources.images().get("misc/antibody1-cursor.png");
+    private static final BufferedImage antibody2 = Resources.images().get("sprites/antibody2-shop.png");
+    private static final BufferedImage anti2Cursor = Resources.images().get("misc/antibody2-cursor.png");
+    private static final BufferedImage antibody3 = Resources.images().get("sprites/antibody3-shop.png");
+    private static final BufferedImage anti3Cursor = Resources.images().get("misc/antibody3-cursor.png");
     private static final BufferedImage Cursor = Resources.images().get("misc/cursor.png");
     private static Point2D mouseManual;
     private static boolean isBuyPress;
@@ -101,11 +105,11 @@ public class Hud extends GuiComponent {
 
     private ImageComponent antibodyBuy() {
         ImageComponent antibodyShop = new ImageComponent(164,175,72,72);
-        antibodyShop.setImage(antibody);
+        antibodyShop.setImage(antibody1);
         isBuyPress = false;
         antibodyShop.onMousePressed(e -> {
             isBuyPress = true;
-            Game.window().cursor().set(antiCursor);
+            Game.window().cursor().set(anti1Cursor);
             Input.mouse().onDragged(x -> {
                 mouseManual = GameStates.states().getSnap(Input.mouse().getMapLocation());
             });
