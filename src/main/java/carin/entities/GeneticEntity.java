@@ -29,13 +29,13 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
             this.maxHP = Config.virus_hp;
             this.damage = Config.virus_dmg;
             this.leech = Config.virus_leech;
-            this.setSpritesheetName(type);
+            this.setSpritesheetName("virus1");
         }
         else if (type.equals("antibody")) {
             this.maxHP = Config.antibody_hp;
             this.damage = Config.antibody_dmg;
             this.leech = Config.antibody_leech;
-            this.setSpritesheetName(type);
+            this.setSpritesheetName("antibody1");
         }
         else {
             this.maxHP = 0;

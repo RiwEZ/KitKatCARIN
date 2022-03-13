@@ -28,8 +28,8 @@ public class Hud extends GuiComponent {
     private static final Color COLOR_BG = new Color(70, 70, 70, 255);
     private static final Color COLOR_SHOP = new Color(30, 30, 30, 255);
     private static final int PADDING = 10;
-    private static final BufferedImage antibody = Resources.images().get("sprites/antibody-shop.png");
-    private static final BufferedImage antiCursor = Resources.images().get("misc/antibody-cursor.png");
+    private static final BufferedImage antibody = Resources.images().get("sprites/antibody1-shop.png");
+    private static final BufferedImage antiCursor = Resources.images().get("misc/antibody1-cursor.png");
     private static final BufferedImage Cursor = Resources.images().get("misc/cursor.png");
     private static Point2D mouseManual;
     private static boolean isBuyPress;
