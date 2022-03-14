@@ -44,7 +44,8 @@ public class IngameScreen extends GameScreen {
     }
 
     public static void update(boolean isPause) {
-        playButton.setImage(isPause ? resume : pause);
+        if (playButton != null)
+            playButton.setImage(isPause ? resume : pause);
     }
 
     public static void resetPlayButton() {

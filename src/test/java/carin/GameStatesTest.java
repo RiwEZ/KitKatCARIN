@@ -25,14 +25,14 @@ class GameStatesTest {
         int tick = GameStates.loop().getTick();
 
         // let loop run for 2 sec
-        GameStates.loop().togglePause();
+        GameStates.loop().setPause(false);
         try {
             Thread.sleep(1000);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        GameStates.loop().togglePause();
+        GameStates.loop().setPause(true);
 
         states.init();
         assertEquals(entities, states.entities());
