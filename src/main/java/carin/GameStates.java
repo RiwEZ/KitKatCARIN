@@ -6,7 +6,6 @@ import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
 import de.gurkenlabs.litiengine.environment.EnvironmentLoadedListener;
 import de.gurkenlabs.litiengine.environment.tilemap.IMap;
-import de.gurkenlabs.litiengine.input.Input;
 import de.gurkenlabs.litiengine.util.TimeUtilities;
 
 import java.awt.geom.Point2D;
@@ -72,7 +71,6 @@ public class GameStates {
     public void init() {
         final long start = System.nanoTime();
 
-
         if (initialized) {
             entities.clear();
             entityMap.clear();
@@ -80,10 +78,9 @@ public class GameStates {
             virusCount = 0;
             toSpawn.clear();
             toRemove.clear();
-            inputController.clearManualMove();
+            inputController.clearListener();
             Game.world().unloadEnvironment();
         }
-
 
         // Setup camera
         CameraManager.getCamera().setClampToMap(false);
@@ -101,7 +98,7 @@ public class GameStates {
         });
 
         inputController = new InputController();
-        inputController.initManualMove();
+        inputController.initListener();
 
         // generate map and load it to the game
         IMap MAP = MapGeneration.generateMap(Config.map_m, Config.map_n);

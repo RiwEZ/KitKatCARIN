@@ -5,6 +5,7 @@ import carin.GameStates;
 import carin.Program;
 import carin.entities.GeneticEntityFactory;
 import carin.entities.Player;
+import carin.util.InputController;
 import carin.util.ListFile;
 import carin.util.SoundManager;
 import de.gurkenlabs.litiengine.Game;
@@ -14,7 +15,6 @@ import de.gurkenlabs.litiengine.gui.DropdownListField;
 import de.gurkenlabs.litiengine.gui.GuiComponent;
 import de.gurkenlabs.litiengine.gui.HorizontalSlider;
 import de.gurkenlabs.litiengine.gui.ImageComponent;
-import de.gurkenlabs.litiengine.input.IMouse;
 import de.gurkenlabs.litiengine.input.Input;
 import de.gurkenlabs.litiengine.resources.Resources;
 
@@ -116,16 +116,15 @@ public class Hud extends GuiComponent {
         Player player = Player.instance();
 
         antibodyShop.onMousePressed(k -> {
+            if (Input.keyboard().isPressed(17)) return;
             isBuyPress = true;
             Game.window().cursor().set(anti1Cursor);
             GameStates.loop().setPause(true);
-        });
-
-        Input.mouse().onDragged(e -> {
-            mouseManual = states.getSnap(Input.mouse().getMapLocation());
+            InputController.setSpacebarToggle(false);
         });
 
         Input.mouse().onReleased(e -> {
+            mouseManual = states.getSnap(Input.mouse().getMapLocation());
             if (isBuyPress) {
                 if (states.isInMap(mouseManual) && states.isUnOccupied(mouseManual)) {
                     if (ddList.getSelectedIndex() == -1) {
@@ -146,6 +145,7 @@ public class Hud extends GuiComponent {
                 }
             }
             Game.window().cursor().set(Cursor);
+            InputController.setSpacebarToggle(true);
             isBuyPress = false;
         });
 
