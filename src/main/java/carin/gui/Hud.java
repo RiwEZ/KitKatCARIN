@@ -118,6 +118,7 @@ public class Hud extends GuiComponent {
         antibodyShop.onMousePressed(k -> {
             isBuyPress = true;
             Game.window().cursor().set(anti1Cursor);
+            GameStates.loop().setPause(true);
         });
 
         Input.mouse().onDragged(e -> {
@@ -126,7 +127,7 @@ public class Hud extends GuiComponent {
 
         Input.mouse().onReleased(e -> {
             if (isBuyPress) {
-                if (states.isUnOccupied(mouseManual)) {
+                if (states.isInMap(mouseManual) && states.isUnOccupied(mouseManual)) {
                     if (ddList.getSelectedIndex() == -1) {
                         if (player.getCredit() - 10 >= 0) {
                             player.addCredit(-10);
