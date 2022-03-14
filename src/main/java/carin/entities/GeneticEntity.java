@@ -20,6 +20,7 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
     private GeneticProgram geneticCode;
     private final String type;
     private final String name;
+    private String spriteSheet[] = {"antibody1", "antibody2", "antibody3", "virus1", "virus2", "virus3"};
 
     public GeneticEntity(String type, String name) {
         super();
@@ -32,6 +33,10 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
             if(name.equals("default1")) this.setSpritesheetName("virus1");
             else if(name.equals("default2")) this.setSpritesheetName("virus2");
             else if(name.equals("default3")) this.setSpritesheetName("virus3");
+            else {
+                int rand = 3 + (int)(Math.random() * ((5 - 3) + 1));
+                this.setSpritesheetName(spriteSheet[rand]);
+            }
         }
         else if (type.equals("antibody")) {
             this.maxHP = Config.antibody_hp;
@@ -40,6 +45,10 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
             if(name.equals("default1")) this.setSpritesheetName("antibody1");
             else if(name.equals("default2")) this.setSpritesheetName("antibody2");
             else if(name.equals("default3")) this.setSpritesheetName("antibody3");
+            else {
+                int rand = 0 + (int)(Math.random() * ((2 - 0) + 1));
+                this.setSpritesheetName(spriteSheet[rand]);
+            }
         }
         else {
             this.maxHP = 0;
