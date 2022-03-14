@@ -3,10 +3,10 @@ package carin.util;
 import carin.Config;
 import carin.GameStates;
 import carin.entities.Antibody;
-import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.input.IMouse;
 import de.gurkenlabs.litiengine.input.Input;
 
+import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
 
 public class InputController {
@@ -23,8 +23,10 @@ public class InputController {
         movePressing = e -> {
             Point2D snap = states.getSnap(Input.mouse().getMapLocation());
             currentFocus = states.getFocusedAntibody(snap);
-            if (currentFocus != null)
+            if (currentFocus != null) {
                 prevPos = currentFocus.getLocation();
+                GameStates.loop().setPause(true);
+            }
         };
 
         moveDragging = e -> {

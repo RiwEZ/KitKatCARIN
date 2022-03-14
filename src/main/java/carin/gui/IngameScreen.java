@@ -1,7 +1,6 @@
 package carin.gui;
-
-
 import carin.GameStates;
+import carin.LogicLoop;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.gui.ImageComponent;
 import de.gurkenlabs.litiengine.gui.screens.GameScreen;
@@ -24,27 +23,28 @@ public class IngameScreen extends GameScreen {
     protected void initializeComponents() {
         hud = new Hud();
 
-        // this is temporary pause button
         super.initializeComponents();
-        playButton = new ImageComponent(Game.window().getResolution().getWidth() - 80, Game.window().getResolution().getHeight() - 45, 36, 36);
+        playButton = new ImageComponent(
+                Game.window().getResolution().getWidth() - 80,
+                Game.window().getResolution().getHeight() - 45,
+                36,
+                36);
         playButton.setImage(resume);
 
         playButton.onClicked(e -> {
             // toggle pause
-            if (!GameStates.loop().isGameOver()) {
-                GameStates.loop().togglePause();
-                if(GameStates.loop().isPause()){
-                    playButton.setImage(resume);
-                }
-                else{
-                    playButton.setImage(pause);
-                }
+            LogicLoop loop = GameStates.loop();
+            if (!loop.isGameOver()) {
+                loop.setPause(!loop.isPause());
             }
         });
 
-
         this.getComponents().add(hud);
         this.getComponents().add(playButton);
+    }
+
+    public static void update(boolean isPause) {
+        playButton.setImage(isPause ? resume : pause);
     }
 
     public static void resetPlayButton() {
