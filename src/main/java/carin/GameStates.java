@@ -1,10 +1,7 @@
 package carin;
 
 import carin.entities.*;
-import carin.util.CameraManager;
-import carin.util.MapGeneration;
-import carin.util.SensorIterator;
-import carin.util.SoundManager;
+import carin.util.*;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Spawnpoint;
 import de.gurkenlabs.litiengine.environment.EnvironmentLoadedListener;
@@ -38,16 +35,13 @@ public class GameStates {
     private List<Antibody> availableAntibody;
     private List<Virus> availableVirus;
 
-    private Antibody currentFocus;
-    private Point2D prevPos;
+    private InputController inputController;
 
     private static LogicLoop loop;
 
     public static GameStates states() {
         return states;
     }
-
-    private Point2D mouseManual;
 
     private void defaultSpawn() {
         // virus spawn
@@ -58,7 +52,7 @@ public class GameStates {
         // antibody spawn
         for(int i = 0; i < 3; i++){
             Point2D pos = Game.random().choose(unoccupiedPos());
-            spawnGeneticEntity(pos, Game.random().choose(availableAntibody).getCopy());
+            spawnGeneticEntity(pos, availableAntibody.get(0).getCopy());
         }
     }
 
@@ -78,11 +72,6 @@ public class GameStates {
     public void init() {
         final long start = System.nanoTime();
 
-        EnvironmentLoadedListener onLoad = env -> {
-            CameraManager.defaultCamSetup();
-            CameraManager.camFunction();
-            defaultSpawn();
-        };
 
         if (initialized) {
             entities.clear();
@@ -91,12 +80,19 @@ public class GameStates {
             virusCount = 0;
             toSpawn.clear();
             toRemove.clear();
-            Input.mouse().clearExplicitListeners();
+            inputController.clearManualMove();
             Game.world().unloadEnvironment();
         }
 
+
         // Setup camera
         CameraManager.getCamera().setClampToMap(false);
+
+        EnvironmentLoadedListener onLoad = env -> {
+            CameraManager.defaultCamSetup();
+            CameraManager.camFunction();
+            defaultSpawn();
+        };
 
         Game.world().onLoaded(onLoad);
         Game.world().onUnloaded(e -> {
@@ -104,28 +100,8 @@ public class GameStates {
             e.clear();
         });
 
-        // Manual move antibody by pressing and drag
-        Input.mouse().onPressed(e -> {
-            Point2D snap = getSnap(Input.mouse().getMapLocation());
-            currentFocus = getFocusedAntibody(snap);
-            if (currentFocus != null)
-                prevPos = currentFocus.getLocation();
-            //LogicLoop.instance().togglePause();
-        });
-        Input.mouse().onDragged(e -> {
-            mouseManual = Input.mouse().getMapLocation();
-            double xOffset = Config.tile_width/2.0;
-            double yOffset = Config.tile_height/2.0;
-            Point2D pos = new Point2D.Double(mouseManual.getX() - xOffset, mouseManual.getY() - yOffset);
-            if (currentFocus != null)
-                currentFocus.setLocation(pos);
-        });
-        Input.mouse().onReleased(k -> {
-            if (currentFocus != null) {
-                currentFocus.manualMove(prevPos, getSnap(mouseManual));
-            }
-            //LogicLoop.instance().togglePause();
-        });
+        inputController = new InputController();
+        inputController.initManualMove();
 
         // generate map and load it to the game
         IMap MAP = MapGeneration.generateMap(Config.map_m, Config.map_n);
@@ -250,7 +226,7 @@ public class GameStates {
         return new Point2D.Double(x, y);
     }
 
-    private Antibody getFocusedAntibody(Point2D snap) {
+    public Antibody getFocusedAntibody(Point2D snap) {
         if(Game.world().getEnvironments() == null){
             return null;
         }
@@ -260,4 +236,7 @@ public class GameStates {
         return null;
     }
 
+    public List<Antibody> getAvailableAntibody() {
+        return Collections.unmodifiableList(availableAntibody);
+    }
 }
