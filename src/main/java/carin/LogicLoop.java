@@ -1,6 +1,7 @@
 package carin;
 
 import carin.entities.IGeneticEntity;
+import carin.gui.IngameScreen;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.util.TimeUtilities;
 
@@ -25,8 +26,9 @@ public class LogicLoop extends Thread {
         delay = defaultDelay / multiplier;
     }
 
-    public void togglePause() {
-        isPause = !isPause;
+    public void setPause(boolean value) {
+        isPause = value;
+        IngameScreen.update(isPause);
     }
 
     public boolean isPause() { return isPause; }
