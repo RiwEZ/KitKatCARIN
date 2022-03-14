@@ -3,7 +3,6 @@ package carin.gui;
 import carin.Config;
 import carin.GameStates;
 import carin.Program;
-
 import carin.entities.GeneticEntityFactory;
 import carin.entities.Player;
 import carin.util.ListFile;
@@ -15,6 +14,7 @@ import de.gurkenlabs.litiengine.gui.DropdownListField;
 import de.gurkenlabs.litiengine.gui.GuiComponent;
 import de.gurkenlabs.litiengine.gui.HorizontalSlider;
 import de.gurkenlabs.litiengine.gui.ImageComponent;
+import de.gurkenlabs.litiengine.input.IMouse;
 import de.gurkenlabs.litiengine.input.Input;
 import de.gurkenlabs.litiengine.resources.Resources;
 
@@ -44,8 +44,12 @@ public class Hud extends GuiComponent {
         super(0, 0, Game.window().getResolution().getWidth(), Game.window().getResolution().getHeight());
     }
 
+    public static void resetSpeedSlide() {
+        speedSlider.setCurrentValue(1f);
+    }
+
     @Override
-    public void render(final Graphics2D g){
+    public void render(final Graphics2D g) {
         this.renderShop(g);
         this.renderGameInfo(g);
         super.render(g);
@@ -71,7 +75,7 @@ public class Hud extends GuiComponent {
 
         FontMetrics fm = g.getFontMetrics();
         double bgHeight = fm.getHeight() + PADDING * 2;
-        double bgY = Game.window().getResolution().getHeight() - 2*bgHeight;
+        double bgY = Game.window().getResolution().getHeight() - 2 * bgHeight;
         double textY = bgY + fm.getHeight() * 1.1;
 
         // render bottom HUD
@@ -91,53 +95,59 @@ public class Hud extends GuiComponent {
         String numberVirus = "VIRUS: " + GameStates.states().getVirusCount();
         String numberCredit = "CREDIT: " + Player.instance().getCredit() + "$";
         String tick = "TIME: " + GameStates.loop().getTick();
-//        String initTime = "InitTime: " + GameStates.states().initTime();
+        //String initTime = "InitTime: " + GameStates.states().initTime();
         String speedControl = "SPEED CONTROL";
         g.setFont(Program.GUI_FONT_SMALL2.deriveFont(12f));
-        TextRenderer.renderWithOutline(g, numberVirus, 200, textY+8, COLOR_OUTLINE);
-        TextRenderer.renderWithOutline(g, numberAnti, 200, textY+29,COLOR_OUTLINE);
-        TextRenderer.renderWithOutline(g, numberCredit, 200, 17,COLOR_OUTLINE);
-        TextRenderer.renderWithOutline(g, tick, 470, Game.window().getResolution().getHeight() - 70,COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, numberVirus, 200, textY + 8, COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, numberAnti, 200, textY + 29, COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, numberCredit, 200, 17, COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, tick, 470, Game.window().getResolution().getHeight() - 70, COLOR_OUTLINE);
         g.setFont(Program.GUI_FONT_SMALL2);
-        TextRenderer.renderWithOutline(g, speedControl, getWidth() - 155, textY+7,COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, speedControl, getWidth() - 155, textY + 7, COLOR_OUTLINE);
 
     }
 
     private ImageComponent antibodyBuy() {
-        ImageComponent antibodyShop = new ImageComponent(164,175,72,72);
+        ImageComponent antibodyShop = new ImageComponent(164, 175, 72, 72);
         antibodyShop.setImage(antibody1);
         isBuyPress = false;
-        antibodyShop.onMousePressed(e -> {
+
+        GameStates states = GameStates.states();
+        Player player = Player.instance();
+
+        antibodyShop.onMousePressed(k -> {
             isBuyPress = true;
             Game.window().cursor().set(anti1Cursor);
-            Input.mouse().onDragged(x -> {
-                mouseManual = GameStates.states().getSnap(Input.mouse().getMapLocation());
-            });
-            Input.mouse().onReleased(k -> {
-                if(isBuyPress){
-                    if(GameStates.states().isUnOccupied(mouseManual)){
-                        if(ddList.getSelectedIndex() == -1) {
-                            if(Player.instance().getCredit() - 10 >= 0){
-                                Player.instance().addCredit(-10);
-                                SoundManager.purchaseSound();
-                                GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody("default1.in").getCopy());
-                            }
-                            else SoundManager.deniedSound();
-                        }
-                        else {
-                            if(Player.instance().getCredit() - 10 >= 0){
-                                Player.instance().addCredit(-10);
-                                SoundManager.purchaseSound();
-                                GameStates.states().spawnGeneticEntity(mouseManual, GeneticEntityFactory.getAntibody(ddList.getSelectedObject().toString()).getCopy());
-                            }
-                            else SoundManager.deniedSound();
-                        }
+        });
+
+        Input.mouse().onDragged(e -> {
+            mouseManual = states.getSnap(Input.mouse().getMapLocation());
+        });
+
+        Input.mouse().onReleased(e -> {
+            if (isBuyPress) {
+                if (states.isUnOccupied(mouseManual)) {
+                    if (ddList.getSelectedIndex() == -1) {
+                        if (player.getCredit() - 10 >= 0) {
+                            player.addCredit(-10);
+                            SoundManager.purchaseSound();
+                            states.spawnGeneticEntity(mouseManual,
+                                    GeneticEntityFactory.getAntibody("default1.in").getCopy());
+                        } else SoundManager.deniedSound();
+                    } else {
+                        if (player.getCredit() - 10 >= 0) {
+                            player.addCredit(-10);
+                            SoundManager.purchaseSound();
+                            states.spawnGeneticEntity(mouseManual,
+                                    GeneticEntityFactory.getAntibody(ddList.getSelectedObject().toString()).getCopy());
+                        } else SoundManager.deniedSound();
                     }
                 }
-                Game.window().cursor().set(Cursor);
-                isBuyPress = false;
-            });
+            }
+            Game.window().cursor().set(Cursor);
+            isBuyPress = false;
         });
+
         return antibodyShop;
     }
 
@@ -160,13 +170,9 @@ public class Hud extends GuiComponent {
 
     }
 
-    public static void resetSpeedSlide() {
-        speedSlider.setCurrentValue(1f);
-    }
-
     private DropdownListField dropDownGenetic() {
         String[] listFile = ListFile.getList();
-        ddList = new DropdownListField(50, 450,300,100, listFile, listFile.length);
+        ddList = new DropdownListField(50, 450, 300, 100, listFile, listFile.length);
         ddList.setSelection(0);
         return ddList;
     }
