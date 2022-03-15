@@ -52,8 +52,8 @@ public class Antibody extends GeneticEntity {
     }
 
     @Override
-    public void getAttacked(IGeneticEntity entity, int dmg) {
-        super.getAttacked(entity, dmg);
+    public boolean getAttacked(IGeneticEntity entity, int dmg) {
+        boolean result = super.getAttacked(entity, dmg);
         if (this.isDead() && !turnToVirus) {
             if (entity instanceof Virus) {
                 IGeneticEntity copy = entity.getCopy();
@@ -62,6 +62,7 @@ public class Antibody extends GeneticEntity {
                 turnToVirus = true;
             }
         }
+        return result;
     }
 
     public void manualMove(Point2D prevPos, Point2D pos) {

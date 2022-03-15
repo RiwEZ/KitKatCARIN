@@ -84,20 +84,22 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
 
     @Override
     public void move(double x, double y) {
-        Point2D pos = new Point2D.Double(this.getX()+(x*Config.tile_width), this.getY()+(y*Config.tile_height));
-        if (states.isInMap(pos)) {
-            Point2D prevPos = new Point2D.Double(this.getX(), this.getY());
-            if (states.isUnOccupied(pos)) {
-                boolean empty = true;
-                for (IGeneticEntity entity : states.getToSpawn()) {
-                    if (entity.getLocation().equals(pos)) {
-                        empty = false;
-                        break;
+        if (!this.isDead()) {
+            Point2D pos = new Point2D.Double(this.getX()+(x*Config.tile_width), this.getY()+(y*Config.tile_height));
+            if (states.isInMap(pos)) {
+                Point2D prevPos = new Point2D.Double(this.getX(), this.getY());
+                if (states.isUnOccupied(pos)) {
+                    boolean empty = true;
+                    for (IGeneticEntity entity : states.getToSpawn()) {
+                        if (entity.getLocation().equals(pos)) {
+                            empty = false;
+                            break;
+                        }
                     }
-                }
-                if (empty) {
-                    SoundManager.moveSound();
-                    setLoc(prevPos, pos);
+                    if (empty) {
+                        SoundManager.moveSound();
+                        setLoc(prevPos, pos);
+                    }
                 }
             }
         }
@@ -110,13 +112,13 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
 
     @Override
     public boolean attack(double x, double y) {
-        Point2D pos = new Point2D.Double(this.getX()+(x*Config.tile_width), this.getY()+(y*Config.tile_height));
-        if (states.isInMap(pos)) {
-            if (!states.isUnOccupied(pos)) {
+        if (!this.isDead()) {
+            Point2D pos = new Point2D.Double(this.getX()+(x*Config.tile_width), this.getY()+(y*Config.tile_height));
+            if (states.isInMap(pos) && !states.isUnOccupied(pos)) {
                 SoundManager.attackSound();
                 IGeneticEntity target = states.entityMap().get(pos);
-                target.getAttacked(this, damage);
-                currentHP = Math.min(currentHP + leech, maxHP);
+                if (target.getAttacked(this, damage))
+                    currentHP = Math.min(currentHP + leech, maxHP);
                 return target.getCurrHP() == 0;
             }
         }
@@ -124,8 +126,13 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
     }
 
     @Override
-    public void getAttacked(IGeneticEntity entity, int dmg) {
-        if (this.isDead()) return;
+    public boolean getAttacked(IGeneticEntity entity, int dmg) {
+        if (this.isDead()) {
+            currentHP = 0;
+            //states.addToRemove(this);
+            return false;
+        }
+
         currentHP = Math.max(currentHP - dmg, 0);
         if (currentHP == 0) {
             SoundManager.lastHitSound();
@@ -133,6 +140,7 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
             SoundManager.knockSound();
             this.die();
         }
+        return true;
     }
 
     @Override

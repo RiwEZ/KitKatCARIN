@@ -37,7 +37,7 @@ public interface IGeneticEntity extends IMobileEntity {
     /**
      * @param dmg receiving dmg
      */
-    void getAttacked(IGeneticEntity entity, int dmg);
+    boolean getAttacked(IGeneticEntity entity, int dmg);
 
 
     /**

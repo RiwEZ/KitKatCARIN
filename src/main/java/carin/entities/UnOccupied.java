@@ -38,7 +38,8 @@ public class UnOccupied extends Creature implements IGeneticEntity {
     }
 
     @Override
-    public void getAttacked(IGeneticEntity entity, int dmg) {
+    public boolean getAttacked(IGeneticEntity entity, int dmg) {
+        return false;
     }
 
     @Override
