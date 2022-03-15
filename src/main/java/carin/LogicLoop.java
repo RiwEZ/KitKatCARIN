@@ -81,12 +81,12 @@ public class LogicLoop extends Thread {
             isPause = true;
             return;
         }
-        spawnVirus();
         for (IGeneticEntity g : states.entities()) {
             g.run();
         }
         states.clearToRemove();
         states.triggerToSpawn();
+        spawnVirus();
     }
 
     private void delay(long processTime) throws InterruptedException {

@@ -59,37 +59,33 @@ public class CameraManager {
         });
         Input.mouse().onDragged(e -> {
             if (Input.keyboard().isPressed(17) && Input.mouse().isLeftButtonPressed() && canDrag) {
-                if (zoomAmount > MaxZoomOut + 0.1) {
-                    Point2D pos = camera.getFocus();
-                    Point2D mouseLoc = Input.mouse().getMapLocation();
-                    double speed = 0.075;
-                    double diffX = (mouseOrigin.getX() - mouseLoc.getX()) * speed;
-                    double diffY = (mouseOrigin.getY() - mouseLoc.getY()) * speed;
+                Point2D pos = camera.getFocus();
+                Point2D mouseLoc = Input.mouse().getMapLocation();
+                double speed = 0.075;
+                double diffX = (mouseOrigin.getX() - mouseLoc.getX()) * speed;
+                double diffY = (mouseOrigin.getY() - mouseLoc.getY()) * speed;
 
-                    Point2D newPos = new Point2D.Double(pos.getX() + diffX, pos.getY() + diffY);
+                Point2D newPos = new Point2D.Double(pos.getX() + diffX, pos.getY() + diffY);
 
-                    camera.setFocus(newPos);
-                }
+                camera.setFocus(newPos);
             }
         });
         // Pan Camera by WASD
         Input.keyboard().onKeyPressed(e -> {
             char keychar = e.getKeyChar();
             if (keychar == 'w' || keychar == 'a' || keychar == 's' || keychar == 'd') {
-                int speed = 10;
-                if (zoomAmount > MaxZoomOut + 0.1) {
-                    Point2D pos = camera.getFocus();
-                    Point2D newPos = null;
-                    if (keychar == 'w')
-                        newPos = new Point2D.Double(pos.getX(), pos.getY() - speed);
-                    if (keychar == 'd')
-                        newPos = new Point2D.Double(pos.getX() + speed, pos.getY());
-                    if (keychar == 'a')
-                        newPos = new Point2D.Double(pos.getX() - speed, pos.getY());
-                    if (keychar == 's')
-                        newPos = new Point2D.Double(pos.getX(), pos.getY() + speed);
-                    camera.setFocus(newPos);
-                }
+            int speed = 10;
+                Point2D pos = camera.getFocus();
+                Point2D newPos = null;
+                if (keychar == 'w')
+                    newPos = new Point2D.Double(pos.getX(), pos.getY() - speed);
+                if (keychar == 'd')
+                    newPos = new Point2D.Double(pos.getX() + speed, pos.getY());
+                if (keychar == 'a')
+                    newPos = new Point2D.Double(pos.getX() - speed, pos.getY());
+                if (keychar == 's')
+                    newPos = new Point2D.Double(pos.getX(), pos.getY() + speed);
+                camera.setFocus(newPos);
             }
         });
 
