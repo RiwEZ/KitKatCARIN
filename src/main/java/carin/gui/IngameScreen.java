@@ -36,6 +36,7 @@ public class IngameScreen extends GameScreen {
             // toggle pause
             LogicLoop loop = GameStates.loop();
             if (!loop.isGameOver()) {
+                SoundManager.tickSound();
                 loop.setPause(!loop.isPause());
             }
         });
