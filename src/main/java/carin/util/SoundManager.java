@@ -9,13 +9,15 @@ import java.util.Collection;
 public class SoundManager {
     private static final Sound knockSound = Resources.sounds().get("audio/knock_b.wav");
     private static final Sound lastHit = Resources.sounds().get("audio/lasthit_b.wav");
-    private static final Sound atk1 = Resources.sounds().get("audio/atk1_b.wav");
-    private static final Sound atk2 = Resources.sounds().get("audio/atk2_b.wav");
+    private static final Sound atk1 = Resources.sounds().get("audio/atk3_b.wav");
+    private static final Sound atk2 = Resources.sounds().get("audio/atk4_b.wav");
     private static final Sound move = Resources.sounds().get("audio/move.wav");
     private static final Sound spawn = Resources.sounds().get("audio/spawn.wav");
     private static final Sound tick = Resources.sounds().get("audio/tick.wav");
     private static final Sound purchase = Resources.sounds().get("audio/purchase.ogg");
     private static final Sound wrong = Resources.sounds().get("audio/wrong.ogg");
+    private static final Sound menu = Resources.sounds().get("audio/bgm/menu.mp3");
+    private static final Sound ingame = Resources.sounds().get("audio/bgm/ingame.mp3");
 
     public static void knockSound() {
         Game.audio().playSound(knockSound,false,50,0.15f);
@@ -44,4 +46,6 @@ public class SoundManager {
     public static void deniedSound() {
         Game.audio().playSound(wrong,false,10,0.35f);
     }
+    public static void menu() { Game.audio().playMusic(menu); }
+    public static void ingame() {Game.audio().playMusic(ingame);}
 }

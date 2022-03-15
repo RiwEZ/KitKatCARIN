@@ -1,6 +1,7 @@
 package carin.gui;
 import carin.GameStates;
 import carin.LogicLoop;
+import carin.util.SoundManager;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.gui.ImageComponent;
 import de.gurkenlabs.litiengine.gui.screens.GameScreen;

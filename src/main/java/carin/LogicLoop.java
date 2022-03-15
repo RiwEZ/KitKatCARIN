@@ -59,6 +59,7 @@ public class LogicLoop extends Thread {
             }
         }
         if(isGameOver){
+            Game.audio().fadeMusic(1000);
             Game.loop().perform(1000, () -> {
                 Game.window().getRenderComponent().fadeIn(1000);
                 Game.screens().display("GAMEOVER");

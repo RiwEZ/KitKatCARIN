@@ -2,6 +2,7 @@ package carin.gui;
 
 import carin.GameStates;
 import carin.Program;
+import carin.util.SoundManager;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.graphics.ImageRenderer;
 import de.gurkenlabs.litiengine.graphics.TextRenderer;
@@ -48,6 +49,7 @@ public class MenuScreen extends Screen {
 
     @Override
     protected void initializeComponents() {
+        SoundManager.menu();
         super.initializeComponents();
         double x = Game.window().getCenter().getX();
         double y = Game.window().getCenter().getY();
@@ -61,6 +63,7 @@ public class MenuScreen extends Screen {
         this.playButton.getAppearanceHovered().setForeColor(new Color(255, 35, 35));
 
         this.playButton.onClicked(e -> {
+            Game.audio().fadeMusic(1000);
             if (this.locked) {
                 return;
             }
@@ -73,6 +76,7 @@ public class MenuScreen extends Screen {
                 Hud.resetSpeedSlide();
                 Game.screens().display("INGAME");
                 Game.window().getRenderComponent().fadeIn(1000);
+                SoundManager.ingame();
                 this.locked = false;
                 this.playButton.setEnabled(true);
             });

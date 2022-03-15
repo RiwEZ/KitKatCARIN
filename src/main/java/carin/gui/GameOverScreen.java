@@ -3,6 +3,7 @@ package carin.gui;
 import carin.GameStates;
 import carin.LogicLoop;
 import carin.Program;
+import carin.util.SoundManager;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.graphics.ShapeRenderer;
 import de.gurkenlabs.litiengine.graphics.TextRenderer;
@@ -44,9 +45,10 @@ public class GameOverScreen extends Screen {
         this.restartButton.setText("RESTART");
         this.restartButton.setFont(Program.GUI_FONT.deriveFont(80f));
         this.restartButton.getAppearance().setForeColor(new Color(255,255,255));
-        this.restartButton.getAppearanceHovered().setForeColor(new Color(215, 82, 82));
+        this.restartButton.getAppearanceHovered().setForeColor(new Color(255, 35, 35));
 
         this.restartButton.onClicked(e -> {
+            Game.audio().stopMusic();
             if (this.locked) {
                 return;
             }
@@ -59,6 +61,7 @@ public class GameOverScreen extends Screen {
                 Hud.resetSpeedSlide();
                 Game.screens().display("INGAME");
                 Game.window().getRenderComponent().fadeIn(1000);
+                SoundManager.ingame();
                 this.locked = false;
                 this.restartButton.setEnabled(true);
             });
@@ -71,13 +74,14 @@ public class GameOverScreen extends Screen {
         exitButton.setText("EXIT");
         exitButton.setFont(Program.GUI_FONT.deriveFont(75f));
         exitButton.getAppearance().setForeColor(new Color(255,255,255));
-        exitButton.getAppearanceHovered().setForeColor(new Color(215, 82, 82));
+        exitButton.getAppearanceHovered().setForeColor(new Color(255, 35, 35));
 
             Game.window().getRenderComponent().fadeOut(1000);
             Game.screens().display("MENU");
             Game.window().getRenderComponent().fadeIn(1000);
 
         exitButton.onClicked(e -> {
+            Game.audio().stopMusic();
             if (this.locked) {
                 return;
             }
@@ -87,6 +91,7 @@ public class GameOverScreen extends Screen {
             Game.loop().perform(1500, () -> {
                 Game.screens().display("MENU");
                 Game.window().getRenderComponent().fadeIn(1000);
+                SoundManager.menu();
                 this.locked = false;
                 exitButton.setEnabled(true);
             });
