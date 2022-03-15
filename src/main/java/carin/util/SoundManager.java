@@ -15,7 +15,7 @@ public class SoundManager {
     private static final Sound spawn = Resources.sounds().get("audio/spawn.wav");
     private static final Sound tick = Resources.sounds().get("audio/tick.wav");
     private static final Sound purchase = Resources.sounds().get("audio/purchase.ogg");
-    private static final Sound wrong = Resources.sounds().get("audio/wrong.ogg");
+    private static final Sound wrong = Resources.sounds().get("audio/wrong.wav");
     private static final Sound menu = Resources.sounds().get("audio/bgm/menu.mp3");
     private static final Sound ingame = Resources.sounds().get("audio/bgm/ingame.mp3");
 

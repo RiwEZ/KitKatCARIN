@@ -40,7 +40,7 @@ public class Hud extends GuiComponent {
     @Override
     protected void initializeComponents() {
         super.initializeComponents();
-        speedSlider = new HorizontalSlider(Game.window().getResolution().getWidth() - 200, Game.window().getResolution().getHeight() - 27, 90, 16,
+        speedSlider = new HorizontalSlider(Game.window().getResolution().getWidth() - 220, Game.window().getResolution().getHeight() - 27, 90, 16,
                 1, 3, 1);
         speedSlider.setShowTicks(true);
         speedSlider.onChange(c -> GameStates.loop().setXSpeed(Math.max(c.intValue(), 1)));
@@ -85,7 +85,7 @@ public class Hud extends GuiComponent {
         TextRenderer.renderWithOutline(g, numberCredit, 200, 17, COLOR_OUTLINE);
         TextRenderer.renderWithOutline(g, tick, 470, Game.window().getResolution().getHeight() - 70, COLOR_OUTLINE);
         g.setFont(Program.GUI_FONT_SMALL2);
-        TextRenderer.renderWithOutline(g, speedControl, getWidth() - 155, textY + 7, COLOR_OUTLINE);
+        TextRenderer.renderWithOutline(g, speedControl, getWidth() - 175, textY + 7, COLOR_OUTLINE);
 
     }
 

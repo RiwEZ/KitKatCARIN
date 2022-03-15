@@ -53,6 +53,7 @@ public class InputController {
         isPressed = false;
         togglePause = e -> {
             if (!isPressed && spacebarToggle) {
+                SoundManager.tickSound();
                 GameStates.loop().setPause(!GameStates.loop().isPause());
                 isPressed = true;
             }
