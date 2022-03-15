@@ -74,6 +74,7 @@ public class MenuScreen extends Screen {
                 GameStates.states().init();
                 IngameScreen.resetPlayButton();
                 Hud.resetSpeedSlide();
+                Hud.antibodyShop.changeZero();
                 Game.screens().display("INGAME");
                 Game.window().getRenderComponent().fadeIn(1000);
                 SoundManager.ingame();

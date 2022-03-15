@@ -9,8 +9,8 @@ import java.util.Collection;
 public class SoundManager {
     private static final Sound knockSound = Resources.sounds().get("audio/knock_b.wav");
     private static final Sound lastHit = Resources.sounds().get("audio/lasthit_b.wav");
-    private static final Sound atk1 = Resources.sounds().get("audio/atk3_b.wav");
-    private static final Sound atk2 = Resources.sounds().get("audio/atk4_b.wav");
+    private static final Sound atk1 = Resources.sounds().get("audio/atk1_b.wav");
+    private static final Sound atk2 = Resources.sounds().get("audio/atk2_b.wav");
     private static final Sound move = Resources.sounds().get("audio/move.wav");
     private static final Sound spawn = Resources.sounds().get("audio/spawn.wav");
     private static final Sound tick = Resources.sounds().get("audio/tick.wav");

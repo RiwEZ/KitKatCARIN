@@ -112,4 +112,8 @@ public class AntibodyShop extends ImageComponent {
         current = index;
     }
 
+    public void changeZero() {
+        changeImage(0);
+    }
+
 }

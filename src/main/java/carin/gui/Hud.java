@@ -18,6 +18,7 @@ public class Hud extends GuiComponent {
     private static final Color COLOR_BG = new Color(70, 70, 70, 255);
     private static final Color COLOR_SHOP = new Color(30, 30, 30, 255);
     private static final Color RED = new Color(255, 50, 50, 255);
+    static AntibodyShop antibodyShop = new AntibodyShop();
     private static final int PADDING = 10;
     private static HorizontalSlider speedSlider;
 
@@ -44,8 +45,6 @@ public class Hud extends GuiComponent {
                 1, 3, 1);
         speedSlider.setShowTicks(true);
         speedSlider.onChange(c -> GameStates.loop().setXSpeed(Math.max(c.intValue(), 1)));
-
-        AntibodyShop antibodyShop = new AntibodyShop();
 
         this.getComponents().add(speedSlider);
         this.getComponents().add(antibodyShop);

@@ -56,6 +56,7 @@ public class GameOverScreen extends Screen {
             this.restartButton.setEnabled(false);
             Game.window().getRenderComponent().fadeOut(1000);
             Game.loop().perform(1500, () -> {
+                Hud.antibodyShop.changeZero();
                 GameStates.states().init();
                 IngameScreen.resetPlayButton();
                 Hud.resetSpeedSlide();
@@ -89,6 +90,7 @@ public class GameOverScreen extends Screen {
             exitButton.setEnabled(false);
             Game.window().getRenderComponent().fadeOut(1000);
             Game.loop().perform(1500, () -> {
+                Hud.antibodyShop.changeZero();
                 Game.screens().display("MENU");
                 Game.window().getRenderComponent().fadeIn(1000);
                 SoundManager.menu();
