@@ -14,23 +14,28 @@ public class CameraManager {
     private static float defaultFocusX, defaultFocusY;
 
     private static Point2D mouseOrigin;
+    private static boolean canDrag = true;
 
     public static Camera getCamera() {
         return camera;
     }
 
+    public static void setCanDrag(boolean value) {
+        canDrag = value;
+    }
+
     // Setup camera
     public static void defaultCamSetup() {
-        MaxZoomOut = (float) ((float) 1 / ((Game.world().environment().getCenter().getX() + Game.world().environment().getCenter().getY()) * 0.004));
+        Point2D envCenter = Game.world().environment().getCenter();
+        MaxZoomOut = (float) ((float) 1 / ((envCenter.getX() + envCenter.getY()) * 0.004));
         zoomAmount = MaxZoomOut;
         defaultFocusX = 0;
-        defaultFocusY = (float) Game.world().environment().getCenter().getY();
+        defaultFocusY = (float) envCenter.getY();
         camera.setFocus(defaultFocusX, defaultFocusY);
         camera.setZoom(zoomAmount, 0);
         Game.world().setCamera(camera);
     }
 
-    // still buggy...
     public static void camFunction() {
         // Zoom-in / Zoom-out by MouseWheel
         Input.mouse().onWheelMoved(e -> {
@@ -48,9 +53,12 @@ public class CameraManager {
             }
         });
         // Pan Camera by Dragging
-        Input.mouse().onPressed(e -> mouseOrigin = Input.mouse().getMapLocation());
+        Input.mouse().onPressed(e -> {
+            if (Input.keyboard().isPressed(17))
+                mouseOrigin = Input.mouse().getMapLocation();
+        });
         Input.mouse().onDragged(e -> {
-            if (Input.keyboard().isPressed(17)) {
+            if (Input.keyboard().isPressed(17) && Input.mouse().isLeftButtonPressed() && canDrag) {
                 if (zoomAmount > MaxZoomOut + 0.1) {
                     Point2D pos = camera.getFocus();
                     Point2D mouseLoc = Input.mouse().getMapLocation();
@@ -64,28 +72,28 @@ public class CameraManager {
                 }
             }
         });
-
+        // Pan Camera by WASD
         Input.keyboard().onKeyPressed(e -> {
-            int speed = 10;
-            if (zoomAmount > MaxZoomOut + 0.1) {
-                Point2D pos = camera.getFocus();
-                Point2D newPos = null;
-                if (e.getKeyChar() == 'w') {
-                    newPos = new Point2D.Double(pos.getX(), pos.getY() - speed);
+            char keychar = e.getKeyChar();
+            if (keychar == 'w' || keychar == 'a' || keychar == 's' || keychar == 'd') {
+                int speed = 10;
+                if (zoomAmount > MaxZoomOut + 0.1) {
+                    Point2D pos = camera.getFocus();
+                    Point2D newPos = null;
+                    if (keychar == 'w')
+                        newPos = new Point2D.Double(pos.getX(), pos.getY() - speed);
+                    if (keychar == 'd')
+                        newPos = new Point2D.Double(pos.getX() + speed, pos.getY());
+                    if (keychar == 'a')
+                        newPos = new Point2D.Double(pos.getX() - speed, pos.getY());
+                    if (keychar == 's')
+                        newPos = new Point2D.Double(pos.getX(), pos.getY() + speed);
+                    camera.setFocus(newPos);
                 }
-                if (e.getKeyChar() == 'd') {
-                    newPos = new Point2D.Double(pos.getX() + speed, pos.getY());
-                }
-                if (e.getKeyChar() == 'a') {
-                    newPos = new Point2D.Double(pos.getX() - speed, pos.getY());
-                }
-                if (e.getKeyChar() == 's') {
-                    newPos = new Point2D.Double(pos.getX(), pos.getY() + speed);
-                }
-                camera.setFocus(newPos == null ? pos : newPos);
             }
         });
 
+        camera.onFocus(e -> InputController.entityOnCursor());
     }
 
     public static void dieScreenShake() {

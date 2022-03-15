@@ -5,6 +5,7 @@ import carin.GameStates;
 import carin.Program;
 import carin.entities.GeneticEntityFactory;
 import carin.entities.Player;
+import carin.util.CameraManager;
 import carin.util.InputController;
 import carin.util.ListFile;
 import carin.util.SoundManager;
@@ -121,32 +122,36 @@ public class Hud extends GuiComponent {
             Game.window().cursor().set(anti1Cursor);
             GameStates.loop().setPause(true);
             InputController.setSpacebarToggle(false);
+            CameraManager.setCanDrag(false);
         });
 
         Input.mouse().onReleased(e -> {
-            mouseManual = states.getSnap(Input.mouse().getMapLocation());
-            if (isBuyPress) {
-                if (states.isInMap(mouseManual) && states.isUnOccupied(mouseManual)) {
-                    if (ddList.getSelectedIndex() == -1) {
-                        if (player.getCredit() - 10 >= 0) {
-                            player.addCredit(-10);
-                            SoundManager.purchaseSound();
-                            states.spawnGeneticEntity(mouseManual,
-                                    GeneticEntityFactory.getAntibody("default1.in").getCopy());
-                        } else SoundManager.deniedSound();
-                    } else {
-                        if (player.getCredit() - 10 >= 0) {
-                            player.addCredit(-10);
-                            SoundManager.purchaseSound();
-                            states.spawnGeneticEntity(mouseManual,
-                                    GeneticEntityFactory.getAntibody(ddList.getSelectedObject().toString()).getCopy());
-                        } else SoundManager.deniedSound();
+            if (Input.mouse().isLeftButton(e)) {
+                mouseManual = states.getSnap(Input.mouse().getMapLocation());
+                if (isBuyPress) {
+                    if (states.isInMap(mouseManual) && states.isUnOccupied(mouseManual)) {
+                        if (ddList.getSelectedIndex() == -1) {
+                            if (player.getCredit() - 10 >= 0) {
+                                player.addCredit(-10);
+                                SoundManager.purchaseSound();
+                                states.spawnGeneticEntity(mouseManual,
+                                        GeneticEntityFactory.getAntibody("default1.in").getCopy());
+                            } else SoundManager.deniedSound();
+                        } else {
+                            if (player.getCredit() - 10 >= 0) {
+                                player.addCredit(-10);
+                                SoundManager.purchaseSound();
+                                states.spawnGeneticEntity(mouseManual,
+                                        GeneticEntityFactory.getAntibody(ddList.getSelectedObject().toString()).getCopy());
+                            } else SoundManager.deniedSound();
+                        }
                     }
                 }
+                Game.window().cursor().set(Cursor);
+                InputController.setSpacebarToggle(true);
+                CameraManager.setCanDrag(true);
+                isBuyPress = false;
             }
-            Game.window().cursor().set(Cursor);
-            InputController.setSpacebarToggle(true);
-            isBuyPress = false;
         });
 
         return antibodyShop;
