@@ -17,6 +17,7 @@ public class Hud extends GuiComponent {
     public static final Color COLOR_OUTLINE = new Color(0, 0, 0, 180);
     private static final Color COLOR_BG = new Color(70, 70, 70, 255);
     private static final Color COLOR_SHOP = new Color(30, 30, 30, 255);
+    private static final Color RED = new Color(255, 50, 50, 255);
     private static final int PADDING = 10;
     private static HorizontalSlider speedSlider;
 
@@ -32,6 +33,7 @@ public class Hud extends GuiComponent {
     public void render(final Graphics2D g) {
         this.renderShop(g);
         this.renderGameInfo(g);
+        this.alertNoAnti(g);
         super.render(g);
     }
 
@@ -104,6 +106,14 @@ public class Hud extends GuiComponent {
         g.setFont(Program.GUI_FONT_SMALL2.deriveFont(18f));
         TextRenderer.renderWithOutline(g, SelectGC, shopBg.getCenterX(), 400, COLOR_OUTLINE);
 
+    }
+
+    private void alertNoAnti(Graphics2D g) {
+        g.setFont(Program.GUI_FONT_SMALL2.deriveFont(12f));
+        if(GameStates.loop().getTick() == 0 && GameStates.states().getAntibodyCount() == 0){
+            g.setColor(RED);
+            TextRenderer.renderWithOutline(g, "NO ANTIBODY IN YOUR BODY PLEASE BUY IT !!", 950, 75, COLOR_OUTLINE);
+        }
     }
 
 }

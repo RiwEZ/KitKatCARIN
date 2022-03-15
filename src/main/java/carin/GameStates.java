@@ -48,11 +48,11 @@ public class GameStates {
             Point2D pos = Game.random().choose(unoccupiedPos());
             spawnGeneticEntity(pos, Game.random().choose(availableVirus).getCopy());
         }
-        // antibody spawn
-        for(int i = 0; i < 3; i++){
-            Point2D pos = Game.random().choose(unoccupiedPos());
-            spawnGeneticEntity(pos, availableAntibody.get(0).getCopy());
-        }
+        // antibody spawn (for testing)
+//        for(int i = 0; i < 3; i++){
+//            Point2D pos = Game.random().choose(unoccupiedPos());
+//            spawnGeneticEntity(pos, availableAntibody.get(0).getCopy());
+//        }
     }
 
     /**
