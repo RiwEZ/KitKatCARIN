@@ -3,43 +3,22 @@ package carin.gui;
 import carin.Config;
 import carin.GameStates;
 import carin.Program;
-import carin.entities.GeneticEntityFactory;
 import carin.entities.Player;
-import carin.util.CameraManager;
-import carin.util.InputController;
-import carin.util.ListFile;
-import carin.util.SoundManager;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.graphics.ShapeRenderer;
 import de.gurkenlabs.litiengine.graphics.TextRenderer;
-import de.gurkenlabs.litiengine.gui.DropdownListField;
 import de.gurkenlabs.litiengine.gui.GuiComponent;
 import de.gurkenlabs.litiengine.gui.HorizontalSlider;
-import de.gurkenlabs.litiengine.gui.ImageComponent;
-import de.gurkenlabs.litiengine.input.Input;
-import de.gurkenlabs.litiengine.resources.Resources;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 
 public class Hud extends GuiComponent {
     public static final Color COLOR_OUTLINE = new Color(0, 0, 0, 180);
     private static final Color COLOR_BG = new Color(70, 70, 70, 255);
     private static final Color COLOR_SHOP = new Color(30, 30, 30, 255);
     private static final int PADDING = 10;
-    private static final BufferedImage antibody1 = Resources.images().get("sprites/antibody1-shop.png");
-    private static final BufferedImage anti1Cursor = Resources.images().get("misc/antibody1-cursor.png");
-    private static final BufferedImage antibody2 = Resources.images().get("sprites/antibody2-shop.png");
-    private static final BufferedImage anti2Cursor = Resources.images().get("misc/antibody2-cursor.png");
-    private static final BufferedImage antibody3 = Resources.images().get("sprites/antibody3-shop.png");
-    private static final BufferedImage anti3Cursor = Resources.images().get("misc/antibody3-cursor.png");
-    private static final BufferedImage Cursor = Resources.images().get("misc/cursor.png");
-    private static Point2D mouseManual;
-    private static boolean isBuyPress;
     private static HorizontalSlider speedSlider;
-    private static DropdownListField ddList;
 
     public Hud() {
         super(0, 0, Game.window().getResolution().getWidth(), Game.window().getResolution().getHeight());
@@ -62,13 +41,13 @@ public class Hud extends GuiComponent {
         speedSlider = new HorizontalSlider(Game.window().getResolution().getWidth() - 200, Game.window().getResolution().getHeight() - 27, 90, 16,
                 1, 3, 1);
         speedSlider.setShowTicks(true);
-        speedSlider.onChange(c -> {
-            GameStates.loop().setXSpeed(Math.max(c.intValue(), 1));
-        });
+        speedSlider.onChange(c -> GameStates.loop().setXSpeed(Math.max(c.intValue(), 1)));
+
+        AntibodyShop antibodyShop = new AntibodyShop();
 
         this.getComponents().add(speedSlider);
-        this.getComponents().add(dropDownGenetic());
-        this.getComponents().add(antibodyBuy());
+        this.getComponents().add(antibodyShop);
+        this.getComponents().add(antibodyShop.getDdList());
     }
 
     private void renderGameInfo(Graphics2D g) {
@@ -108,55 +87,6 @@ public class Hud extends GuiComponent {
 
     }
 
-    private ImageComponent antibodyBuy() {
-        ImageComponent antibodyShop = new ImageComponent(164, 175, 72, 72);
-        antibodyShop.setImage(antibody1);
-        isBuyPress = false;
-
-        GameStates states = GameStates.states();
-        Player player = Player.instance();
-
-        antibodyShop.onMousePressed(k -> {
-            if (Input.keyboard().isPressed(17)) return;
-            isBuyPress = true;
-            Game.window().cursor().set(anti1Cursor);
-            GameStates.loop().setPause(true);
-            InputController.setSpacebarToggle(false);
-            CameraManager.setCanDrag(false);
-        });
-
-        Input.mouse().onReleased(e -> {
-            if (Input.mouse().isLeftButton(e)) {
-                mouseManual = states.getSnap(Input.mouse().getMapLocation());
-                if (isBuyPress) {
-                    if (states.isInMap(mouseManual) && states.isUnOccupied(mouseManual)) {
-                        if (ddList.getSelectedIndex() == -1) {
-                            if (player.getCredit() - 10 >= 0) {
-                                player.addCredit(-10);
-                                SoundManager.purchaseSound();
-                                states.spawnGeneticEntity(mouseManual,
-                                        GeneticEntityFactory.getAntibody("default1.in").getCopy());
-                            } else SoundManager.deniedSound();
-                        } else {
-                            if (player.getCredit() - 10 >= 0) {
-                                player.addCredit(-10);
-                                SoundManager.purchaseSound();
-                                states.spawnGeneticEntity(mouseManual,
-                                        GeneticEntityFactory.getAntibody(ddList.getSelectedObject().toString()).getCopy());
-                            } else SoundManager.deniedSound();
-                        }
-                    }
-                }
-                Game.window().cursor().set(Cursor);
-                InputController.setSpacebarToggle(true);
-                CameraManager.setCanDrag(true);
-                isBuyPress = false;
-            }
-        });
-
-        return antibodyShop;
-    }
-
     private void renderShop(Graphics2D g) {
         Rectangle2D shopBg = new Rectangle2D.Double(0, 0, 400, Game.window().getResolution().getHeight());
         g.setColor(COLOR_SHOP);
@@ -174,13 +104,6 @@ public class Hud extends GuiComponent {
         g.setFont(Program.GUI_FONT_SMALL2.deriveFont(18f));
         TextRenderer.renderWithOutline(g, SelectGC, shopBg.getCenterX(), 400, COLOR_OUTLINE);
 
-    }
-
-    private DropdownListField dropDownGenetic() {
-        String[] listFile = ListFile.getList();
-        ddList = new DropdownListField(50, 450, 300, 100, listFile, listFile.length);
-        ddList.setSelection(0);
-        return ddList;
     }
 
 }

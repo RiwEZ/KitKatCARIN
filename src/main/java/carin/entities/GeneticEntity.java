@@ -6,6 +6,7 @@ import carin.gui.StatusBar;
 import carin.parser.GeneticProgram;
 import carin.util.CameraManager;
 import carin.util.SoundManager;
+import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.*;
 import de.gurkenlabs.litiengine.graphics.RenderType;
 
@@ -20,7 +21,6 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
     private GeneticProgram geneticCode;
     private final String type;
     private final String name;
-    private String spriteSheet[] = {"antibody1", "antibody2", "antibody3", "virus1", "virus2", "virus3"};
 
     public GeneticEntity(String type, String name) {
         super();
@@ -30,25 +30,11 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
             this.maxHP = Config.virus_hp;
             this.damage = Config.virus_dmg;
             this.leech = Config.virus_leech;
-            if(name.equals("default1")) this.setSpritesheetName("virus1");
-            else if(name.equals("default2")) this.setSpritesheetName("virus2");
-            else if(name.equals("default3")) this.setSpritesheetName("virus3");
-            else {
-                int rand = 3 + (int)(Math.random() * ((5 - 3) + 1));
-                this.setSpritesheetName(spriteSheet[rand]);
-            }
         }
         else if (type.equals("antibody")) {
             this.maxHP = Config.antibody_hp;
             this.damage = Config.antibody_dmg;
             this.leech = Config.antibody_leech;
-            if(name.equals("default1")) this.setSpritesheetName("antibody1");
-            else if(name.equals("default2")) this.setSpritesheetName("antibody2");
-            else if(name.equals("default3")) this.setSpritesheetName("antibody3");
-            else {
-                int rand = 0 + (int)(Math.random() * ((2 - 0) + 1));
-                this.setSpritesheetName(spriteSheet[rand]);
-            }
         }
         else {
             this.maxHP = 0;
@@ -56,6 +42,15 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
             this.leech = 0;
             this.die();
         }
+
+        if (!name.equals("")) {
+            this.setSpritesheetName(name);
+        }
+        else {
+            String[] spriteSheet = {"antibody1", "antibody2", "antibody3", "virus1", "virus2", "virus3"};
+            this.setSpritesheetName(Game.random().choose(spriteSheet));
+        }
+
         this.setRenderType(RenderType.GROUND);
 
         this.currentHP = maxHP;
@@ -69,6 +64,11 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
             e.setVisible(false);
             this.removeListener(status);
         });
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     @Override
