@@ -57,8 +57,8 @@ public class MenuScreen extends Screen {
         this.playButton.setImage(null);
         this.playButton.setText("START");
         this.playButton.setFont(Program.GUI_FONT.deriveFont(100f));
-        this.playButton.getAppearance().setForeColor(new Color(215, 82, 82));
-        this.playButton.getAppearanceHovered().setForeColor(new Color(253, 184, 184));
+        this.playButton.getAppearance().setForeColor(new Color(255, 255, 255));
+        this.playButton.getAppearanceHovered().setForeColor(new Color(255, 35, 35));
 
         this.playButton.onClicked(e -> {
             if (this.locked) {
@@ -84,8 +84,8 @@ public class MenuScreen extends Screen {
         this.exitButton.setImage(null);
         this.exitButton.setText("EXIT");
         this.exitButton.setFont(Program.GUI_FONT.deriveFont(75f));
-        this.exitButton.getAppearance().setForeColor(new Color(215, 82, 82));
-        this.exitButton.getAppearanceHovered().setForeColor(new Color(253, 184, 184));
+        this.exitButton.getAppearance().setForeColor(new Color(255, 255, 255));
+        this.exitButton.getAppearanceHovered().setForeColor(new Color(255, 35, 35));
 
         this.exitButton.onClicked(e -> {
             System.exit(0);
