@@ -128,7 +128,8 @@ public abstract class GeneticEntity extends Creature implements IGeneticEntity {
                 SoundManager.attackSound();
                 IGeneticEntity target = states.entityMap().get(pos);
                 if (target.getAttacked(this, damage))
-                    currentHP = Math.min(currentHP + leech, maxHP);
+                    if(this.type.equals("virus")) currentHP = Math.min(currentHP + leech, maxHP);
+                    else if(this.type.equals("antibody") && target.getCurrHP() == 0) currentHP = Math.min(currentHP + leech, maxHP);
                 return target.getCurrHP() == 0;
             }
         }
