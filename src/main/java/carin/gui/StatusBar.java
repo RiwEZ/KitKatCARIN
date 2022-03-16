@@ -2,13 +2,10 @@ package carin.gui;
 
 import carin.Program;
 import carin.entities.Antibody;
-import carin.entities.GeneticEntity;
 import carin.entities.Virus;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.entities.Creature;
-import de.gurkenlabs.litiengine.graphics.Camera;
 import de.gurkenlabs.litiengine.graphics.IRenderable;
-import de.gurkenlabs.litiengine.graphics.TextRenderer;
 import de.gurkenlabs.litiengine.resources.Resources;
 
 import java.awt.*;

@@ -5,8 +5,9 @@ import carin.entities.IGeneticEntity;
 import java.util.Map;
 
 public class Term implements Expr {
-    private Expr v, u;
-    private Character op;
+    private final Expr v;
+    private final Expr u;
+    private final Character op;
 
     public Term(Expr v, Character op, Expr u) {
         this.v = v;

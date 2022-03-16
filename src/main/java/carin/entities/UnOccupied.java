@@ -4,8 +4,6 @@ import carin.parser.GeneticProgram;
 import de.gurkenlabs.litiengine.entities.Creature;
 import de.gurkenlabs.litiengine.graphics.RenderType;
 
-import java.awt.geom.Point2D;
-
 /**
  * Representing empty space on entityMap.
  */

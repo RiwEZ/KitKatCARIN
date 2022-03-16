@@ -10,8 +10,8 @@ public class SensorIterator implements Iterator<IGeneticEntity> {
     private final Point2D host;
     private final GameStates states;
     private int lookAt;
-    int tile_width;
-    int tile_height;
+    final int tile_width;
+    final int tile_height;
 
     public SensorIterator(Point2D host, GameStates states, int tile_width, int tile_height) {
         this.host = host;

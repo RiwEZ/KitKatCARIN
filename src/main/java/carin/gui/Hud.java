@@ -18,7 +18,7 @@ public class Hud extends GuiComponent {
     private static final Color COLOR_BG = new Color(70, 70, 70, 255);
     private static final Color COLOR_SHOP = new Color(30, 30, 30, 255);
     private static final Color RED = new Color(255, 50, 50, 255);
-    static AntibodyShop antibodyShop = new AntibodyShop();
+    static final AntibodyShop antibodyShop = new AntibodyShop();
     private static final int PADDING = 10;
     private static HorizontalSlider speedSlider;
 

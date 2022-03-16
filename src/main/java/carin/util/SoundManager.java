@@ -4,8 +4,6 @@ import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.resources.Resources;
 import de.gurkenlabs.litiengine.sound.Sound;
 
-import java.util.Collection;
-
 public class SoundManager {
     private static final Sound knockSound = Resources.sounds().get("audio/knock_b.wav");
     private static final Sound lastHit = Resources.sounds().get("audio/lasthit_b.wav");

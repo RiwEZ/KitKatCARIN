@@ -5,7 +5,8 @@ import carin.entities.IGeneticEntity;
 import java.util.Map;
 
 public class Factor implements Expr {
-    private Expr v, u;
+    private final Expr v;
+    private final Expr u;
 
     public Factor(Expr v, Expr u) {
         this.v = v;

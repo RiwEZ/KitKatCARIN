@@ -28,10 +28,6 @@ public class GameOverScreen extends Screen {
         renderGameOverLogo(g);
         super.render(g);
     }
-    @Override
-    public void prepare() {
-        super.prepare();
-    }
 
     protected void initializeComponents() {
         super.initializeComponents();

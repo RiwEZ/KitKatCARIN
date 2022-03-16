@@ -43,11 +43,6 @@ public class MenuScreen extends Screen {
     }
 
     @Override
-    public void prepare() {
-        super.prepare();
-    }
-
-    @Override
     protected void initializeComponents() {
         SoundManager.menu();
         super.initializeComponents();
@@ -92,9 +87,7 @@ public class MenuScreen extends Screen {
         this.exitButton.getAppearance().setForeColor(new Color(255, 255, 255));
         this.exitButton.getAppearanceHovered().setForeColor(new Color(255, 35, 35));
 
-        this.exitButton.onClicked(e -> {
-            System.exit(0);
-        });
+        this.exitButton.onClicked(e -> System.exit(0));
         this.getComponents().add(this.exitButton);
     }
 
