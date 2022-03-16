@@ -200,15 +200,17 @@ public class GeneticParser {
             v = new Power(tk.consume(), rand);
         else if (Token.isSensor(tk.peek())) {
             if (tk.peek("nearby")) {
+                String cmd = tk.consume().val();
                 if (Token.isDirection(tk.peek())) {
                     int direction = Token.getDirection(tk.consume().val());
-                    v = new SensorExpr(tk.consume().val(), direction);
+                    v = new SensorExpr(cmd, direction);
                 }
                 else throw new SyntaxError("direction expected", errInfo());
             }
             else
                 v = new SensorExpr(tk.consume().val());
 
+            return v;
         }
         else if (tk.consume("(")) {
             v = parseExpr();
