@@ -22,6 +22,7 @@ public class Antibody extends GeneticEntity {
 
     public Antibody(String name) {
         super("antibody", name);
+        super.setSprite("antibody1");
         this.antibodyID = ID;
         ID++;
     }

@@ -16,7 +16,6 @@ import de.gurkenlabs.litiengine.resources.Resources;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AntibodyShop extends ImageComponent {
@@ -54,9 +53,10 @@ public class AntibodyShop extends ImageComponent {
         antibody = new ArrayList<>();
         cursor = new ArrayList<>();
 
-        Arrays.stream(antibodies().toArray()).forEach(name -> {
-            antibody.add(Resources.images().get("sprites/" + name + "-shop.png"));
-            cursor.add(Resources.images().get("misc/" + name + "-cursor.png"));
+        antibodies().forEach(ab -> {
+            String sprite = ab.getSpritesheetName();
+            antibody.add(Resources.images().get("sprites/" + sprite + "-shop.png"));
+            cursor.add(Resources.images().get("misc/" + sprite + "-cursor.png"));
         });
     }
 

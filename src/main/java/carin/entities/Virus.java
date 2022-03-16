@@ -16,6 +16,7 @@ public class Virus extends GeneticEntity {
 
     public Virus(String name) {
         super("virus", name);
+        super.setSprite("virus1");
         this.virusID = ID;
         ID++;
     }

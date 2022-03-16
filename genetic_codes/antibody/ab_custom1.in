@@ -1,0 +1,9 @@
+virusLoc = virus
+if (virusLoc % 10 - 7) then shoot upleft
+else if (virusLoc % 10 - 6) then shoot left
+else if (virusLoc % 10 - 5) then shoot downleft
+else if (virusLoc % 10 - 4) then shoot down
+else if (virusLoc % 10 - 3) then shoot downright
+else if (virusLoc % 10 - 2) then shoot right
+else if (virusLoc % 10 - 1) then shoot upright
+else shoot up
