@@ -198,8 +198,18 @@ public class GeneticParser {
         if (!tk.hasNext()) throw new SyntaxError("expression expected", errInfo());
         else if (Token.isPower(tk.peek()))
             v = new Power(tk.consume(), rand);
-        else if (Token.isSensor(tk.peek()))
-            v = new SensorExpr(tk.consume().val());
+        else if (Token.isSensor(tk.peek())) {
+            if (tk.peek("nearby")) {
+                if (Token.isDirection(tk.peek())) {
+                    int direction = Token.getDirection(tk.consume().val());
+                    v = new SensorExpr(tk.consume().val(), direction);
+                }
+                else throw new SyntaxError("direction expected", errInfo());
+            }
+            else
+                v = new SensorExpr(tk.consume().val());
+
+        }
         else if (tk.consume("(")) {
             v = parseExpr();
             if (!tk.consume(")"))

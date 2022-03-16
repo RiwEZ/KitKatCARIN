@@ -190,50 +190,177 @@ class SensorExprTest {
 
         @Test
         void noInRange() {
-            SensorExpr sensor = new SensorExpr(cmd);
+            SensorExpr sensor = new SensorExpr(cmd, 6);
             assertEquals(0, sensor.evaluate(new HashMap<>(), main));
         }
 
-        @TestFactory
-        Stream<DynamicTest> isAntibodyLocCorrect() {
-            List<Integer> testCases = new LinkedList<>();
-            List<Integer> testNum = new LinkedList<>();
-            int c = 0;
-            for (int i = 1; i <= 3; i++) {
-                for (int j = 1; j <= 8; j++) {
-                    testCases.add(i * 10 + j);
-                    testNum.add(c);
-                    c++;
-                }
-            }
+        @Test
+        void up() {
+            SensorExpr sensor = new SensorExpr(cmd, 8);
+            spawnAntibody(16);
+            assertEquals(32, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(8);
+            assertEquals(22, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(0);
+            assertEquals(12, sensor.evaluate(new HashMap<>(), main));
 
-            return testNum.stream().map(i -> dynamicTest("at location" + testCases.get(i), () -> {
-                resetMap(st, main);
-                spawnAntibody(i);
-                SensorExpr sensor = new SensorExpr(cmd);
-                assertEquals(10*(testCases.get(i)/10)+2, sensor.evaluate(new HashMap<>(), main));
-            }));
+            resetMap(st, main);
+            spawnVirus(16);
+            assertEquals(31, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(8);
+            assertEquals(21, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(0);
+            assertEquals(11, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
         }
 
-        @TestFactory
-        Stream<DynamicTest> isVirusLocCorrect() {
-            List<Integer> testCases = new LinkedList<>();
-            List<Integer> testNum = new LinkedList<>();
-            int c = 0;
-            for (int i = 1; i <= 3; i++) {
-                for (int j = 1; j <= 8; j++) {
-                    testCases.add(i * 10 + j);
-                    testNum.add(c);
-                    c++;
-                }
-            }
+        @Test
+        void left() {
+            SensorExpr sensor = new SensorExpr(cmd, 4);
+            spawnAntibody(16);
+            assertEquals(32, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(8);
+            assertEquals(22, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(0);
+            assertEquals(12, sensor.evaluate(new HashMap<>(), main));
 
-            return testNum.stream().map(i -> dynamicTest("at location" + testCases.get(i), () -> {
-                resetMap(st, main);
-                spawnVirus(i);
-                SensorExpr sensor = new SensorExpr(cmd);
-                assertEquals(10*(testCases.get(i)/10)+1, sensor.evaluate(new HashMap<>(), main));
-            }));
+            resetMap(st, main);
+            spawnVirus(16);
+            assertEquals(31, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(8);
+            assertEquals(21, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(0);
+            assertEquals(11, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
         }
+
+        @Test
+        void right() {
+            SensorExpr sensor = new SensorExpr(cmd, 6);
+            spawnAntibody(16);
+            assertEquals(32, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(8);
+            assertEquals(22, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(0);
+            assertEquals(12, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
+            spawnVirus(16);
+            assertEquals(31, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(8);
+            assertEquals(21, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(0);
+            assertEquals(11, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
+        }
+
+        @Test
+        void down() {
+            SensorExpr sensor = new SensorExpr(cmd, 2);
+            spawnAntibody(16);
+            assertEquals(32, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(8);
+            assertEquals(22, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(0);
+            assertEquals(12, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
+            spawnVirus(16);
+            assertEquals(31, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(8);
+            assertEquals(21, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(0);
+            assertEquals(11, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
+        }
+
+        @Test
+        void downleft() {
+            SensorExpr sensor = new SensorExpr(cmd, 1);
+            spawnAntibody(16);
+            assertEquals(32, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(8);
+            assertEquals(22, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(0);
+            assertEquals(12, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
+            spawnVirus(16);
+            assertEquals(31, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(8);
+            assertEquals(21, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(0);
+            assertEquals(11, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
+        }
+
+        @Test
+        void downright() {
+            SensorExpr sensor = new SensorExpr(cmd, 3);
+            spawnAntibody(16);
+            assertEquals(32, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(8);
+            assertEquals(22, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(0);
+            assertEquals(12, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
+            spawnVirus(16);
+            assertEquals(31, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(8);
+            assertEquals(21, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(0);
+            assertEquals(11, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
+        }
+
+        @Test
+        void upright() {
+            SensorExpr sensor = new SensorExpr(cmd, 9);
+            spawnAntibody(16);
+            assertEquals(32, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(8);
+            assertEquals(22, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(0);
+            assertEquals(12, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
+            spawnVirus(16);
+            assertEquals(31, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(8);
+            assertEquals(21, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(0);
+            assertEquals(11, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
+        }
+
+        @Test
+        void upleft() {
+            SensorExpr sensor = new SensorExpr(cmd, 1);
+            spawnAntibody(16);
+            assertEquals(32, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(8);
+            assertEquals(22, sensor.evaluate(new HashMap<>(), main));
+            spawnAntibody(0);
+            assertEquals(12, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
+            spawnVirus(16);
+            assertEquals(31, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(8);
+            assertEquals(21, sensor.evaluate(new HashMap<>(), main));
+            spawnVirus(0);
+            assertEquals(11, sensor.evaluate(new HashMap<>(), main));
+
+            resetMap(st, main);
+        }
+
     }
 }
