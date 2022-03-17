@@ -9,6 +9,7 @@ import de.gurkenlabs.litiengine.graphics.ShapeRenderer;
 import de.gurkenlabs.litiengine.graphics.TextRenderer;
 import de.gurkenlabs.litiengine.gui.GuiComponent;
 import de.gurkenlabs.litiengine.gui.HorizontalSlider;
+import de.gurkenlabs.litiengine.input.Input;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -21,6 +22,9 @@ public class Hud extends GuiComponent {
     static final AntibodyShop antibodyShop = new AntibodyShop();
     private static final int PADDING = 10;
     private static HorizontalSlider speedSlider;
+    private static int slider;
+    private static boolean isPressed1;
+    private static boolean isPressed2;
 
     public Hud() {
         super(0, 0, Game.window().getResolution().getWidth(), Game.window().getResolution().getHeight());
@@ -45,6 +49,32 @@ public class Hud extends GuiComponent {
                 1, 3, 1);
         speedSlider.setShowTicks(true);
         speedSlider.onChange(c -> GameStates.loop().setXSpeed(Math.max(c.intValue(), 1)));
+
+        slider = 0;
+        isPressed1 = false;
+        isPressed2 = false;
+
+        Input.keyboard().onKeyPressed(37, e -> {
+            if (!isPressed1) {
+                slider = Math.max(0, slider - 1);
+                updateSlider(slider);
+                isPressed1 = true;
+            }
+        });
+        Input.keyboard().onKeyReleased(37, e -> {
+            isPressed1 = false;
+        });
+
+        Input.keyboard().onKeyPressed(39, e -> {
+            if (!isPressed2) {
+                slider = Math.min(3, slider + 1);
+                updateSlider(slider);
+                isPressed2 = true;
+            }
+        });
+        Input.keyboard().onKeyReleased(39, e -> {
+            isPressed2 = false;
+        });
 
         this.getComponents().add(speedSlider);
         this.getComponents().add(antibodyShop);
@@ -86,6 +116,10 @@ public class Hud extends GuiComponent {
         g.setFont(Program.GUI_FONT_SMALL2);
         TextRenderer.renderWithOutline(g, speedControl, getWidth() - 175, textY + 7, COLOR_OUTLINE);
 
+    }
+
+    public static void updateSlider(int change) {
+        speedSlider.setCurrentValue(change);
     }
 
     private void renderShop(Graphics2D g) {

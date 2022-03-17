@@ -89,6 +89,14 @@ public class CameraManager {
             }
         });
 
+        Input.keyboard().onKeyPressed(90, e -> {
+            if (e.isControlDown()) {
+                zoomAmount = MaxZoomOut;
+                camera.setZoom(zoomAmount, 0);
+                camera.setFocus(defaultFocusX, defaultFocusY);
+            }
+        });
+
         camera.onFocus(e -> InputController.entityOnCursor());
     }
 
